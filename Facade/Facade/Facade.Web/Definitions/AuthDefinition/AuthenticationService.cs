@@ -1,7 +1,7 @@
 ﻿using AuthRequest;
 using Grpc.Core;
 
-namespace Facade.Web.Services;
+namespace Facade.Web.Definitions.AuthDefinition;
 
 public class AuthenticationService : Authentication.AuthenticationBase
 {
