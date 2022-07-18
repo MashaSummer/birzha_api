@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCore.Identity.MongoDbCore.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuthMicroservice.Infrastructure;
 
@@ -6,8 +7,16 @@ namespace AuthMicroservice.Infrastructure;
 /// Default user for application.
 /// Add profile data for application users by adding properties to the ApplicationUser class
 /// </summary>
-public class ApplicationUser : IdentityUser<Guid>
+public class ApplicationUser : MongoIdentityUser<Guid>
 {
+
+    public ApplicationUser()
+    {
+    }
+
+    public ApplicationUser(string userName, string email) : base(userName, email)
+    {
+    }
     /// <summary>
     /// FirstName
     /// </summary>

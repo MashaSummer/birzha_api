@@ -16,6 +16,6 @@ public class DataSeedingDefinition : AppDefinition
     public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
         DatabaseInitializer.SeedUsers(app.Services);
-        DatabaseInitializer.SeedEvents(app.Services);
+        //DatabaseInitializer.SeedEvents(app.Services); TODO: Add seed event after adding event infrastructure
     }
 }

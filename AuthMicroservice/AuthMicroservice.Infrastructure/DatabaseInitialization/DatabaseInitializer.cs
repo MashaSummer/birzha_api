@@ -18,7 +18,6 @@ public static class DatabaseInitializer
     public static async void SeedUsers(IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
-        await using var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
         // ATTENTION!
         // -----------------------------------------------------------------------------
@@ -28,11 +27,14 @@ public static class DatabaseInitializer
         // -----------------------------------------------------------------------------
 
         var roles = AppData.Roles.ToArray();
-
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var t11 = await userManager.FindByNameAsync("asd");
+        var t = await roleManager.FindByNameAsync("asd");
         foreach (var role in roles)
         {
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-            if (!context!.Roles.Any(r => r.Name == role))
+            
+            if (true)
             {
                 await roleManager.CreateAsync(new ApplicationRole { Name = role, NormalizedName = role.ToUpper() });
             }
@@ -68,7 +70,22 @@ public static class DatabaseInitializer
                 }
             }
         };
+        var admin = await userManager.FindByEmailAsync(developer1.Email);
+        if (admin == null)
+        {
+            var result = await userManager.CreateAsync(developer1, "123qwe!@#");
 
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException("Cannot create account");
+            }
+
+            foreach (var role in roles)
+            {
+                var roleAdded = await userManager!.AddToRoleAsync(developer1, role);
+            }
+        }
+        /*
         if (!context!.Users.Any(u => u.UserName == developer1.UserName))
         {
             var password = new PasswordHasher<ApplicationUser>();
@@ -91,9 +108,11 @@ public static class DatabaseInitializer
                 }
             }
         }
+        */
 
         #endregion
-
+        // loging from template TODO: edit to mongoDb saving log
+        /*
         await context.EventItems.AddAsync(new EventItem
         {
             CreatedAt = DateTime.UtcNow,
@@ -104,6 +123,7 @@ public static class DatabaseInitializer
         });
 
         await context.SaveChangesAsync();
+        */
     }
 
     /// <summary>

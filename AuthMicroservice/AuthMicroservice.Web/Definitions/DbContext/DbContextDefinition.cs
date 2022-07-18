@@ -36,30 +36,9 @@ public class DbContextDefinition : AppDefinition
         });
 
 
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
-            options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
-            options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
-            options.ClaimsIdentity.EmailClaimType = OpenIddictConstants.Claims.Email;
-            // configure more options if you need
-        });
+        
 
-        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireUppercase = false;
-            })
-            .AddSignInManager()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddUserStore<ApplicationUserStore>()
-            .AddRoleStore<ApplicationRoleStore>()
-            .AddUserManager<UserManager<ApplicationUser>>()
-            .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
-            .AddDefaultTokenProviders();
+        
 
         services.AddTransient<ApplicationUserStore>();
     }

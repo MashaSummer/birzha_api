@@ -33,7 +33,15 @@ public class ProfilesMapperConfiguration : Profile
             .ForMember(x => x.TwoFactorEnabled, o => o.Ignore())
             .ForMember(x => x.LockoutEnd, o => o.Ignore())
             .ForMember(x => x.LockoutEnabled, o => o.Ignore())
-            .ForMember(x => x.AccessFailedCount, o => o.Ignore());
+            .ForMember(x => x.AccessFailedCount, o => o.Ignore())
+            .ForMember(x => x.Version, o => o.Ignore())
+            .ForMember(x => x.CreatedOn, o => o.Ignore())
+            .ForMember(x => x.Claims, o => o.Ignore())
+            .ForMember(x => x.Roles, o => o.Ignore())
+            .ForMember(x => x.Logins, o => o.Ignore())
+            .ForMember(x => x.Tokens, o => o.Ignore());
+
+
 
         CreateMap<RegisterViewModel, ApplicationUserProfile>()
             .ForMember(x => x.Id, o => o.Ignore())

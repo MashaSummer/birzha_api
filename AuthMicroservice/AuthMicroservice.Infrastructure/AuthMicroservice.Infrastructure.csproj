@@ -7,7 +7,10 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.2" />
 		<PackageReference Include="Calabonga.UnitOfWork" Version="3.0.0" />
+		<PackageReference Include="OpenIddict.Abstractions" Version="3.1.1" />
+		<PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
 		<PackageReference Include="OperationResultCore" Version="3.0.1" />
 		<PackageReference Include="Calabonga.PredicatesBuilder" Version="2.0.0" />
 		<PackageReference Include="Calabonga.Microservices.Core" Version="4.0.0" />
