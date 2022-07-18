@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "AuthRequest";
+
+service Authentication  {
+  rpc Login (UserData) returns (TokenData);
+}
+
+message UserData {
+  string Email = 1;
+  string Password = 2;
+}
+
+
+message TokenData {
+  string Token = 1; 
+}
