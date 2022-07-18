@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facade.Domain", "Facade\Facade.Domain\Facade.Domain.csproj", "{B20B7401-A455-48AB-913A-AE5952FA494A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facade.Infrastructure", "Facade\Facade.Infrastructure\Facade.Infrastructure.csproj", "{FF304EE8-7B5D-4AFF-9D0E-C66F00593F1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facade.Web", "Facade\Facade.Web\Facade.Web.csproj", "{B931D647-72EA-450B-BFD4-9F5D6D6B2308}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B20B7401-A455-48AB-913A-AE5952FA494A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B20B7401-A455-48AB-913A-AE5952FA494A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B20B7401-A455-48AB-913A-AE5952FA494A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B20B7401-A455-48AB-913A-AE5952FA494A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF304EE8-7B5D-4AFF-9D0E-C66F00593F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF304EE8-7B5D-4AFF-9D0E-C66F00593F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF304EE8-7B5D-4AFF-9D0E-C66F00593F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF304EE8-7B5D-4AFF-9D0E-C66F00593F1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B931D647-72EA-450B-BFD4-9F5D6D6B2308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B931D647-72EA-450B-BFD4-9F5D6D6B2308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B931D647-72EA-450B-BFD4-9F5D6D6B2308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B931D647-72EA-450B-BFD4-9F5D6D6B2308}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
