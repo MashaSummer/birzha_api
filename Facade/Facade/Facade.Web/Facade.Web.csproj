@@ -31,5 +31,8 @@
         <ProjectReference Include="..\Facade.Infrastructure\Facade.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Protobuf Include="Protos\auth.proto" GrpcService="Server"/>
+    </ItemGroup>
 
 </Project>
