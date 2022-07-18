@@ -13,5 +13,7 @@ message UserData {
 
 
 message TokenData {
-  string Token = 1; 
+  string Token = 1;
+  bool HasError = 2;
+  string ErrorText = 3;
 }
