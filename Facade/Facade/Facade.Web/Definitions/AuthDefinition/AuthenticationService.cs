@@ -20,15 +20,15 @@ public class AuthenticationService : Authentication.AuthenticationBase
     /// <returns></returns>
     public override async Task<TokenData> Login(UserData request, ServerCallContext context)
     {
-        var response = "";
+        var response = "None";
         var hasError = false;
-        var errorText = "";
+        var errorText = "None";
 
         try
         {
             response = await _client.GetStringAsync(_authUrl);
         }
-        catch (HttpRequestException e)
+        catch (Exception e)
         {
             Console.WriteLine(e);
 
@@ -36,6 +36,8 @@ public class AuthenticationService : Authentication.AuthenticationBase
             errorText = e.Message;
         }
 
-        return new TokenData() { Token = response, HasError = hasError, ErrorText = errorText };
+        Console.WriteLine($"Sending message: {response} {hasError} {errorText}");
+
+        return await Task.FromResult(new TokenData() { Token = response, ErrorText = errorText, HasError = hasError });
     }
 }

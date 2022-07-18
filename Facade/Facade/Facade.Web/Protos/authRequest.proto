@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "AuthRequest";
 
+package auth;
+
 service Authentication  {
   rpc Login (UserData) returns (TokenData);
 }
