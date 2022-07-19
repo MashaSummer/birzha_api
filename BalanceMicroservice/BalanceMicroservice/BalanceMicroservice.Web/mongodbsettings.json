@@ -1,17 +1,14 @@
 {
-  "BalanceStoreDatabase": {
+  "BookStoreDatabase": {
     "ConnectionString": "mongodb://localhost:27017",
     "DatabaseName": "BalanceStore",
-    "BalanceCollectionName": "Balance"
+    "BooksCollectionName": "Balance"
   },
   "Logging": {
     "LogLevel": {
       "Default": "Information",
       "Microsoft.AspNetCore": "Warning"
     }
-  },
-  "AuthServer": {
-    "Url": "https://localhost:10001"
   },
   "AllowedHosts": "*"
 }
