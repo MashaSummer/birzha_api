@@ -9,10 +9,10 @@ service AuthService {
 }
 
 message LoginData {
-  string email = 1;
+  string email1 = 1;
   string password = 2;
 }
 
 message TokenData {
-  string token = 1;
+  string token1 = 1;
 }

@@ -1,6 +1,6 @@
 ﻿using Facade.Web.Definitions.Base;
 
-namespace Facade.Web.Auth;
+namespace Facade.Web.GrpcServices;
 
 public class TestServiceDefinition : AppDefinition
 {

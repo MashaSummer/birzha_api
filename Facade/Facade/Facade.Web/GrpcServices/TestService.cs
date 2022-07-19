@@ -1,7 +1,7 @@
 ﻿using AuthRequest;
 using Grpc.Core;
 
-namespace Facade.Web.Auth;
+namespace Facade.Web.GrpcServices;
 
 public class TestService : AuthService.AuthServiceBase
 {
@@ -11,8 +11,8 @@ public class TestService : AuthService.AuthServiceBase
 
     public override Task<TokenData> Login(LoginData request, ServerCallContext context)
     {
-        _logger.Log(LogLevel.Information, $"Login: {request.Email} Password: {request.Password}");
+        _logger.Log(LogLevel.Information, $"Login: {request.Email1} Password: {request.Password}");
 
-        return Task.FromResult(new TokenData() { Token = "To123456789ken" });
+        return Task.FromResult(new TokenData() { Token1 = "To123456789ken" });
     }
 }
