@@ -15,6 +15,4 @@ message LoginData {
 
 message TokenData {
   string token = 1;
-  bool has_error = 2;
-  string error_text = 3;
 }
