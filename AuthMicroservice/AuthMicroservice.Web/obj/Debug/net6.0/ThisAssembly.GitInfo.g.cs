@@ -46,17 +46,17 @@ namespace
       /// <summary>Branch: AuthMicroservice</summary>
       public const string Branch = @"AuthMicroservice";
 
-      /// <summary>Commit: c1c1e2b</summary>
-      public const string Commit = @"c1c1e2b";
+      /// <summary>Commit: a183a78</summary>
+      public const string Commit = @"a183a78";
 
-      /// <summary>Sha: c1c1e2b6dabf1a63c6c9ade939c90a7a7ee7f1a4</summary>
-      public const string Sha = @"c1c1e2b6dabf1a63c6c9ade939c90a7a7ee7f1a4";
+      /// <summary>Sha: a183a78fbe9b73670d451d2f7683df209af02cdc</summary>
+      public const string Sha = @"a183a78fbe9b73670d451d2f7683df209af02cdc";
 
-      /// <summary>Commit date: 2022-07-18T17:33:48+03:00</summary>
-      public const string CommitDate = @"2022-07-18T17:33:48+03:00";
+      /// <summary>Commit date: 2022-07-19T15:25:51+03:00</summary>
+      public const string CommitDate = @"2022-07-19T15:25:51+03:00";
 
-      /// <summary>Commits on top of base version: 7</summary>
-      public const string Commits = @"7";
+      /// <summary>Commits on top of base version: 8</summary>
+      public const string Commits = @"8";
 
       /// <summary>Tag: </summary>
       public const string Tag = @"";
@@ -86,8 +86,8 @@ namespace
         /// <summary>Minor: 0</summary>
         public const string Minor = @"0";
 
-        /// <summary>Patch: 7</summary>
-        public const string Patch = @"7";
+        /// <summary>Patch: 8</summary>
+        public const string Patch = @"8";
 
         /// <summary>Label: </summary>
         public const string Label = @"";

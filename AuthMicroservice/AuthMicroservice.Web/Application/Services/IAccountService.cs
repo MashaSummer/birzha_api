@@ -1,5 +1,4 @@
 ﻿using AuthMicroservice.Infrastructure;
-using AuthMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
 using Calabonga.Microservices.Core.Validators;
 using Calabonga.OperationResults;
 using System.Security.Claims;
@@ -20,28 +19,6 @@ namespace AuthMicroservice.Web.Application.Services
         /// </summary>
         /// <returns></returns>
         Guid GetCurrentUserId();
-
-        /// <summary>
-        /// Returns <see cref="ApplicationUser"/> instance after successful registration
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        
-
-        /// <summary>
-        /// Returns user profile
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        Task<OperationResult<UserProfileViewModel>> GetProfileByIdAsync(string identifier);
-
-        /// <summary>
-        /// Returns user profile
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        Task<OperationResult<UserProfileViewModel>> GetProfileByEmailAsync(string email);
 
         /// <summary>
         /// Returns User by user identifier

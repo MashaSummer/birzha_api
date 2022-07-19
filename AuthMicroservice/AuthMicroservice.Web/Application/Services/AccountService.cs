@@ -1,7 +1,6 @@
 ﻿using AuthMicroservice.Domain.Base;
 using AuthMicroservice.Infrastructure;
 using AuthMicroservice.Web.Definitions.Identity;
-using AuthMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
 using AutoMapper;
 using Calabonga.Microservices.Core.Exceptions;
 using Calabonga.Microservices.Core.Extensions;
@@ -58,41 +57,7 @@ namespace AuthMicroservice.Web.Application.Services
             var identitySub = identity?.GetSubjectId();
             return identitySub?.ToGuid() ?? Guid.Empty;
         }
-
-        /// <summary>
-        /// Returns <see cref="ApplicationUser"/> instance after successful registration
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        
-
-        /// <summary>
-        /// Returns user profile
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        public async Task<OperationResult<UserProfileViewModel>> GetProfileByIdAsync(string identifier)
-        {
-            var operation = OperationResult.CreateResult<UserProfileViewModel>();
-            var claimsPrincipal = await GetPrincipalByIdAsync(identifier);
-            operation.Result = _mapper.Map<UserProfileViewModel>(claimsPrincipal.Identity);
-            return await Task.FromResult(operation);
-        }
-
-        /// <summary>
-        /// Returns user profile
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public async Task<OperationResult<UserProfileViewModel>> GetProfileByEmailAsync(string email)
-        {
-            var operation = OperationResult.CreateResult<UserProfileViewModel>();
-            var claimsPrincipal = await GetPrincipalByEmailAsync(email);
-            operation.Result = _mapper.Map<UserProfileViewModel>(claimsPrincipal.Identity);
-            return await Task.FromResult(operation);
-        }
-
+  
         /// <summary>
         /// Returns ClaimPrincipal by user identity
         /// </summary>
