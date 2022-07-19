@@ -40,6 +40,16 @@ public class ApplicationUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<
 
         ((ClaimsIdentity)principal.Identity!).AddClaim(new Claim("framework", "nimble"));
 
+        if (!string.IsNullOrWhiteSpace(user.Id.ToString()))
+        {
+            ((ClaimsIdentity)principal.Identity!).AddClaim(new Claim("id", user.Id.ToString()));
+        }
+
+        if (!string.IsNullOrWhiteSpace(user.UserName))
+        {
+            ((ClaimsIdentity)principal.Identity!).AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+        }
+
         if (!string.IsNullOrWhiteSpace(user.FirstName))
         {
             ((ClaimsIdentity)principal.Identity!).AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));

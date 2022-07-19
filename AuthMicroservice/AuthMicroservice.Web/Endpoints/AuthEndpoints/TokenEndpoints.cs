@@ -18,12 +18,15 @@ public class TokenEndpoints : AppDefinition
     public override void ConfigureApplication(WebApplication app, IWebHostEnvironment environment) =>
         app.MapPost("~/connect/token", TokenAsync).ExcludeFromDescription();
 
+    
     private async Task<IResult> TokenAsync(
         HttpContext httpContext,
         IOpenIddictScopeManager manager,
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager,
-        IAccountService accountService)
+        IAccountService accountService,
+        ILogger<TokenEndpoints> logger
+        )
     {
         var request = httpContext.GetOpenIddictServerRequest() ?? throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
         
@@ -48,15 +51,17 @@ public class TokenEndpoints : AppDefinition
 
         if (request.IsPasswordGrantType())
         {
-            var user = await userManager.FindByNameAsync(request.Username);
+            var user = await userManager.FindByEmailAsync(request.Username);
             if (user == null)
             {
+                logger.LogError($"Invalid attempt to sign in for user: {request?.Username} ");
                 return Results.Problem("Invalid operation");
             }
 
             // Ensure the user is allowed to sign in
             if (!await signInManager.CanSignInAsync(user))
             {
+                logger.LogError($"Invalid attempt to sign in for user: {request?.Username} ");
                 return Results.Problem("Invalid operation");
             }
 
@@ -64,6 +69,7 @@ public class TokenEndpoints : AppDefinition
             // Ensure the user is not already locked out
             if (userManager.SupportsUserLockout && await userManager.IsLockedOutAsync(user))
             {
+                logger.LogError($"Invalid attempt to sign in for user: {request?.Username} ");
                 return Results.Problem("Invalid operation");
             }
 
@@ -75,6 +81,7 @@ public class TokenEndpoints : AppDefinition
                     await userManager.AccessFailedAsync(user);
                 }
 
+                logger.LogError($"Invalid attempt to sign in for user: {request?.Username} ");
                 return Results.Problem("Invalid operation");
             }
 
@@ -84,6 +91,7 @@ public class TokenEndpoints : AppDefinition
                 await userManager.ResetAccessFailedCountAsync(user);
             }
 
+            logger.LogInformation($"User: {user.Email} signed in");
             var principal = await accountService.GetPrincipalByEmailAsync(user.Email);
             return Results.SignIn(principal, new AuthenticationProperties(), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         }

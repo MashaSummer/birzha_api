@@ -1,0 +1,15 @@
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\AuthMicroservice.Infrastructure.deps.json
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\AuthMicroservice.Infrastructure.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\ref\AuthMicroservice.Infrastructure.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\AuthMicroservice.Infrastructure.pdb
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\AuthMicroservice.Domain.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\bin\Debug\net6.0\AuthMicroservice.Domain.pdb
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.csproj.AssemblyReference.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.AssemblyInfoInputs.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.AssemblyInfo.cs
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.csproj.CopyComplete
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\ref\AuthMicroservice.Infrastructure.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Infrastructure\obj\Debug\net6.0\AuthMicroservice.Infrastructure.pdb

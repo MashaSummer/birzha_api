@@ -1,0 +1,176 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Infrastructure\\AuthMicroservice.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\AuthMicroservice.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\AuthMicroservice.Domain.csproj",
+        "projectName": "AuthMicroservice.Domain",
+        "projectPath": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\AuthMicroservice.Domain.csproj",
+        "packagesPath": "C:\\Users\\taram\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\taram\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "AspNetCore.Identity.MongoDbCore": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "OpenIddict.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "OpenIddict.MongoDb": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Infrastructure\\AuthMicroservice.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Infrastructure\\AuthMicroservice.Infrastructure.csproj",
+        "projectName": "AuthMicroservice.Infrastructure",
+        "projectPath": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Infrastructure\\AuthMicroservice.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\taram\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\taram\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\AuthMicroservice.Domain.csproj": {
+                "projectPath": "C:\\Projects\\Active\\DeeplayBirzha\\birzha_api\\AuthMicroservice\\AuthMicroservice.Domain\\AuthMicroservice.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "AspNetCore.Identity.MongoDbCore": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Calabonga.Microservices.Core": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Calabonga.PredicatesBuilder": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Calabonga.UnitOfWork": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
+            "OpenIddict.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "OpenIddict.MongoDb": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "OperationResultCore": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

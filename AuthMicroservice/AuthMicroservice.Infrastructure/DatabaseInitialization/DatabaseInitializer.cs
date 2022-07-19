@@ -34,7 +34,7 @@ public static class DatabaseInitializer
         foreach (var role in roles)
         {
             
-            if (true)
+            if (!roleManager.Roles.Any(x => x.Name == role))
             {
                 await roleManager.CreateAsync(new ApplicationRole { Name = role, NormalizedName = role.ToUpper() });
             }

@@ -13,17 +13,54 @@ public class OpenIddictWorker : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await using var scope = _serviceProvider.CreateAsyncScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await context.Database.EnsureCreatedAsync(cancellationToken);
-
-        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
-
-        if (await manager.FindByClientIdAsync("service-to-service", cancellationToken) is null)
+        await RegisterApplicationsAsync(scope.ServiceProvider);
+    }
+    static async Task RegisterApplicationsAsync(IServiceProvider provider, CancellationToken token = default)
+    {
+        var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
+        var url = provider.GetRequiredService<IConfiguration>().GetValue<string>("AuthServer:Url");
+        if (await manager.FindByClientIdAsync("authorization-flow", token) is null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "client_id_sts",
+                ClientId = "authorization-flow",
+                ClientSecret = "client_secret_code",
+                DisplayName = "API testing clients with Authorization Code Flow demonstration",
+                
+                PostLogoutRedirectUris =
+                        {
+                            new Uri("http://localhost:5010/signout-callback-oidc")
+                        },
+                RedirectUris =
+                        {
+                            new Uri("https://www.thunderclient.com/oauth/callback"),        // https://www.thunderclient.com/
+                            new Uri($"{url}/swagger/oauth2-redirect.html")                  // https://swagger.io/
+                        },
+                Permissions =
+                        {
+                            // Endpoint permissions
+                            OpenIddictConstants.Permissions.Endpoints.Authorization,
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+
+                            // Grant type permissions
+                            OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+
+                            // Scope permissions
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "api",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "custom",
+
+                            // Response types
+                            OpenIddictConstants.Permissions.ResponseTypes.Code,
+                            OpenIddictConstants.Permissions.ResponseTypes.IdToken
+                        }
+            });
+        }
+        
+        if (await manager.FindByClientIdAsync("service-to-service", token) is null)
+        {
+            await manager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = "service-to-service",
                 ClientSecret = "client_secret_sts",
                 DisplayName = "Service-To-Service demonstration",
                 Permissions =
@@ -38,43 +75,8 @@ public class OpenIddictWorker : IHostedService
                     // Scope permissions
                     OpenIddictConstants.Permissions.Prefixes.Scope + "api"
                 }
-            }, cancellationToken);
-        }
-
-        if (await manager.FindByClientIdAsync("authorization-flow", cancellationToken) is null)
-        {
-            var url = _serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("AuthServer:Url");
-
-            await manager.CreateAsync(new OpenIddictApplicationDescriptor
-            {
-                ClientId = "client_id_code",
-                ClientSecret = "client_secret_code",
-                DisplayName = "API testing clients with Authorization Code Flow demonstration",
-                RedirectUris = {
-                    new Uri("https://www.thunderclient.com/oauth/callback"),        // https://www.thunderclient.com/
-                    new Uri($"{url}/swagger/oauth2-redirect.html")                  // https://swagger.io/
-                },
-
-                Permissions =
-                {
-                    // Endpoint permissions
-                    OpenIddictConstants.Permissions.Endpoints.Authorization,
-                    OpenIddictConstants.Permissions.Endpoints.Token,
-
-                    // Grant type permissions
-                    OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
-
-                    // Scope permissions
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "custom",
-
-                    // Response types
-                    OpenIddictConstants.Permissions.ResponseTypes.Code,
-                    OpenIddictConstants.Permissions.ResponseTypes.IdToken
-                }
-            }, cancellationToken);
+            }, token);
         }
     }
-
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

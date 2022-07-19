@@ -1,5 +1,4 @@
-﻿using AuthMicroservice.Web.Application.Services;
-using AuthMicroservice.Web.Definitions.Base;
+﻿using AuthMicroservice.Web.Definitions.Base;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +13,7 @@ namespace AuthMicroservice.Web.Endpoints.AuthEndpoints;
 /// </summary>
 public class AuthorizeEndpoints : AppDefinition
 {
-    private readonly IAccountService _accountService;
+    
 
     public override void ConfigureApplication(WebApplication app, IWebHostEnvironment environment)
     {

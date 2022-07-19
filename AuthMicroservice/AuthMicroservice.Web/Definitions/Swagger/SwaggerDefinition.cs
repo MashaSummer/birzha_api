@@ -36,7 +36,7 @@ public class SwaggerDefinition : AppDefinition
             settings.DefaultModelsExpandDepth(0);
             settings.DocExpansion(DocExpansion.None);
             settings.OAuthScopeSeparator(" ");
-            settings.OAuthClientId("client_id_code");
+            settings.OAuthClientId("authorization-flow");
             settings.OAuthClientSecret("client_secret_code");
             settings.DisplayRequestDuration();
             settings.OAuthAppName(AppData.ServiceName);

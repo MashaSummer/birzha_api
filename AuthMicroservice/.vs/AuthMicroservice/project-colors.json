@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "82820971-c4dd-4107-a397-29da07713e28": {
+      "ProjectGuid": "82820971-c4dd-4107-a397-29da07713e28",
+      "DisplayName": "AuthMicroservice.Web",
+      "ColorIndex": 0
+    },
+    "6b046f2a-2ee0-413d-859e-1d4cd30d066a": {
+      "ProjectGuid": "6b046f2a-2ee0-413d-859e-1d4cd30d066a",
+      "DisplayName": "AuthMicroservice.Infrastructure",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}

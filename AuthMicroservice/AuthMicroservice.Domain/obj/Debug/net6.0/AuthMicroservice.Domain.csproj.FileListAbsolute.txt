@@ -1,0 +1,12 @@
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\bin\Debug\net6.0\AuthMicroservice.Domain.deps.json
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\bin\Debug\net6.0\AuthMicroservice.Domain.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\bin\Debug\net6.0\ref\AuthMicroservice.Domain.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\bin\Debug\net6.0\AuthMicroservice.Domain.pdb
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.csproj.AssemblyReference.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.AssemblyInfoInputs.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.AssemblyInfo.cs
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.csproj.CoreCompileInputs.cache
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\ref\AuthMicroservice.Domain.dll
+C:\Projects\Active\DeeplayBirzha\birzha_api\AuthMicroservice\AuthMicroservice.Domain\obj\Debug\net6.0\AuthMicroservice.Domain.pdb
