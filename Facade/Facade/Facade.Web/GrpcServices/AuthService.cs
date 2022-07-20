@@ -8,12 +8,13 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
     private readonly ILogger<AuthService> _logger;
     private readonly string _authUrl;
 
-    private static readonly HttpClient _client = new HttpClient();
+    private readonly HttpClient _client;
 
-    public AuthService(ILogger<AuthService> logger, string authUrl)
+    public AuthService(ILogger<AuthService> logger, string authUrl, HttpClient client)
     {
         _logger = logger;
         _authUrl = authUrl;
+        _client = client;
     }
 
     
