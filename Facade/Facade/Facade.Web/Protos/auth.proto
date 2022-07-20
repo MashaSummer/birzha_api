@@ -16,8 +16,9 @@ message LoginData {
 message TokenData {
   string token = 1;
   enum Status {
-    SUCCESS = 0;
-    FAILED = 1;
+    NONE = 0;
+    SUCCESS = 1;
+    FAILED = 2;
   }
   Status status = 2;
 }

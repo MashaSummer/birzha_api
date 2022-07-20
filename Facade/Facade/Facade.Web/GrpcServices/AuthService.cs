@@ -52,7 +52,9 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
             hasError = true;
         }
 
-        return await Task.FromResult(new TokenData() { Token = response, Status = hasError ? TokenData.Types.Status.Failed : TokenData.Types.Status.Success});
+        _logger.LogInformation($"Has login error: {hasError}");
+        var toReturn = new TokenData() { Token = response, Status = hasError ? TokenData.Types.Status.Failed : TokenData.Types.Status.Success };
+        return await Task.FromResult(toReturn);
     }
 
 
