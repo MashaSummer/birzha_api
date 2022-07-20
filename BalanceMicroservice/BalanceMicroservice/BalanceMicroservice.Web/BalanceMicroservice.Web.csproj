@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\getBalance.proto" />
+    <None Remove="Protos\BalanceService.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\getBalance.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\BalanceService.proto" GrpcServices="Server" />
   </ItemGroup>
 	
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints
 {
     public class BalanceEndpointDefinition : AppDefinition
     {
-        public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
+        /*public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         {
             app.MapGet("/api/balance/get-balance/{id}", GetBalance);
             //app.MapGet("/api/balance/get-balances", GetAllBalances);
@@ -41,6 +41,6 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints
         [ProducesResponseType(401)]
         [FeatureGroupName("Balance")]
         private async Task<string> AddBalance([FromServices] IMediator mediator, Guid id, int balance, HttpContext context)
-           => await mediator.Send(new PutBalanceRequest(id, balance), context.RequestAborted);
+           => await mediator.Send(new PutBalanceRequest(id, balance), context.RequestAborted);*/
     }
 }
