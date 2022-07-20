@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
+using MediatR;
 
 namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints.Queries
 {

@@ -1,6 +1,8 @@
 ﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
+using BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
 using Calabonga.Microservices.Core;
 using MediatR;
+using MongoDB.Bson;
 using System.Security.Claims;
 
 namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.Queries
@@ -23,9 +25,8 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.Queries
 
         protected override string Handle(GetBalanceRequest request)
         {
-            var balance = _balanceService.GetAsync(request.id);
-            
-            return $"Current user ({request.id}) have following balance: {string.Join("|", balance)}";
+            var balance = _balanceService.GetAsync(request.id).Result;
+            return $"Current user ({request.id}) have following balance: {string.Join("|", balance.Balance)}";
         }
     }
 }

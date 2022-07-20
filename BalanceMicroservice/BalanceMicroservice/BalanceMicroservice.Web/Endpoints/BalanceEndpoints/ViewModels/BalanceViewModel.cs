@@ -12,8 +12,7 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels
         /// Identifier
         /// </summary>
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Balance
