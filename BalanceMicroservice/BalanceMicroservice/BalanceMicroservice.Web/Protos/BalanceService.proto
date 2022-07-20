@@ -7,7 +7,7 @@ service QueryBalanceService {
 	rpc GetBalance(GetBalanceRequest) returns (BalanceResponse);
 }
 
-service CommonBalanceService {
+service CommandBalanceService {
 	rpc AddBalance(ChangeBalanceRequest) returns (BalanceResponse);
 	rpc ReduseBalance(ChangeBalanceRequest) returns (BalanceResponse);
 }
@@ -24,4 +24,6 @@ message ChangeBalanceRequest {
 
 message BalanceResponse {
 	double balance = 1;
+	bool error = 2;
+	string error_message = 3;
 }

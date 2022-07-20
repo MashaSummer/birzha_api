@@ -32,7 +32,7 @@ namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints
         public async Task<List<BalanceViewModel>> GetAsync() =>
             await _balancesCollection.Find(_ => true).ToListAsync();
         public async Task<BalanceViewModel> GetAsync(Guid id) =>
-            await _balancesCollection.Find(x => x.Id == id).FirstAsync();
+            await _balancesCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
         public async Task CreateAsync(BalanceViewModel balance) =>
             await _balancesCollection.InsertOneAsync(balance);
         public async Task UpdateAsync(BalanceViewModel updatedBalance) =>
