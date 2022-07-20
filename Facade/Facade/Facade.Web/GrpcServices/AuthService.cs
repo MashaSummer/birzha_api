@@ -34,7 +34,9 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
 
         try
         {
-            response = await _client.GetStringAsync(_authUrl);
+            var authResponse = await _client.SendAsync(CreateMessage(request.Email, request.Password));
+            authResponse.EnsureSuccessStatusCode();
+            response = await authResponse.Content.ReadAsStringAsync();
         }
         catch (Exception e)
         {
@@ -45,5 +47,25 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
         }
 
         return await Task.FromResult(new TokenData() { Token = response, ErrorText = errorText, HasError = hasError });
+    }
+
+
+    private HttpRequestMessage CreateMessage(string email, string password)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Post, _authUrl);
+        
+        var messageDict = new Dictionary<string, string>()
+        {
+            { "client_id", "service-to-service" },
+            { "client_secret", "client_secret_sts" },
+            { "scope", "api" },
+            { "grant_type", "password" },
+            { "username", email },
+            { "password", password }
+        };
+        
+        message.Content = new FormUrlEncodedContent(messageDict);
+
+        return message;
     }
 }
