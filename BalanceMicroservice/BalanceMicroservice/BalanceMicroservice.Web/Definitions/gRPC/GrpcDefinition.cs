@@ -1,8 +1,7 @@
 ﻿using BalanceMicroservice.Web.Definitions.Base;
-using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
 using BalanceMicroservice.Web.Endpoints.BalanceEndpoints.ViewModels;
 
-namespace BalanceMicroservice.Web.Definitions.Mongo
+namespace BalanceMicroservice.Web.GrpcService
 {
     public class GrpcDefinition : AppDefinition
     {
@@ -11,6 +10,7 @@ namespace BalanceMicroservice.Web.Definitions.Mongo
 
         public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         {
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
                 endpoints.MapGrpcService<GetBalanceController>()
                 );

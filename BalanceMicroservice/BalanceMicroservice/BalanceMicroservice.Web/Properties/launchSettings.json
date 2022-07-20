@@ -20,6 +20,14 @@
         "ASPNETCORE_URLS": "https://localhost:20001"
       },
       "distributionName": ""
+    },
+    "Профиль 1": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
