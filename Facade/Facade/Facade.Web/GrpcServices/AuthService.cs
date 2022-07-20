@@ -1,4 +1,5 @@
 ﻿using AuthRequest;
+using Facade.Web.GrpcServices.ViewModels;
 using Grpc.Core;
 
 namespace Facade.Web.GrpcServices;
@@ -30,23 +31,28 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
 
         var response = "No response";
         var hasError = false;
-        var errorText = "No error";
 
         try
         {
             var authResponse = await _client.SendAsync(CreateMessage(request.Email, request.Password));
             authResponse.EnsureSuccessStatusCode();
-            response = await authResponse.Content.ReadAsStringAsync();
+            var tokenResponse = await authResponse.Content.ReadFromJsonAsync<TokenResponseViewModel>();
+
+            if (tokenResponse == null)
+            {
+                throw new Exception("Invalid auth response");
+            }
+
+            response = tokenResponse?.access_token;
         }
         catch (Exception e)
         {
             _logger.LogError($"Error on login method: {e.Message}");
 
             hasError = true;
-            errorText = e.Message;
         }
 
-        return await Task.FromResult(new TokenData() { Token = response, ErrorText = errorText, HasError = hasError });
+        return await Task.FromResult(new TokenData() { Token = response, Status = hasError ? TokenData.Types.Status.Failed : TokenData.Types.Status.Success});
     }
 
 
