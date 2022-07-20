@@ -1,0 +1,94 @@
+﻿using Grpc.Core;
+using Balances;
+using BalanceMicroservice;
+using Microsoft.EntityFrameworkCore;
+using Grpc.Net.Client;
+
+namespace Facade.Web.GrpcBalance
+{
+    public class BalanceService : Balance.BalanceBase
+    {
+        private readonly ILogger<BalanceService> _logger;
+        private readonly GrpcChannel _channel;
+        public BalanceService(ILogger<BalanceService> logger,GrpcChannel channel)
+        {
+            _logger = logger;
+            _channel = channel;
+        }
+
+        public override async  Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
+        {
+            var hasError = false;
+            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
+            if(id == null)
+            {
+                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+            }
+            BalanceResponse response = null;
+            try
+            {
+                var service = new QueryBalanceService.QueryBalanceServiceClient(_channel);
+                response =  service.GetBalance(new GetBalanceRequest { Id = id.ToString()});
+            } 
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error on login method: {ex.Message}");
+                hasError = true;
+            }
+            return await Task.FromResult(new BalanceData() { 
+                Balance = response.Balance,
+                Status = hasError ? BalanceData.Types.Status.Success : BalanceData.Types.Status.Failed
+            });
+        }
+        public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context)
+        {
+            var hasError = false;
+            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
+            if (id == null)
+            {
+                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+            }
+            BalanceResponse response = null;
+            try
+            {
+                var service = new CommandBalanceService.CommandBalanceServiceClient(_channel);
+                response = service.AddBalance(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error on login method: {ex.Message}");
+                hasError = true;
+            }
+            return await Task.FromResult(new BalanceData()
+            {
+                Balance = response.Balance,
+                Status = hasError ? BalanceData.Types.Status.Success : BalanceData.Types.Status.Failed
+            });
+        }
+        public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context)
+        {
+            var hasError = false;
+            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
+            if (id == null)
+            {
+                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+            }
+            BalanceResponse response = null;
+            try
+            {
+                var service = new CommandBalanceService.CommandBalanceServiceClient(_channel);
+                response = service.ReduseBalance(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error on login method: {ex.Message}");
+                hasError = true;
+            }
+            return await Task.FromResult(new BalanceData()
+            {
+                Balance = response.Balance,
+                Status = hasError ? BalanceData.Types.Status.Success : BalanceData.Types.Status.Failed
+            });
+        }
+    }
+}
