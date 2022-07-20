@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "BalanceMicroservice";
+option csharp_namespace = "BalanceMicroservice.Web.GrpcService";
 
 
 service GetBalanceService {

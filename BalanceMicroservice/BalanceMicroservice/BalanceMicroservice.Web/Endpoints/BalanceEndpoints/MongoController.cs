@@ -6,11 +6,11 @@ using MongoDB.Driver;
 
 namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints
 {
-    public class BalanceService
+    public class MongoController
     {
         private readonly IMongoCollection<BalanceViewModel> _balancesCollection;
 
-        public BalanceService(IOptions<BalanceStoreDatabaseSettings> balanceStoreDatabaseSettings)
+        public MongoController(IOptions<BalanceStoreDatabaseSettings> balanceStoreDatabaseSettings)
         {
             var mongoCLient = new MongoClient(
                 balanceStoreDatabaseSettings.Value.ConnectionString);
@@ -18,7 +18,6 @@ namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints
                 balanceStoreDatabaseSettings.Value.DatabaseName);
             _balancesCollection = mongoDatabase.GetCollection<BalanceViewModel>(
                 balanceStoreDatabaseSettings.Value.BalanceCollectionName);
-            
         }
 
         public async void SetValue()
@@ -29,9 +28,6 @@ namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints
                 Balance = 150
             });
         }
-
-
-
 
         public async Task<List<BalanceViewModel>> GetAsync() =>
             await _balancesCollection.Find(_ => true).ToListAsync();

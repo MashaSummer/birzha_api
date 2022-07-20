@@ -7,9 +7,9 @@ namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints.Queries
     public class ReduceBalanceRequestHandler : RequestHandler<ReduceBalanceRequest, string>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly BalanceService _balanceService;
+        private readonly MongoController _balanceService;
 
-        public ReduceBalanceRequestHandler(IHttpContextAccessor httpContextAccessor, BalanceService balanceService)
+        public ReduceBalanceRequestHandler(IHttpContextAccessor httpContextAccessor, MongoController balanceService)
         {
             _httpContextAccessor = httpContextAccessor;
             _balanceService = balanceService;
