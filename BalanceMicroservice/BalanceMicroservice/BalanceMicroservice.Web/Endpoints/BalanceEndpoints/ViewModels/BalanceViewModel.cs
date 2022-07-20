@@ -6,7 +6,7 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels
     /// <summary>
     /// Application User Profile
     /// </summary>
-    public class BalanceViewModel
+    public struct BalanceViewModel
     {
         /// <summary>
         /// Identifier
@@ -18,6 +18,6 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels
         /// Balance
         /// </summary>
         [BsonElement("Balance")]
-        public int Balance { get; set; }
+        public double Balance { get; set; }
     }
 }
