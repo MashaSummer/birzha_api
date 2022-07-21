@@ -44,7 +44,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
                 throw new Exception("Invalid auth response");
             }
 
-            response = tokenResponse?.access_token;
+            response = tokenResponse?.AccessToken;
         }
         catch (Exception e)
         {
