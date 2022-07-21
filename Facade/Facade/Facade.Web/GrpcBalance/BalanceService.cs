@@ -1,8 +1,8 @@
 ﻿using Grpc.Core;
 using Balances;
 using BalanceMicroservice;
-using Microsoft.EntityFrameworkCore;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Facade.Web.GrpcBalance
 {
@@ -15,7 +15,7 @@ namespace Facade.Web.GrpcBalance
             _logger = logger;
             _channel = channel;
         }
-
+       
         public override async  Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
         {
             var hasError = false;
@@ -28,11 +28,11 @@ namespace Facade.Web.GrpcBalance
             try
             {
                 var service = new QueryBalanceService.QueryBalanceServiceClient(_channel);
-                response =  service.GetBalance(new GetBalanceRequest { Id = id.ToString()});
+                response = await service.GetBalanceAsync(new GetBalanceRequest { Id = id.ToString()});
             } 
             catch(Exception ex)
             {
-                _logger.LogError($"Error on login method: {ex.Message}");
+                _logger.LogError($"Error on Balance method get: {ex.Message}");
                 hasError = true;
             }
             return await Task.FromResult(new BalanceData() { 
@@ -40,6 +40,7 @@ namespace Facade.Web.GrpcBalance
                 Status = hasError ? BalanceData.Types.Status.Success : BalanceData.Types.Status.Failed
             });
         }
+        [Authorize]
         public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context)
         {
             var hasError = false;
@@ -52,11 +53,11 @@ namespace Facade.Web.GrpcBalance
             try
             {
                 var service = new CommandBalanceService.CommandBalanceServiceClient(_channel);
-                response = service.AddBalance(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
+                response = await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error on login method: {ex.Message}");
+                _logger.LogError($"Error on Balance method Add: {ex.Message}");
                 hasError = true;
             }
             return await Task.FromResult(new BalanceData()
@@ -65,6 +66,7 @@ namespace Facade.Web.GrpcBalance
                 Status = hasError ? BalanceData.Types.Status.Success : BalanceData.Types.Status.Failed
             });
         }
+        [Authorize]
         public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context)
         {
             var hasError = false;
@@ -77,11 +79,11 @@ namespace Facade.Web.GrpcBalance
             try
             {
                 var service = new CommandBalanceService.CommandBalanceServiceClient(_channel);
-                response = service.ReduseBalance(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
+                response = await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id.ToString(), Value = request.Value });
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error on login method: {ex.Message}");
+                _logger.LogError($"Error on Balance method reduce: {ex.Message}");
                 hasError = true;
             }
             return await Task.FromResult(new BalanceData()

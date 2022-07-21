@@ -11,7 +11,7 @@ public class AuthDefinition : AppDefinition
         services.AddSingleton(provider =>
             new BalanceService(
                 provider.GetRequiredService<ILogger<BalanceService>>(),
-                GrpcChannel.ForAddress("https://localhost:30001")
+                GrpcChannel.ForAddress(configuration["BalanceServer:Url"])
         ));
     }
 }
