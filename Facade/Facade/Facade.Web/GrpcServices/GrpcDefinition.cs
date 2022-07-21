@@ -1,4 +1,5 @@
-﻿using Facade.Web.Definitions.Base;
+﻿using Facade.Domain.Base;
+using Facade.Web.Definitions.Base;
 
 namespace Facade.Web.GrpcServices
 {
@@ -9,6 +10,9 @@ namespace Facade.Web.GrpcServices
         public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         {
             app.UseRouting();
+            app.UseCors(AppData.PolicyName);
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>());
         }
     }
