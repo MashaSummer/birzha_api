@@ -9,7 +9,7 @@ namespace BalanceMicroservice.Web.Definitions.Mongo
         public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<BalanceStoreDatabaseSettings>(configuration.GetSection("BalanceStoreDatabase"));
-            services.AddSingleton<MongoController>();
+            services.AddSingleton<MongoService>();
         }
     }
 }

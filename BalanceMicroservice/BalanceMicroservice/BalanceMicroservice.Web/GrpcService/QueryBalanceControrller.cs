@@ -5,8 +5,8 @@ namespace BalanceMicroservice.Web.GrpcService
 {
     public class QueryBalanceController: QueryBalanceService.QueryBalanceServiceBase
     {
-        private readonly MongoController _database;
-        public QueryBalanceController(MongoController mongo)
+        private readonly MongoService _database;
+        public QueryBalanceController(MongoService mongo)
         {
             _database = mongo;
         }
