@@ -6,7 +6,7 @@ namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels
     /// <summary>
     /// Application User Profile
     /// </summary>
-    public struct BalanceViewModel
+    public class BalanceViewModel
     {
         /// <summary>
         /// Identifier

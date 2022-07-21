@@ -11,14 +11,14 @@ namespace BalanceMicroservice.Web.GrpcService
             _database = mongo;
         }
 
-        public override Task<BalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
+        public override async Task<BalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
         {
             var balanceTask = _database.GetAsync(new Guid(request.Id));
 
-            return Task.FromResult(new BalanceResponse
+            return new BalanceResponse
             {
-                Balance = balanceTask == null ? 0 : balanceTask.Result.Balance
-            });
+                Balance = balanceTask == null ? 0 : (await balanceTask).Balance
+            };
         }
     }
 }

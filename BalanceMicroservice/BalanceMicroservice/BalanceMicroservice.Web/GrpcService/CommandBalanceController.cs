@@ -14,25 +14,25 @@ namespace BalanceMicroservice.Web.GrpcService
 
         public override async Task<BalanceResponse> AddBalance(ChangeBalanceRequest request, ServerCallContext context)
         {
-            BalanceViewModel balanceOld = await CheckBalance(request.Id);
-
-            await _database.UpdateAsync(CalculateNewBalance(balanceOld, request.Value));
-            
-            return new BalanceResponse
-            {
-                Balance = _database.GetAsync(new Guid(request.Id)).Result.Balance
-            };
+            return await ChangeBalance(request, request.Value);
         }
 
         public override async Task<BalanceResponse> ReduseBalance(ChangeBalanceRequest request, ServerCallContext context)
         {
-            BalanceViewModel balanceOld = await CheckBalance(request.Id);
+            return await ChangeBalance(request, request.Value * -1);
+        }
 
-            await _database.UpdateAsync(CalculateNewBalance(balanceOld, request.Value * -1));
+
+
+        private async Task<BalanceResponse> ChangeBalance(ChangeBalanceRequest request, double value)
+        {
+            BalanceViewModel balanceOld = await GetBalance(request.Id);
+
+            await _database.UpdateAsync(CalculateNewBalance(balanceOld, value));
 
             return new BalanceResponse
             {
-                Balance = _database.GetAsync(new Guid(request.Id)).Result.Balance
+                Balance = (await _database.GetAsync(new Guid(request.Id))).Balance
             };
         }
 
@@ -45,11 +45,14 @@ namespace BalanceMicroservice.Web.GrpcService
             };
         }
 
-        private async Task<BalanceViewModel> CheckBalance(string id)
+        // Нужно ли запрвшивать баланс по gRPC у отдающей части, что бы соблюсти cqrs или и так нормально?
+        private async Task<BalanceViewModel> GetBalance(string id)
         {
-            var balanceTask = _database.GetAsync(new Guid(id));
+            Guid userId = new(id);
 
-            if (balanceTask == null)
+            var balanceTask = _database.GetAsync(userId);
+
+            if (await balanceTask == null)
             {
                 /*return new BalanceResponse
                 {
@@ -61,11 +64,12 @@ namespace BalanceMicroservice.Web.GrpcService
                 await _database.CreateAsync(
                     new BalanceViewModel
                     {
-                        Id = new Guid(id),
+                        Id = userId,
                         Balance = 0
                     });
-                balanceTask = _database.GetAsync(new Guid(id));
+                balanceTask = _database.GetAsync(userId);
             }
+
             return await balanceTask;
         }
     }
