@@ -25,15 +25,17 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
     /// <returns></returns>
     public override async Task<TokenData> Login(LoginData request, ServerCallContext context)
     {
-        _logger.Log(LogLevel.Information, $"Got login request");
-        _logger.LogInformation($"Url: {_client.BaseAddress}");
+        _logger.LogInformation("Got login request");
 
         var response = "No response";
         var hasError = false;
 
         try
         {
-            var authResponse = await _client.SendAsync(CreateMessage(request.Email, request.Password));
+            var authResponse = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Post, _client.BaseAddress)
+            {
+                Content = CreateMessage(request.Email, request.Password)
+            });
             authResponse.EnsureSuccessStatusCode();
             var tokenResponse = await authResponse.Content.ReadFromJsonAsync<TokenResponseViewModel>();
 
@@ -57,7 +59,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
     }
 
 
-    private HttpRequestMessage CreateMessage(string email, string password)
+    private FormUrlEncodedContent CreateMessage(string email, string password)
     {
         var message = new HttpRequestMessage(HttpMethod.Post, _client.BaseAddress);
         
@@ -71,8 +73,6 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
             { "password", password }
         };
         
-        message.Content = new FormUrlEncodedContent(messageDict);
-
-        return message;
+        return new FormUrlEncodedContent(messageDict);
     }
 }
