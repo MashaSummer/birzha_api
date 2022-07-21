@@ -7,14 +7,12 @@ namespace Facade.Web.GrpcServices;
 public class AuthService : AuthRequest.AuthService.AuthServiceBase
 {
     private readonly ILogger<AuthService> _logger;
-    private readonly string _authUrl;
 
     private readonly HttpClient _client;
 
-    public AuthService(ILogger<AuthService> logger, string authUrl, HttpClient client)
+    public AuthService(ILogger<AuthService> logger, HttpClient client)
     {
         _logger = logger;
-        _authUrl = authUrl;
         _client = client;
     }
 
@@ -28,6 +26,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
     public override async Task<TokenData> Login(LoginData request, ServerCallContext context)
     {
         _logger.Log(LogLevel.Information, $"Got login request");
+        _logger.LogInformation($"Url: {_client.BaseAddress}");
 
         var response = "No response";
         var hasError = false;
@@ -60,7 +59,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
 
     private HttpRequestMessage CreateMessage(string email, string password)
     {
-        var message = new HttpRequestMessage(HttpMethod.Post, _authUrl);
+        var message = new HttpRequestMessage(HttpMethod.Post, _client.BaseAddress);
         
         var messageDict = new Dictionary<string, string>()
         {
