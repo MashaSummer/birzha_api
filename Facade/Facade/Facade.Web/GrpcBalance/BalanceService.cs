@@ -15,7 +15,7 @@ namespace Facade.Web.GrpcBalance
             _logger = logger;
             _channel = channel;
         }
-       
+       [Authorize]
         public override async  Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
         {
             var hasError = false;
