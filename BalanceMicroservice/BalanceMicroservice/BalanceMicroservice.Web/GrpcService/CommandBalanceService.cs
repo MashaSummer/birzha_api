@@ -4,10 +4,10 @@ using Grpc.Core;
 
 namespace BalanceMicroservice.Web.GrpcService
 {
-    public class CommandBalanceController : CommandBalanceService.CommandBalanceServiceBase
+    public class CommandBalanceService : BalanceMicroservice.CommandBalanceService.CommandBalanceServiceBase
     {
         private readonly MongoService _database;
-        public CommandBalanceController(MongoService mongo)
+        public CommandBalanceService(MongoService mongo)
         {
             _database = mongo;
         }

@@ -21,7 +21,7 @@ namespace BalanceMicroservice.Web.GrpcService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<QueryBalanceController>();
-                endpoints.MapGrpcService<CommandBalanceController>();
+                endpoints.MapGrpcService<CommandBalanceService>();
             });
         }
     }
