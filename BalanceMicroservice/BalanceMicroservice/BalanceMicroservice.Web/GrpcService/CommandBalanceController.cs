@@ -26,9 +26,7 @@ namespace BalanceMicroservice.Web.GrpcService
 
         private async Task<BalanceResponse> ChangeBalance(ChangeBalanceRequest request, double value)
         {
-            BalanceViewModel balanceOld = await GetBalance(request.Id);
-
-            await _database.UpdateAsync(CalculateNewBalance(balanceOld, value));
+            await _database.UpdateAsync(CalculateNewBalance(await GetBalance(request.Id), value));
 
             return new BalanceResponse
             {
