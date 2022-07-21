@@ -41,8 +41,6 @@ try
 
     builder.Services.AddDefinitions(builder, typeof(Program));
 
-
-    
     // create application
     var app = builder.Build();
     app.UseDefinitions();
