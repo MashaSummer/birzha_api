@@ -24,7 +24,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
     /// </summary>
     /// <param name="request">user email and password</param>
     /// <param name="context"></param>
-    /// <returns></returns>
+    /// <returns>Object with token</returns>
     public override async Task<TokenData> Login(LoginData request, ServerCallContext context)
     {
         _logger.LogInformation("Got login request");
