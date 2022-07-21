@@ -16,7 +16,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:20001",
+      "applicationUrl": "https://localhost:30001",
       "dotnetRunMessages": true
     },
     "WSL": {

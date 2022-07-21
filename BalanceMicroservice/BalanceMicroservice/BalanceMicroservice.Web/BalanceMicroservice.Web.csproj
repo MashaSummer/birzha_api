@@ -15,7 +15,6 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="FluentValidation" Version="11.1.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
-    <PackageReference Include="GitInfo" Version="2.2.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
     <PackageReference Include="Grpc.Tools" Version="2.47.0">
       <PrivateAssets>all</PrivateAssets>

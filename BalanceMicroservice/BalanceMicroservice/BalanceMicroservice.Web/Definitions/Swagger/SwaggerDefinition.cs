@@ -12,7 +12,6 @@ namespace BalanceMicroservice.Web.Definitions.Swagger
     public class SwaggerDefinition : AppDefinition
     {
 
-        private const string _appVersion = $"{ThisAssembly.Git.SemVer.Major}.{ThisAssembly.Git.SemVer.Minor}.{ThisAssembly.Git.SemVer.Patch}";
         private const string _swaggerConfig = "/swagger/v1/swagger.json";
 
         public override void ConfigureApplication(WebApplication app, IWebHostEnvironment environment)
@@ -27,8 +26,8 @@ namespace BalanceMicroservice.Web.Definitions.Swagger
             app.UseSwagger();
             app.UseSwaggerUI(settings =>
             {
-                settings.SwaggerEndpoint(_swaggerConfig, $"{AppData.ServiceName} v.{_appVersion}");
-                settings.HeadContent = $"{ThisAssembly.Git.Branch.ToUpper()} {ThisAssembly.Git.Commit.ToUpper()}";
+                settings.SwaggerEndpoint(_swaggerConfig, $"{AppData.ServiceName} v.???");
+                settings.HeadContent = $"??? ???";
                 settings.DocumentTitle = $"{AppData.ServiceName}";
                 settings.DefaultModelExpandDepth(0);
                 settings.DefaultModelRendering(ModelRendering.Model);
@@ -51,7 +50,7 @@ namespace BalanceMicroservice.Web.Definitions.Swagger
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = AppData.ServiceName,
-                    Version = _appVersion,
+                    Version = "???",
                     Description = AppData.ServiceDescription
                 });
 
