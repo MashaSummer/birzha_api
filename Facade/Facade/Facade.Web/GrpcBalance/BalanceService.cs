@@ -16,6 +16,7 @@ namespace Facade.Web.GrpcBalance
             _logger = logger;
             _channel = channel;
         }
+
         [Authorize]
         public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
         {
@@ -36,9 +37,14 @@ namespace Facade.Web.GrpcBalance
                 _logger.LogError($"Error on Balance method get: {ex.Message}");
                 hasError = true;
             }
+            if (response == null)
+            {
+                _logger.LogError("Bad response");
+                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+            }
             return await Task.FromResult(new BalanceData()
             {
-                Balance = response == null ? 0 : response.Balance,
+                Balance = response.Balance,
                 Status = hasError ? BalanceData.Types.Status.Failed : BalanceData.Types.Status.Success
             });
         }
@@ -62,9 +68,14 @@ namespace Facade.Web.GrpcBalance
                 _logger.LogError($"Error on Balance method Add: {ex.Message}");
                 hasError = true;
             }
+            if (response == null)
+            {
+                _logger.LogError("Bad response");
+                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+            }
             return await Task.FromResult(new BalanceData()
             {
-                Balance = response == null ? 0 : response.Balance,
+                Balance = response.Balance,
                 Status = hasError ? BalanceData.Types.Status.Failed : BalanceData.Types.Status.Success
             });
         }
@@ -96,10 +107,11 @@ namespace Facade.Web.GrpcBalance
             }
             return await Task.FromResult(new BalanceData()
             {
-                Balance = response == null ? 0 : response.Balance,
+                Balance = response.Balance,
                 Status = hasError ? BalanceData.Types.Status.Failed : BalanceData.Types.Status.Success
             });
         }
+
 
     }
 }
