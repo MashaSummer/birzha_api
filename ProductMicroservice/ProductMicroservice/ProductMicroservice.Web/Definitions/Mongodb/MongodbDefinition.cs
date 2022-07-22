@@ -8,7 +8,9 @@ public class MongodbDefinition : AppDefinition
 {
     public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient<IMongoClient>(provider => new MongoClient(configuration.GetConnectionString("mongo")));
+        var mongoSettings = configuration.GetSection("MongoSettings").Get<MongoDbSettings>();
+        services.AddSingleton(mongoSettings);
+        services.AddTransient<IMongoClient>(provider => new MongoClient(mongoSettings.ConnectionString));
         services.AddSingleton<IDbWorker, MongoDbWorker>();
     }
 }
