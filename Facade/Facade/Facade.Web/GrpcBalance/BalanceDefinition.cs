@@ -1,10 +1,9 @@
-﻿
-using Facade.Web.Definitions.Base;
-using ILogger = Grpc.Core.Logging.ILogger;
+﻿using Facade.Web.Definitions.Base;
 using Grpc.Net.Client;
+
 namespace Facade.Web.GrpcBalance;
 
-public class AuthDefinition : AppDefinition
+public class BalanceDefinition : AppDefinition
 {
     public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
