@@ -65,9 +65,9 @@ namespace BalanceMicroservice.Web.GrpcService
         {
             Guid userId = new(id);
 
-            var balanceTask = await _database.GetAsync(userId);
+            var balance = await _database.GetAsync(userId);
 
-            if (balanceTask == null)
+            if (balance == null)
             {
                 _logger.LogInformation($"User {id} has no record");
                 /*return new BalanceResponse
@@ -83,11 +83,11 @@ namespace BalanceMicroservice.Web.GrpcService
                         Id = userId,
                         Balance = 0
                     });
-                _logger.LogInformation($"Record for user {id} succesfully created");
-                balanceTask = await _database.GetAsync(userId);
+                _logger.LogInformation($"Record for user {id} successfully created");
+                balance = await _database.GetAsync(userId);
             }
 
-            return balanceTask;
+            return balance;
         }
     }
 }
