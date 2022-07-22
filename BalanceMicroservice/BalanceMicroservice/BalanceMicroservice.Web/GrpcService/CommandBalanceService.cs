@@ -4,33 +4,50 @@ using Grpc.Core;
 
 namespace BalanceMicroservice.Web.GrpcService
 {
-    public class CommandBalanceController : CommandBalanceService.CommandBalanceServiceBase
+    public class CommandBalanceService : BalanceMicroservice.CommandBalanceService.CommandBalanceServiceBase
     {
         private readonly MongoService _database;
-        public CommandBalanceController(MongoService mongo)
+        private readonly ILogger<CommandBalanceService> _logger;
+        public CommandBalanceService(MongoService mongo, ILogger<CommandBalanceService> logger)
         {
             _database = mongo;
+            _logger = logger;
         }
 
         public override Task<BalanceResponse> AddBalance(ChangeBalanceRequest request, ServerCallContext context)
         {
-            return ChangeBalance(request, request.Value);
+            _logger.LogInformation($"Add balance request for user {request.Id} in the amount of {request.Value} units");
+            return ChangeBalance(request.Id, request.Value, false);
         }
 
         public override Task<BalanceResponse> ReduseBalance(ChangeBalanceRequest request, ServerCallContext context)
         {
-            return ChangeBalance(request, request.Value * -1);
+            _logger.LogInformation($"Reduse balance request for user {request.Id} in the amount of {request.Value} units");
+            return ChangeBalance(request.Id, request.Value, true);
         }
 
 
 
-        private async Task<BalanceResponse> ChangeBalance(ChangeBalanceRequest request, double value)
+        private async Task<BalanceResponse> ChangeBalance(string id, double value, bool negative)
         {
-            await _database.UpdateAsync(CalculateNewBalance(await GetBalance(request.Id), value));
+            if (value <= 0) 
+            {
+                _logger.LogError($"User {id} tried to use negative value ({value})");
+                return new BalanceResponse
+                {
+                    Balance = 0,
+                    Error = true,
+                    ErrorMessage = "You can`t use negative or zero value"
+                };
+            }
+
+            if (negative) { value *= -1; }
+
+            await _database.UpdateAsync(CalculateNewBalance(await GetBalance(id), value));
 
             return new BalanceResponse
             {
-                Balance = (await _database.GetAsync(new Guid(request.Id))).Balance
+                Balance = (await _database.GetAsync(new Guid(id))).Balance
             };
         }
 
@@ -52,6 +69,7 @@ namespace BalanceMicroservice.Web.GrpcService
 
             if (await balanceTask == null)
             {
+                _logger.LogInformation($"User {id} has no record");
                 /*return new BalanceResponse
                 {
                     Balance = 0,
@@ -65,6 +83,7 @@ namespace BalanceMicroservice.Web.GrpcService
                         Id = userId,
                         Balance = 0
                     });
+                _logger.LogInformation($"Record for user {id} succesfully created");
                 balanceTask = _database.GetAsync(userId);
             }
 

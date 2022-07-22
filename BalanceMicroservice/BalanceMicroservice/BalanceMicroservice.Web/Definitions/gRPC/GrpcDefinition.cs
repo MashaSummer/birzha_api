@@ -20,8 +20,8 @@ namespace BalanceMicroservice.Web.GrpcService
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<QueryBalanceController>();
-                endpoints.MapGrpcService<CommandBalanceController>();
+                endpoints.MapGrpcService<QueryBalanceService>();
+                endpoints.MapGrpcService<CommandBalanceService>();
             });
         }
     }
