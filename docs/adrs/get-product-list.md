@@ -36,7 +36,7 @@
 
 ### Предлагаемые proto-файлы
 ---
-```
+```protobuf
 service ProductService {
     rpc GetAllProducts (GetAllProductsRequest) returns (GetAllProductsResponse);
 }
