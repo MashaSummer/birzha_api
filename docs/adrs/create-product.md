@@ -38,7 +38,7 @@
 ---
 ```
 service ProductService {
-    rpc GetAllProducts (AllProductsRequest) returns (AllProductsResponse);
+    rpc GetAllProducts (GetAllProductsRequest) returns (GetAllProductsResponse);
 }
 
 message AllProductsRequest {}
