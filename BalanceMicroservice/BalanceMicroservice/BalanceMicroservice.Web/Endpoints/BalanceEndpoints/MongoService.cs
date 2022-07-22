@@ -20,15 +20,6 @@ namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints
                 balanceStoreDatabaseSettings.Value.BalanceCollectionName);
         }
 
-        //public async void SetValue()
-        //{
-        //    await _balancesCollection.InsertOneAsync(new BalanceViewModel
-        //    {
-        //        Id = new Guid("FF0186C5-C3A5-4668-9641-83FDFC111571"),
-        //        Balance = 150
-        //    });
-        //}
-
         public async Task<List<BalanceViewModel>> GetAsync() =>
             await _balancesCollection.Find(_ => true).ToListAsync();
         public async Task<BalanceViewModel> GetAsync(Guid id) =>
