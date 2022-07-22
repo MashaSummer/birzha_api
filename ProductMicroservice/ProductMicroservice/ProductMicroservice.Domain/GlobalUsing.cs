@@ -1,0 +1,1 @@
+﻿global using ProductMicroservice.Domain.Base;
