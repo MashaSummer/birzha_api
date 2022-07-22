@@ -2,5 +2,5 @@
 
 public interface IDbWorker
 {
-    T GetAllRecord<T>();
+    Task<IEnumerable<T>> GetAllRecord<T>();
 }
