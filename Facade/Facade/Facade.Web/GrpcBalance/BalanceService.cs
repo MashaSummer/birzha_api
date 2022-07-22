@@ -7,6 +7,7 @@ using Calabonga.OperationResults;
 
 namespace Facade.Web.GrpcBalance
 {
+    [Authorize]
     public class BalanceService : Balance.BalanceBase
     {
         private readonly ILogger<BalanceService> _logger;
@@ -17,38 +18,42 @@ namespace Facade.Web.GrpcBalance
             _channel = channel;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
         {
             var hasError = false;
+            var result = OperationResult.CreateResult<BalanceData>();
             var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
             if (id == null)
             {
-                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
+                _logger.LogError($"Invalid id");
+                result.AddError("Invalid id");
+                return result.Result;
             }
             BalanceResponse response = new BalanceResponse();
             try
             {
                 var service = new QueryBalanceService.QueryBalanceServiceClient(_channel);
                 response = await service.GetBalanceAsync(new GetBalanceRequest { Id = id.Value });
+                if (response == null)
+                {
+                    _logger.LogError("Bad response");
+                    result.AddError("Bad response");
+                }
+                else
+                {
+                    result.Result = new BalanceData { Balance = response.Balance, Status = BalanceData.Types.Status.Success };
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error on Balance method get: {ex.Message}");
-                hasError = true;
+                _logger.LogError("Error on Balance method get {0}", ex.Message);
+                result.AddError(ex.Message);
             }
-            if (response == null)
-            {
-                _logger.LogError("Bad response");
-                return await Task.FromResult(new BalanceData() { Balance = 0, Status = BalanceData.Types.Status.Failed });
-            }
-            return await Task.FromResult(new BalanceData()
-            {
-                Balance = response.Balance,
-                Status = hasError ? BalanceData.Types.Status.Failed : BalanceData.Types.Status.Success
-            });
+
+            return result.Result;
         }
-        [Authorize]
+
         public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context)
         {
             var hasError = false;
@@ -65,7 +70,7 @@ namespace Facade.Web.GrpcBalance
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error on Balance method Add: {ex.Message}");
+                _logger.LogError("Error on Balance method Add {0}", ex.Message);
                 hasError = true;
             }
             if (response == null)
@@ -79,7 +84,7 @@ namespace Facade.Web.GrpcBalance
                 Status = hasError ? BalanceData.Types.Status.Failed : BalanceData.Types.Status.Success
             });
         }
-        [Authorize]
+
         public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context)
         {
             var hasError = false;
@@ -97,7 +102,7 @@ namespace Facade.Web.GrpcBalance
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error on Balance method reduce: {ex.Message}");
+                _logger.LogError("Error on Balance method reduce {0}", ex.Message);
                 hasError = true;
             }
             if (response == null)
