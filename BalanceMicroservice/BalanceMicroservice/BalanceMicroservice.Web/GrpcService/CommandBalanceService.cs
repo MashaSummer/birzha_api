@@ -1,4 +1,5 @@
 ﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
+using BalanceMicroservice.Web.MongoService;
 using BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
 using Grpc.Core;
 
@@ -47,7 +48,7 @@ namespace BalanceMicroservice.Web.GrpcService
 
             return new BalanceResponse
             {
-                Balance = (await _database.GetAsync(new Guid(id))).Balance
+                Balance = (await _database.GetByIdAsync(new Guid(id))).Balance
             };
         }
 
@@ -65,7 +66,7 @@ namespace BalanceMicroservice.Web.GrpcService
         {
             Guid userId = new(id);
 
-            var balance = await _database.GetAsync(userId);
+            var balance = await _database.GetByIdAsync(userId);
 
             if (balance == null)
             {
@@ -84,7 +85,7 @@ namespace BalanceMicroservice.Web.GrpcService
                         Balance = 0
                     });
                 _logger.LogInformation($"Record for user {id} successfully created");
-                balance = await _database.GetAsync(userId);
+                balance = await _database.GetByIdAsync(userId);
             }
 
             return balance;
