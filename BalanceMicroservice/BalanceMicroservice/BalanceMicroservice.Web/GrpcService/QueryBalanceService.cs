@@ -16,11 +16,11 @@ namespace BalanceMicroservice.Web.GrpcService
         public override async Task<BalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
         {
             _logger.LogInformation($"User {request.Id} asked for the balance");
-            var balanceTask = _database.GetByIdAsync(new Guid(request.Id));
+            var balanceTask = await _database.GetAsync(new Guid(request.Id));
 
             return new BalanceResponse
             {
-                Balance = balanceTask == null ? 0 : (await balanceTask).Balance
+                Balance = balanceTask == null ? 0 : balanceTask.Balance
             };
         }
     }
