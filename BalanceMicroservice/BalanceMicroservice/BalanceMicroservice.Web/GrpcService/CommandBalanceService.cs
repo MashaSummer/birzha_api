@@ -6,9 +6,9 @@ namespace BalanceMicroservice.Web.GrpcService
 {
     public class CommandBalanceService : BalanceMicroservice.CommandBalanceService.CommandBalanceServiceBase
     {
-        private readonly MongoService _database;
+        private readonly MongoBalanceService _database;
         private readonly ILogger<CommandBalanceService> _logger;
-        public CommandBalanceService(MongoService mongo, ILogger<CommandBalanceService> logger)
+        public CommandBalanceService(MongoBalanceService mongo, ILogger<CommandBalanceService> logger)
         {
             _database = mongo;
             _logger = logger;
