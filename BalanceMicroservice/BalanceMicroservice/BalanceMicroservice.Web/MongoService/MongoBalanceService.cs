@@ -6,11 +6,11 @@ using MongoDB.Driver;
 
 namespace BalanceMicroservice.Web.MongoService
 {
-    public class MongoService
+    public class MongoBalanceService
     {
         private readonly IMongoCollection<BalanceViewModel> _balancesCollection;
 
-        public MongoService(IOptions<BalanceStoreDatabaseSettings> balanceStoreDatabaseSettings)
+        public MongoBalanceService(IOptions<BalanceStoreDatabaseSettings> balanceStoreDatabaseSettings)
         {
             var mongoCLient = new MongoClient(
                 balanceStoreDatabaseSettings.Value.ConnectionString);

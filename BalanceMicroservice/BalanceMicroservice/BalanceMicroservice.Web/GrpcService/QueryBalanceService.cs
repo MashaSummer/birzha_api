@@ -1,4 +1,5 @@
 ﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
+using BalanceMicroservice.Web.MongoService;
 using Grpc.Core;
 
 namespace BalanceMicroservice.Web.GrpcService
@@ -16,7 +17,7 @@ namespace BalanceMicroservice.Web.GrpcService
         public override async Task<BalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
         {
             _logger.LogInformation($"User {request.Id} asked for the balance");
-            var balanceTask = await _database.GetAsync(new Guid(request.Id));
+            var balanceTask = await _database.GetByIdAsync(new Guid(request.Id));
 
             return new BalanceResponse
             {
