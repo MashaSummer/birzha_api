@@ -41,7 +41,7 @@ service ProductService {
     rpc GetAllProducts (GetAllProductsRequest) returns (GetAllProductsResponse);
 }
 
-message AllProductsRequest {}
+message GetAllProductsRequest {}
 
 enum Status {
     NONE = 0;
@@ -49,7 +49,7 @@ enum Status {
     FAILED = 2;
 } 
 
-message AllProductsResponse {
+message GetAllProductsResponse {
     message Product {
         int32 id = 1;
         string name = 2;
