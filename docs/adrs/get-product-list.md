@@ -43,13 +43,7 @@ service ProductService {
 
 message GetAllProductsRequest {}
 
-enum Status {
-    NONE = 0;
-    SUCCESS = 1;
-    FAILED = 2;
-} 
-
-message GetAllProductsResponse {
+message ProductArray {
     message Product {
         int32 id = 1;
         string name = 2;
@@ -58,7 +52,18 @@ message GetAllProductsResponse {
     }
 
     repeated Product products = 1;
-    Status status = 2;
+}
+
+message Error {
+    string error_message = 1;
+    string stack_trace = 2;
+}
+
+message GetAllProductsResponse {
+    oneof result {
+        ProductArray product_array = 1;
+        Error error = 2;
+    }
 }
 ```
 
