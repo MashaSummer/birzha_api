@@ -1,7 +1,6 @@
 using AutoMapper;
 using ProductMicroservice.Definitions.Base;
 using ProductMicroservice.Definitions.Mongodb.Models;
-using ProductMicroservice.Definitions.Mongodb.ViewModels;
 using ProductMicroservice.Infrastructure.Mongodb;
 using ProductMicroservice.Infrastructure.Mongodb.Context;
 using MongoDB.Driver;
@@ -21,8 +20,8 @@ public class MongoDefinition : AppDefinition
             new MongodbSettings()
             {
                 ConnectionString = connectionString,
-                CollectionName = configuration["Person:Collection"],
-                DbName = configuration["Person:Database"]
+                CollectionName = configuration["Products:Collection"],
+                DbName = configuration["Products:Database"]
             }, provider.GetRequiredService<IMongoClient>()));
 
         services.AddSingleton<IDbWorker<ProductModel>, MongodbWorker<ProductModel>>();
