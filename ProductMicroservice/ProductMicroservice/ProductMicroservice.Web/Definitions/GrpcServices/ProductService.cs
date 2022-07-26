@@ -1,4 +1,5 @@
 using AutoMapper;
+using Calabonga.OperationResults;
 using Google.Protobuf.Collections;
 using Grpc.Core;
 using ProductGrpc;
@@ -26,21 +27,46 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
     public override async Task<GetAllProductsResponse> GetAllProducts(GetAllProductsRequest request, ServerCallContext context)
     {
         _logger.LogInformation("Get all data from database");
-        
-        var productModels = await _dbWorker.GetAllRecords();
-        
-        foreach (var productModel in productModels)
-        {
-            Console.WriteLine($"{productModel.Id} {productModel.Name} {productModel.BestAsk} {productModel.BestBid}");
-        }
 
-        var result = new GetAllProductsResponse()
+        var dbResult = await GetAllProductsFromDb();
+
+        if (!dbResult.Ok)
+        {
+            return new GetAllProductsResponse()
+            {
+                Error = new Error()
+                {
+                    ErrorMessage = dbResult.Error.Message,
+                    StackTrace = dbResult.Error.StackTrace
+                }
+            };
+        }
+        
+        var productModels = dbResult.Result;
+
+        var response = new GetAllProductsResponse()
         {
             ProductArray = new ProductArray()
         };
+
+        response.ProductArray.Products.AddRange(productModels.Select(x =>
+            _mapper.Map<ProductArray.Types.Product>(x)).ToList());
         
-        result.ProductArray.Products.AddRange(productModels.Select(x => 
-                _mapper.Map<ProductArray.Types.Product>(x)).ToList());
+        return response;
+    }
+
+    private async Task<OperationResult<IEnumerable<ProductModel>>> GetAllProductsFromDb()
+    {
+        OperationResult<IEnumerable<ProductModel>> result = new OperationResult<IEnumerable<ProductModel>>();
+        try
+        {
+            result.Result = await _dbWorker.GetAllRecords();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
 
         return result;
     }
