@@ -59,7 +59,12 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         try
         {
             result.Result = await _dbWorker.GetAllRecords();
+            if (result.Result == null)
+            {
+                result.AddError(new Exception("Failed to get products data from database"));
+            }
         }
+        
         catch (Exception e)
         {
             _logger.LogError(e.Message);
