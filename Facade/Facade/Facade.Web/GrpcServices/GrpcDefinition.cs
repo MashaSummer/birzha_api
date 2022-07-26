@@ -12,6 +12,7 @@ namespace Facade.Web.GrpcServices
         {
             services.AddGrpc();
             services.Configure<ServiceUrls>(configuration.GetSection("ServiceUrls"));
+            services.AddGrpcReflection();
         }
 
         public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
@@ -22,6 +23,7 @@ namespace Facade.Web.GrpcServices
             app.UseAuthorization();
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>());
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
+            app.MapGrpcReflectionService();
         }
     }
 }

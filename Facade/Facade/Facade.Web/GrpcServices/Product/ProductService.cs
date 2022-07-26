@@ -1,4 +1,5 @@
-﻿using Facade.Web.Application;
+﻿using Calabonga.OperationResults;
+using Facade.Web.Application;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
@@ -31,19 +32,36 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         var channel = GrpcChannel.ForAddress(_serviceUrls.ProductService);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channel);
 
-        var response = await productClient.GetAllProductsAsync(new GetAllProductsRequest());
-        if (response == null)
+        var response = await TryGetAllProducts(productClient);
+
+        if (response.Ok)
         {
-            var error = new Error() { ErrorMessage = "Failed to request" };
-            response = new GetAllProductsResponse() { Error = error };
-            _logger.LogError($"{nameof(GetAllProducts)} failed to request", new Exception());
-        }
-        else if (response.Error != null)
-        {
-            _logger.LogError($"{nameof(GetAllProducts)} something went wrong in ProductMicroservice", response.Error);
+            return response.Result;
         }
 
-        return await Task.FromResult(response); 
+        return new GetAllProductsResponse() { Error = new Error() { ErrorMessage = response.Exception.Message, StackTrace = response.Exception.StackTrace } };
+    }
+
+
+    private async Task<OperationResult<GetAllProductsResponse>> TryGetAllProducts(ProductGrpc.ProductService.ProductServiceClient client)
+    {
+        var result = new OperationResult<GetAllProductsResponse>();
+
+        try
+        {
+            result.Result = await client.GetAllProductsAsync(new GetAllProductsRequest());
+            if (result.Result == null)
+            {
+                result.AddError(new Exception("Failed to request"));
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+
+        return result;
     }
 }
 
