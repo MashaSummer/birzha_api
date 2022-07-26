@@ -1,31 +1,37 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>ProductMicroservice</RootNamespace>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Automapper" Version="11.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="FluentValidation" Version="11.0.1" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.1" />
-    <PackageReference Include="GitInfo" Version="2.2.0" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
-    <PackageReference Include="MongoDB.Driver" Version="2.17.0" />
-    <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
-    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.21.3" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
+        <PackageReference Include="Grpc.Core" Version="2.46.3" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.47.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="MongoDB.Driver" Version="2.17.0" />
+        <PackageReference Include="OperationResult" Version="1.5.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Protobuf Include="Protos\product.proto" GrpcServices="Server" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProductMicroservice.Infrastructure\ProductMicroservice.Infrastructure.csproj" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <ProjectReference Include="..\ProductMicroservice.Domain\ProductMicroservice.Domain.csproj" />
+        <ProjectReference Include="..\ProductMicroservice.Infrastructure\ProductMicroservice.Infrastructure.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -1,37 +1,36 @@
-﻿using ProductMicroservice.Web.Definitions.Base;
+﻿using ProductMicroservice.Definitions.Base;
 
-namespace ProductMicroservice.Web.Definitions.Mapping
+namespace ProductMicroservice.Definitions.Mapping;
+
+/// <summary>
+/// Register Automapper as MicroserviceDefinition
+/// </summary>
+public class AutomapperDefinition : AppDefinition
 {
     /// <summary>
-    /// Register Automapper as MicroserviceDefinition
+    /// Configure services for current microservice
     /// </summary>
-    public class AutomapperDefinition : AppDefinition
-    {
-        /// <summary>
-        /// Configure services for current microservice
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
-            => services.AddAutoMapper(typeof(Program));
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        => services.AddAutoMapper(typeof(Program));
 
-        /// <summary>
-        /// Configure application for current microservice
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
+    /// <summary>
+    /// Configure application for current microservice
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="env"></param>
+    public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
+    {
+        var mapper = app.Services.GetRequiredService<AutoMapper.IConfigurationProvider>();
+        if (env.IsDevelopment())
         {
-            var mapper = app.Services.GetRequiredService<AutoMapper.IConfigurationProvider>();
-            if (env.IsDevelopment())
-            {
-                // validate Mapper Configuration
-                mapper.AssertConfigurationIsValid();
-            }
-            else
-            {
-                mapper.CompileMappings();
-            }
+            // validate Mapper Configuration
+            mapper.AssertConfigurationIsValid();
+        }
+        else
+        {
+            mapper.CompileMappings();
         }
     }
 }

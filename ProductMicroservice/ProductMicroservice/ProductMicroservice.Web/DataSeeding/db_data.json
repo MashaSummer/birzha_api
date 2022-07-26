@@ -1,5 +1,0 @@
-[
-  {"_id" : "1111-222-gege-333", "name" : "Dollar", "best_ask" : 1, "best_bid" : 1},
-  {"_id" : "222-333-gege-444", "name" : "Euro", "best_ask" : 2, "best_bid" : 45.2},
-  {"_id" : "333-444-gege-555", "name" : "Rub", "best_ask" : 0, "best_bid" : 2}
-]
