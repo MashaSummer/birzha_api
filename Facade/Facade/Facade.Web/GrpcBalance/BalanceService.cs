@@ -64,7 +64,7 @@ namespace Facade.Web.GrpcBalance
             try
             {
                 var service = new CommandBalanceService.CommandBalanceServiceClient(_channel);
-                response = await service.AddBalanceAsync(new ChangeBalanceRequest { Id = "12345678-1234-1234-1234-123456789abc", Value = request.Value });
+                response = await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id.Value, Value = request.Value });
                 if (response == null || response.Error)
                 {
                     _logger.LogError("Bad response : {0}", response.ErrorMessage);
