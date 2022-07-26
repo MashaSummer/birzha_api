@@ -16,6 +16,7 @@
         <PackageReference Include="Grpc.AspNetCore.Server" Version="2.47.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.47.0" />
         <PackageReference Include="Grpc.Core" Version="2.46.3" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
         <PackageReference Include="Grpc.Reflection" Version="2.47.0" />
         <PackageReference Include="Grpc.Tools" Version="2.47.0">
           <PrivateAssets>all</PrivateAssets>
@@ -41,5 +42,8 @@
 	<ItemGroup>
         <Protobuf Include="Protos\product.proto" GrpcService="Server" />
     </ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\product.proto" GrpcService="Client" />
+	</ItemGroup>
 
 </Project>
