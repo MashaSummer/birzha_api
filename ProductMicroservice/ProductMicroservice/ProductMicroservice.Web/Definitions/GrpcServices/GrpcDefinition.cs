@@ -12,6 +12,6 @@ public class GrpcDefinition : AppDefinition
     public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
         app.UseRouting();
-        //app.UseEndpoints(endpoint => endpoint.MapGrpcService<HelloService>());
+        app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
     }
 }
