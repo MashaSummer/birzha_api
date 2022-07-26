@@ -1,10 +1,11 @@
 ﻿using AuthRequest;
 using Calabonga.OperationResults;
-using Facade.Web.GrpcServices.ViewModels;
+using Facade.Web.GrpcServices.Auth.ViewModels;
 using Grpc.Core;
 using System.Text.Json;
 
-namespace Facade.Web.GrpcServices;
+namespace Facade.Web.Auth;
+
 
 public class AuthService : AuthRequest.AuthService.AuthServiceBase
 {
