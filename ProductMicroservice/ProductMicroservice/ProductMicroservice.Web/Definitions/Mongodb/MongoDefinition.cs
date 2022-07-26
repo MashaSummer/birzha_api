@@ -5,6 +5,7 @@ using ProductMicroservice.Definitions.Mongodb.ViewModels;
 using ProductMicroservice.Infrastructure.Mongodb;
 using ProductMicroservice.Infrastructure.Mongodb.Context;
 using MongoDB.Driver;
+using ProductMicroservice.Domain.DbBase;
 
 namespace ProductMicroservice.Definitions.Mongodb;
 
@@ -12,11 +13,11 @@ public class MongoDefinition : AppDefinition
 {
     public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        /*var connectionString = configuration.GetConnectionString("mongo");
+        var connectionString = configuration.GetConnectionString("mongo");
 
         services.AddTransient<IMongoClient>(provider => new MongoClient(connectionString));
 
-        services.AddSingleton<IMongoDbContext<PersonModel>>(provider => new MongodbContext<PersonModel>(
+        services.AddSingleton<IMongoDbContext<ProductModel>>(provider => new MongodbContext<ProductModel>(
             new MongodbSettings()
             {
                 ConnectionString = connectionString,
@@ -24,6 +25,6 @@ public class MongoDefinition : AppDefinition
                 DbName = configuration["Person:Database"]
             }, provider.GetRequiredService<IMongoClient>()));
 
-        services.AddSingleton<MongodbWorker<PersonModel>>();*/
+        services.AddSingleton<IDbWorker<ProductModel>, MongodbWorker<ProductModel>>();
     }
 }
