@@ -2,6 +2,7 @@
 using Facade.Web.Application;
 using Facade.Web.Auth;
 using Facade.Web.Definitions.Base;
+using Facade.Web.GrpcServices.Product;
 
 namespace Facade.Web.GrpcServices
 {
@@ -20,6 +21,7 @@ namespace Facade.Web.GrpcServices
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
         }
     }
 }
