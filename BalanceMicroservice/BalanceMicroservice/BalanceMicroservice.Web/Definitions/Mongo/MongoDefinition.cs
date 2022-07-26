@@ -1,7 +1,6 @@
 ﻿using BalanceMicroservice.Web.Definitions.Base;
-using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
-using BalanceMicroservice.Web.Endpoints.BalanceEndpoints.ViewModels;
 using BalanceMicroservice.Web.MongoService;
+using BalanceMicroservice.Web.MongoService.ViewModels;
 
 namespace BalanceMicroservice.Web.Definitions.Mongo
 {

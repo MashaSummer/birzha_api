@@ -2,7 +2,7 @@
 
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels
+namespace BalanceMicroservice.Web.MongoService.ViewModels
 {
     /// <summary>
     /// Application User Profile

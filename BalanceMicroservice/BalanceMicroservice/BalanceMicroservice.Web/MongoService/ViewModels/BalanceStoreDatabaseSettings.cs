@@ -1,4 +1,4 @@
-﻿namespace BalanceMicroservice.Web.Endpoints.BalanceEndpoints.ViewModels
+﻿namespace BalanceMicroservice.Web.MongoService.ViewModels
 {
     public class BalanceStoreDatabaseSettings
     {

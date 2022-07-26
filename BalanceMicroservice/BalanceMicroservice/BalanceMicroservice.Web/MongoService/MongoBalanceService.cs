@@ -1,5 +1,4 @@
-﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints.ViewModels;
-using BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
+﻿using BalanceMicroservice.Web.MongoService.ViewModels;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;

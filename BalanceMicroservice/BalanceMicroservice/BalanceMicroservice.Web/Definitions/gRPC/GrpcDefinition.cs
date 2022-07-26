@@ -1,5 +1,5 @@
 ﻿using BalanceMicroservice.Web.Definitions.Base;
-using BalanceMicroservice.Web.Endpoints.BalanceEndpoints.ViewModels;
+using BalanceMicroservice.Web.BalanceService;
 using Grpc.AspNetCore.Server;
 
 namespace BalanceMicroservice.Web.GrpcService
@@ -20,8 +20,8 @@ namespace BalanceMicroservice.Web.GrpcService
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<QueryBalanceService>();
-                endpoints.MapGrpcService<CommandBalanceService>();
+                endpoints.MapGrpcService<BalanceService.QueryBalanceService>();
+                endpoints.MapGrpcService<BalanceService.CommandBalanceService>();
             });
         }
     }

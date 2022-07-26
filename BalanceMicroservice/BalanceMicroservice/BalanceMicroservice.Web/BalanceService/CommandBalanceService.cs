@@ -1,9 +1,8 @@
-﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
-using BalanceMicroservice.Web.MongoService;
-using BalanceMicroservice.Web.Endpoints.ProfileEndpoints.ViewModels;
+﻿using BalanceMicroservice.Web.MongoService;
 using Grpc.Core;
+using BalanceMicroservice.Web.MongoService.ViewModels;
 
-namespace BalanceMicroservice.Web.GrpcService
+namespace BalanceMicroservice.Web.BalanceService
 {
     public class CommandBalanceService : BalanceMicroservice.CommandBalanceService.CommandBalanceServiceBase
     {
@@ -31,7 +30,7 @@ namespace BalanceMicroservice.Web.GrpcService
 
         private async Task<BalanceResponse> ChangeBalance(string id, double value, bool negative)
         {
-            if (value <= 0) 
+            if (value <= 0)
             {
                 _logger.LogError($"User {id} tried to use negative value ({value})");
                 return new BalanceResponse
@@ -55,7 +54,8 @@ namespace BalanceMicroservice.Web.GrpcService
 
         private static BalanceViewModel CalculateNewBalance(BalanceViewModel oldValue, double newValue)
         {
-            return new BalanceViewModel {
+            return new BalanceViewModel
+            {
                 Id = oldValue.Id,
                 Balance = oldValue.Balance + newValue
             };

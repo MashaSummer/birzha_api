@@ -1,10 +1,9 @@
-﻿using BalanceMicroservice.Web.Endpoints.BalanceEndpoints;
-using BalanceMicroservice.Web.MongoService;
+﻿using BalanceMicroservice.Web.MongoService;
 using Grpc.Core;
 
-namespace BalanceMicroservice.Web.GrpcService
+namespace BalanceMicroservice.Web.BalanceService
 {
-    public class QueryBalanceService: BalanceMicroservice.QueryBalanceService.QueryBalanceServiceBase
+    public class QueryBalanceService : BalanceMicroservice.QueryBalanceService.QueryBalanceServiceBase
     {
         private readonly MongoBalanceService _database;
         private readonly ILogger<QueryBalanceService> _logger;
