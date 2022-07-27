@@ -25,10 +25,6 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         GetAllProductsRequest request, 
         ServerCallContext context)
     {
-        var userId = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
-
-        _logger.LogInformation($"{nameof(GetAllProducts)} request by user: id={userId}");
-
         var channel = GrpcChannel.ForAddress(_serviceUrls.ProductService);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channel);
 
@@ -39,13 +35,20 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
             return response.Result;
         }
 
-        return new GetAllProductsResponse() { Error = new Error() { ErrorMessage = response.Exception.Message, StackTrace = response.Exception.StackTrace } };
+        return new GetAllProductsResponse()
+        {
+            Error = new Error()
+            {
+                ErrorMessage = response.Exception == null ? "Failed to request" : response.Exception.Message,
+                StackTrace = response.Exception == null ? new Exception().StackTrace : response.Exception.StackTrace
+            }
+        };
     }
 
 
     private async Task<OperationResult<GetAllProductsResponse>> TryGetAllProducts(ProductGrpc.ProductService.ProductServiceClient client)
     {
-        var result = new OperationResult<GetAllProductsResponse>();
+        var result = OperationResult.CreateResult<GetAllProductsResponse>();
 
         try
         {
