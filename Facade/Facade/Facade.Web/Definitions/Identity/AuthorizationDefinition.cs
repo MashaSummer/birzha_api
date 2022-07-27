@@ -97,8 +97,6 @@ public class AuthorizationDefinition : AppDefinition
     /// <param name="env"></param>
     public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
-        
-
         // registering UserIdentity helper as singleton
         UserIdentity.Instance.Configure(app.Services.GetService<IHttpContextAccessor>()!);
     }
