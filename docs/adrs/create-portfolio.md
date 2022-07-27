@@ -102,14 +102,15 @@ message ChangePortfolioRequest {
 
 message PortfolioResponse {
     message Product {
-        string id = 1;
-        int32 volume = 2;
-        double spent = 3;
-        double earned = 4;
-        double best_ask = 5;
-        double estimate = 6;
-        double delta_abs = 7;
-        double delta_rel = 8;
+        int32 id = 1;
+        string name = 2
+        int32 volume = 3;
+        double spent = 4;
+        double earned = 5;
+        double best_ask = 6;
+        double estimate = 7;
+        double delta_abs = 8;
+        double delta_rel = 9;
     }
 
     message Total {
