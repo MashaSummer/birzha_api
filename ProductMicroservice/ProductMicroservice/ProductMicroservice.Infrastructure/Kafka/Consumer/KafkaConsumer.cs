@@ -5,15 +5,15 @@ using Microsoft.Extensions.Hosting;
 
 namespace ProductMicroservice.Infrastructure.Kafka.Consumer;
 
-public class KafkaConsumer<Tk, Tv> : IHostedService, IDisposable
+public class KafkaConsumer<TKey, TValue> : IHostedService, IDisposable
 {
-    private readonly IConsumer<Tk, Tv> _consumer;
+    private readonly IConsumer<TKey, TValue> _consumer;
 
-    private readonly IEventHandler<Tk, Tv> _handler;
+    private readonly IEventHandler<TKey, TValue> _handler;
 
     private readonly string _topic;
 
-    public KafkaConsumer(KafkaConsumerConfig config, IConsumer<Tk, Tv> consumer, IEventHandler<Tk, Tv> handler)
+    public KafkaConsumer(KafkaConsumerConfig config, IConsumer<TKey, TValue> consumer, IEventHandler<TKey, TValue> handler)
     {
         _consumer = consumer;
         _topic = config.Topic;

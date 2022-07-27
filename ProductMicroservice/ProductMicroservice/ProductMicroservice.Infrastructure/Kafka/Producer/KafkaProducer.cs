@@ -1,6 +1,6 @@
 using Calabonga.OperationResults;
 using Confluent.Kafka;
-using ProductMicroservice.EventsBase;
+using ProductMicroservice.Domain.EventsBase;
 using ProductMicroservice.Infrastructure.Kafka.Config;
 
 namespace ProductMicroservice.Infrastructure.Kafka.Producer;

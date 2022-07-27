@@ -2,7 +2,7 @@ using Confluent.Kafka;
 using ProductMicroservice.Definitions.Base;
 using ProductMicroservice.Definitions.Kafka.Handlers;
 using ProductMicroservice.Definitions.Kafka.Models;
-using ProductMicroservice.EventsBase;
+using ProductMicroservice.Domain.EventsBase;
 using ProductMicroservice.Infrastructure.Kafka.Config;
 
 namespace ProductMicroservice.Definitions.Kafka;
