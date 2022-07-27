@@ -45,7 +45,7 @@ message GetAllProductsRequest {}
 
 message ProductArray {
     message Product {
-        int32 id = 1;
+        string id = 1;
         string name = 2;
         double best_ask = 3;
         double best_bid = 4;
