@@ -4,5 +4,7 @@
     {
         public string AuthService { get; set; }
         public string ProductService { get; set; }
+        
+        public string BalanceService { get; set; }
     }
 }
