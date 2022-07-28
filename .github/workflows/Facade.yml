@@ -70,8 +70,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ env.PORT }}
           script: |
-            rm /var/Facade/Facade/Facade.Web/appsettings.json
-            mv /var/${{ env.APPSETTINGS }} /var/Facade/Facade/Facade.Web/appsettings.json
+            rm /var/${{ env.TEST_WORK_DIR }}/appsettings.json
+            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
             cd /var/${{ env.MICROSERVICE_NAME }}
             docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
             docker run ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d
