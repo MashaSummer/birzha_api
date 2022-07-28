@@ -5,23 +5,23 @@ using ProductMicroservice.Infrastructure.Kafka.Config;
 
 namespace ProductMicroservice.Infrastructure.Kafka.Producer;
 
-public class KafkaProducer<Tk, Tv> : IEventProducer<Tk, Tv>, IDisposable
+public class KafkaProducer<TKey, TValue> : IEventProducer<TKey, TValue>, IDisposable
 {
-    private readonly IProducer<Tk, Tv> _producer;
+    private readonly IProducer<TKey, TValue> _producer;
     private readonly string _topic;
 
-    public KafkaProducer(KafkaProducerConfig config, IProducer<Tk, Tv> producer)
+    public KafkaProducer(KafkaProducerConfig config, IProducer<TKey, TValue> producer)
     {
         _producer = producer;
         _topic = config.Topic;
     }
 
-    public async Task<OperationResult<bool>> ProduceAsync(Tk key, Tv value)
+    public async Task<OperationResult<bool>> ProduceAsync(TKey key, TValue value)
     {
         var result = new OperationResult<bool>();
         try
         {
-            await _producer.ProduceAsync(_topic, new Message<Tk, Tv>()
+            await _producer.ProduceAsync(_topic, new Message<TKey, TValue>()
             {
                 Key = key,
                 Value = value
