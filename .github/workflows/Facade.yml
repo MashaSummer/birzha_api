@@ -1,0 +1,77 @@
+name: Facade-test-and-deploy
+env:
+  SERVER: "84.38.185.78"
+  PORT: "22"
+  USER: "root"
+  MICROSERVICE_NAME: "Facade"
+  MICROSERVICE_TAG: "facade"
+  DOCKERFILE: "facade_dockerfile"
+  APPSETTINGS: "facade_appsettings.json"
+  TEST_WORK_DIR: "Facade/Facade/Facade.Web"
+  
+on:
+  push:
+    paths: 
+      - "Facade/**"
+      - ".github/workflows/Facade.yaml"
+
+jobs:
+  build-and-test-app:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      working-directory: ${{ env.TEST_WORK_DIR }}
+      run: dotnet restore
+    - name: Build
+      working-directory: ${{ env.TEST_WORK_DIR }}
+      run: dotnet build --no-restore
+    - name: Test
+      working-directory: ${{ env.TEST_WORK_DIR }}
+      run: dotnet test --no-build --verbosity normal
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test-app
+    steps:
+  
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ env.PORT }} -H ${{ env.SERVER }} >> ~/.ssh/known_hosts
+
+      - name: Deploy microservice with rsync
+        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./${{ env.MICROSERVICE_NAME }} ${{ env.USER }}@${{ env.SERVER }}:/var
+     
+      - name: Deploy appsettings.json with rsync
+        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.APPSETTINGS }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.APPSETTINGS }}
+     
+      - name: Deploy Dockerfile rsync
+        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.DOCKERFILE }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.DOCKERFILE }}
+ 
+      - name: Restart Node Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SERVER }}
+          username: ${{ env.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            rm /var/${{ env.TEST_WORK_DIR }}/appsettings.json
+            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
+            cd /var/${{ env.MICROSERVICE_NAME }}
+            docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
+            docker run -p 80:80 -p 443:443 -e ASPNETCORE_ENVIRONMENT=Development --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "Balances";
+
+package balance;
+
+service Balance {
+  rpc GetBalance (EmptyRequest) returns (BalanceData);
+  rpc AddBalance (ValueRequest) returns (BalanceData);
+  rpc ReduceBalance (ValueRequest) returns (BalanceData);
+}
+message EmptyRequest{
+
+}
+message BalanceData {
+  double  balance = 1;
+  enum Status {
+    NONE = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+  }
+  Status status = 2;
+}
+message ValueRequest{
+    double value = 1;
+}

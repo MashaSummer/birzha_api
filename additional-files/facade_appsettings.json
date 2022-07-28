@@ -1,0 +1,20 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "BalanceServer": {
+      "Url": "https://localhost:30001"
+    },
+
+    "AuthServer": {
+        "Url": "https://localhost:10001"
+    },
+    "AllowedHosts": "*",
+  "ServiceUrls": {
+    "AuthService": "https://facade:5001/connect/token",
+    "ProductService": "https://localhost:35001"
+  }
+}
