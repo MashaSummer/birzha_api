@@ -12,8 +12,8 @@ env:
 on:
   push:
     paths: 
-      - "${{ env.MICROSERVICE_NAME }}/**"
-      - ".github/workflows/${{ env.MICROSERVICE_NAME }}.yaml"
+      - "Facade/**"
+      - ".github/workflows/Facade.yaml"
 
 jobs:
   build-and-test-app:
