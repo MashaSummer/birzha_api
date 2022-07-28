@@ -13,8 +13,8 @@ env:
 on:
   push:
     paths: 
-      - "${{ env.MICROSERVICE_NAME }}/**"
-      - ".github/workflows/${{ env.MICROSERVICE_NAME }}.yaml"
+      - "AuthMicroservice/**"
+      - ".github/workflows/AuthMicroservice.yaml"
 
 jobs:
   build-and-test-app:
