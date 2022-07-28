@@ -7,7 +7,7 @@ env:
   MICROSERVICE_TAG: "auth"
   DOCKERFILE: "auth_dockerfile"
   APPSETTINGS: "auth_appsettings.json"
-  TEST_WORK_DIR: "AuthMicroservice/AuthMicroservice.Web/"
+  TEST_WORK_DIR: "AuthMicroservice/AuthMicroservice.Web"
 
   
 on:
