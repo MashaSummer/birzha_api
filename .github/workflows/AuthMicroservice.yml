@@ -72,7 +72,7 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             rm /var/${{ env.TEST_WORK_DIR }}/appsettings.json
-            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
+            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.Development.json
             cd /var/${{ env.MICROSERVICE_NAME }}
             docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
             docker run ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d
