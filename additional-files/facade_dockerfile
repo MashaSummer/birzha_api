@@ -1,0 +1,24 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Facade/Facade.Web/Facade.Web.csproj", "Facade/Facade.Web/"]
+COPY ["Facade/Facade.Infrastructure/Facade.Infrastructure.csproj", "Facade/Facade.Infrastructure/"]
+COPY ["Facade/Facade.Domain/Facade.Domain.csproj", "Facade/Facade.Domain/"]
+RUN dotnet restore "Facade/Facade.Web/Facade.Web.csproj"
+COPY . .
+WORKDIR "/src/Facade/Facade.Web"
+RUN dotnet build "Facade.Web.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Facade.Web.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Facade.Web.dll"]
