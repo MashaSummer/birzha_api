@@ -7,12 +7,13 @@ env:
   MICROSERVICE_TAG: "facade"
   DOCKERFILE: "facade_dockerfile"
   APPSETTINGS: "facade_appsettings.json"
+  TEST_WORK_DIR: "Facade/Facade/Facade.Web"
   
 on:
   push:
     paths: 
-      - "Facade/**"
-      - ".github/workflows/Facade.yaml"
+      - "${{ env.MICROSERVICE_NAME }}/**"
+      - ".github/workflows/${{ env.MICROSERVICE_NAME }}.yaml"
 
 jobs:
   build-and-test-app:
@@ -26,13 +27,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      working-directory: Facade/Facade/Facade.Web
+      working-directory: ${{ env.TEST_WORK_DIR }}
       run: dotnet restore
     - name: Build
-      working-directory: Facade/Facade/Facade.Web
+      working-directory: ${{ env.TEST_WORK_DIR }}
       run: dotnet build --no-restore
     - name: Test
-      working-directory: Facade/Facade/Facade.Web
+      working-directory: ${{ env.TEST_WORK_DIR }}
       run: dotnet test --no-build --verbosity normal
 
   Deploy:
