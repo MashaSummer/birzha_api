@@ -17,6 +17,7 @@
         <PackageReference Include="Grpc.AspNetCore.Server" Version="2.47.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.47.0" />
         <PackageReference Include="Grpc.Core" Version="2.46.3" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
         <PackageReference Include="Grpc.Reflection" Version="2.47.0" />
         <PackageReference Include="Grpc.Tools" Version="2.47.0">
           <PrivateAssets>all</PrivateAssets>
@@ -36,9 +37,11 @@
         <ProjectReference Include="..\Facade.Infrastructure\Facade.Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Protobuf Include="Protos\auth.proto" GrpcService="Server" />
-        <Protobuf Include="Protos\Balance.proto" GrpcService="Server" />
-		<Protobuf Include="Protos\BalanceService.proto" GrpcService="Client" />
-    </ItemGroup>
+
+        <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
+
+        <!--You can not provide GrpcServices parametr (Both - default)-->
+        <Protobuf Include="Protos\product.proto" GrpcServices="Both" /> 
+	  </ItemGroup>
 
 </Project>

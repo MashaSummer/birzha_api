@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Facade.Web.GrpcServices.ViewModels;
+namespace Facade.Web.GrpcServices.Auth.ViewModels;
 
 
 public class TokenResponseViewModel
