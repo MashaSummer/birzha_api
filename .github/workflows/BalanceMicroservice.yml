@@ -12,8 +12,8 @@ env:
 on:
   push:
     paths: 
-      - "${{ env.MICROSERVICE_NAME }}/**"
-      - ".github/workflows/${{ env.MICROSERVICE_NAME }}.yaml"
+      - "BalanceMicroservice/**"
+      - ".github/workflows/BalanceMicroservice.yaml"
 
 jobs:
   build-and-test-app:
