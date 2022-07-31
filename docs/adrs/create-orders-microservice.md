@@ -151,3 +151,6 @@ message CreateOrderResponse {
     // look above
 }
 ```
+
+### <b>Схема</b>
+![architecture schema](ShemasImg/OrdersMicroserviceShema.png)
