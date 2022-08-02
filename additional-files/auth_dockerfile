@@ -9,12 +9,12 @@ ENV ASPNETCORE_URLS="http://*:5000;https://*:5001"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["AuthMicroservice.Web/AuthMicroservice.Web.csproj", "AuthMicroservice.Web/"]
-COPY ["AuthMicroservice.Infrastructure/AuthMicroservice.Infrastructure.csproj", "AuthMicroservice.Infrastructure/"]
-COPY ["AuthMicroservice.Domain/AuthMicroservice.Domain.csproj", "AuthMicroservice.Domain/"]
-RUN dotnet restore "AuthMicroservice.Web/AuthMicroservice.Web.csproj"
+COPY ["AuthMicroservice/AuthMicroservice.Web/AuthMicroservice.Web.csproj", "AuthMicroservice/AuthMicroservice.Web/"]
+COPY ["AuthMicroservice/AuthMicroservice.Infrastructure/AuthMicroservice.Infrastructure.csproj", "AuthMicroservice/AuthMicroservice.Infrastructure/"]
+COPY ["AuthMicroservice/AuthMicroservice.Domain/AuthMicroservice.Domain.csproj", "AuthMicroservice/AuthMicroservice.Domain/"]
+RUN dotnet restore "AuthMicroservice/AuthMicroservice.Web/AuthMicroservice.Web.csproj"
 COPY . .
-WORKDIR "/src/AuthMicroservice.Web"
+WORKDIR "/src/AuthMicroservice/AuthMicroservice.Web"
 RUN dotnet build "AuthMicroservice.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
