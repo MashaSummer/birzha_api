@@ -6,7 +6,7 @@
         }
     },
     "BalanceServer": {
-      "Url": "https://localhost:30001"
+      "Url": "https://BalanceMicroservice:30001"
     },
 
     "AuthServer": {
@@ -14,7 +14,7 @@
     },
     "AllowedHosts": "*",
   "ServiceUrls": {
-    "AuthService": "https://facade:5001/connect/token",
-    "ProductService": "https://localhost:35001"
+    "AuthService": "https://AuthMicroservice:5001/connect/token",
+    "ProductService": "https://ProductMicroservice:35001"
   }
 }
