@@ -10,7 +10,7 @@ ENV ASPNETCORE_URLS="http://*:5000;https://*:5001"
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["AuthMicroservice.Web/AuthMicroservice.Web.csproj", "AuthMicroservice.Web/"]
-COPY [AuthMicroservice.Infrastructure/AuthMicroservice.Infrastructure.csproj", "AuthMicroservice.Infrastructure/"]
+COPY ["AuthMicroservice.Infrastructure/AuthMicroservice.Infrastructure.csproj", "AuthMicroservice.Infrastructure/"]
 COPY ["AuthMicroservice.Domain/AuthMicroservice.Domain.csproj", "AuthMicroservice.Domain/"]
 RUN dotnet restore "AuthMicroservice.Web/AuthMicroservice.Web.csproj"
 COPY . .
