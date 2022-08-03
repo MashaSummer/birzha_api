@@ -9,6 +9,16 @@ public enum OrderTypes
     Ask
 }
 
+
+public enum OrderStatus
+{
+    Validating,
+    Validated,
+    Active,
+    Inactive,
+    Aborted
+}
+
 public class OrderModel
 {
     [BsonId]
@@ -33,7 +43,10 @@ public class OrderModel
     
     [BsonElement("deadline")]
     [BsonIgnoreIfNull]
-    public DateTime? Deadline = null;
-    
-    
+    public BsonDateTime? Deadline = null;
+
+
+    [BsonElement("status")]
+    public OrderStatus Status { get; set; }
+
 }
