@@ -75,4 +75,4 @@ jobs:
             mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
             cd /var/${{ env.MICROSERVICE_NAME }}
             docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
-            docker run ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} --network dockprom_monitor-net --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d
+            docker run ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} --network dockprom_monitor-net  -p 5000:80 -p 5001:443 -e ASPNETCORE_HTTPS_PORT=5001 -e ASPNETCORE_Kestrel__Certificates__Default__Password=12345678 -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v ${HOME}/.aspnet/https:/https/ --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d
