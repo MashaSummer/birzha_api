@@ -22,8 +22,8 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
         // TODO send request to validate
         
         // TODO move to kafka handler
-
-        var order = _mapper.Map<OrderModel>(request);
+        
+        var order = _mapper.Map<OrderModel>(request.OrderDetail);
         order.Status = OrderStatus.Validating;
         await _dbWorker.AddNewRecord(order);
 

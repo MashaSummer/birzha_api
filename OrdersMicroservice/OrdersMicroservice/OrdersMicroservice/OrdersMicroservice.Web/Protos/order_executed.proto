@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrdersEvent";
+
+import "Protos/order.proto";
+
+package order_executed;
+
+message OrderExecuteEvent {
+  
+  orders.Order ask_order = 1;
+  
+  orders.Order bid_order = 2;
+  
+}

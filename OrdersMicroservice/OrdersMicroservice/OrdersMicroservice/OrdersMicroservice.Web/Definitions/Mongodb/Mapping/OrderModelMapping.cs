@@ -9,7 +9,7 @@ public class OrderModelMapping : Profile
 {
     public OrderModelMapping()
     {
-        CreateMap<CreateOrderRequest, OrderModel>()
+        CreateMap<Order, OrderModel>()
             .ForMember(d => d.Id, s => s.Ignore())
             .ForMember(d => d.OrderType,
                 s => s.MapFrom(x => x.Type == OrderType.Asc ? OrderTypes.Ask : OrderTypes.Bid))

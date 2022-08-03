@@ -33,8 +33,7 @@ message Error {
   string stack_trace = 2;
 }
 
-message CreateOrderRequest {
-
+message Order {
   OrderType type = 1;
 
   string product_id = 2;
@@ -44,10 +43,16 @@ message CreateOrderRequest {
   double price = 4;
 
   bool only_full_execution = 5;
-  
+
   DateTime deadline = 6;
-  
+
   string investor_id = 7;
+}
+
+message CreateOrderRequest {
+  
+  Order order_detail = 1;
+  
 }
 
 message CreateOrderResponse {

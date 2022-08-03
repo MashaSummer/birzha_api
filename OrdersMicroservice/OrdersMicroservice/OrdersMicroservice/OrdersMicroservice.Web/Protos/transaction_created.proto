@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrdersEvent";
+
+package transaction_created;
+
+message TransactionCreatedEvent {
+  
+  string ask_order_id = 1;
+  
+  string bid_order_id = 2;
+}
