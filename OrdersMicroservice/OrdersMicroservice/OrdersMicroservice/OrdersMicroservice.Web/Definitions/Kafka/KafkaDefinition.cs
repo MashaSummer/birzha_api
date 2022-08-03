@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using GrpcServices;
+using OrdersEvent;
 using OrdersMicroservice.Definitions.Base;
 using OrdersMicroservice.Definitions.Kafka.Handlers;
 using OrdersMicroservice.Definitions.Kafka.Models;
@@ -16,10 +17,25 @@ public class KafkaDefinition : AppDefinition
         if (!isEnableKafka)
             return;
 
-        var producerConfig = configuration.GetSection("Kafka:ProducerConfig").Get<KafkaProducerConfig>();
+        // For "Orders_Created" topic
+        var ordersCreatedConfig = configuration.GetSection("Kafka:OrdersCreatedProducer").Get<KafkaProducerConfig>();
+        services.AddKafkaProducer<Null, OrderCreatedEvent>(ordersCreatedConfig);
 
-        services.AddKafkaProducer<Null, Request>(producerConfig);
-
+        
+        // For "Orders_Executed" topic
+        var ordersExecutedConfig = configuration.GetSection("Kafka:OrdersExecutedProducer").Get<KafkaProducerConfig>();
+        services.AddKafkaProducer<Null, OrderExecuteEvent>(ordersExecutedConfig);
+        
+        // For "Orders_Candidates" topic
+        var ordersCandidatesConfig =
+            configuration.GetSection("Kafka:OrdersCandidatesProducer").Get<KafkaProducerConfig>();
+        services.AddKafkaProducer<Null, CandidatesFoundEvent>(ordersCandidatesConfig);
+        
+        // For "Orders_Validation" topic
+        var ordersValidationConfig =
+            configuration.GetSection("Kafka:OrdersValidationConsumer").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, OrderValidationEvent>(ordersValidationConfig, new ValidationHandler());
+        
         var consumerConfig = configuration.GetSection("Kafka:ConsumerConfig").Get<KafkaConsumerConfig>();
 
         services.AddKafkaConsumer<Null, Request>(consumerConfig, new RequestHadler());

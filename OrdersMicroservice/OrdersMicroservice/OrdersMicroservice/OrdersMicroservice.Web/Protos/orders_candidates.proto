@@ -1,12 +1,12 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
 option csharp_namespace = "OrdersEvent";
 
-package transaction_created;
+package orders_candidates;
 
-message TransactionCreatedEvent {
-  
+message CandidatesFoundEvent {
+
   string ask_order_id = 1;
-  
+
   string bid_order_id = 2;
 }
