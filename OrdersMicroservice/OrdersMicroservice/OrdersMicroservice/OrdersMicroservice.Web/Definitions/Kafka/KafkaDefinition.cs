@@ -13,6 +13,7 @@ public class KafkaDefinition : AppDefinition
 {
     public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
+        
         var isEnableKafka = bool.Parse(configuration["Kafka:IsEnable"]);
         if (!isEnableKafka)
             return;
