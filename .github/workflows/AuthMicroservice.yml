@@ -56,13 +56,10 @@ jobs:
       - name: Deploy microservice with rsync
         run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./${{ env.MICROSERVICE_NAME }} ${{ env.USER }}@${{ env.SERVER }}:/var
      
-      - name: Deploy appsettings.json with rsync
-        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.APPSETTINGS }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.APPSETTINGS }}
-     
       - name: Deploy Dockerfile rsync
         run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.DOCKERFILE }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.DOCKERFILE }}
  
-      - name: Restart Node Server
+      - name: Build & run container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER }}
