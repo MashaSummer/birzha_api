@@ -71,4 +71,18 @@ public static class KafkaExtension
 
         return services;
     }
+
+    public static IServiceCollection AddKafkaConsumer<TKey, TValue>(this IServiceCollection services,
+       KafkaConsumerConfig consumerConfig) where TValue : class, IMessage<TValue>, new()
+    {
+        services.AddTransient<IConsumer<TKey, TValue>>(provider =>
+            new ConsumerBuilder<TKey, TValue>(consumerConfig.ConsumerConfig)
+                .SetValueDeserializer(new ProtobufDeserializer<TValue>()).Build());
+
+        services.AddHostedService<KafkaConsumer<TKey, TValue>>(provider =>
+            new KafkaConsumer<TKey, TValue>(consumerConfig, provider.GetRequiredService<IConsumer<TKey, TValue>>(),
+                provider.GetRequiredService<IEventHandler<TKey, TValue>>()));
+
+        return services;
+    }
 }

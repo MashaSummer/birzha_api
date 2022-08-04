@@ -35,8 +35,9 @@ public class KafkaDefinition : AppDefinition
         // For "Orders_Validation" topic
         var ordersValidationConfig =
             configuration.GetSection("Kafka:OrdersValidationConsumer").Get<KafkaConsumerConfig>();
-        services.AddKafkaConsumer<Null, OrderValidationEvent>(ordersValidationConfig, new ValidationHandler());
+        services.AddKafkaConsumer<Null, OrderValidationEvent>(ordersValidationConfig);
         
+
     }
 
 
