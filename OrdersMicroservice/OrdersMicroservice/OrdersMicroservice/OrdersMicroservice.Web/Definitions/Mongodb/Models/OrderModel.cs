@@ -15,7 +15,8 @@ public enum OrderStatus
     Validating,
     Validated,
     Active,
-    Inactive,
+    Executing,
+    Executed,
     Aborted
 }
 

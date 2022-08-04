@@ -2,6 +2,7 @@ using Calabonga.OperationResults;
 using OrdersMicroservice.Domain.DbBase;
 using OrdersMicroservice.Infrastructure.Mongodb.Context;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace OrdersMicroservice.Infrastructure.Mongodb;
 
@@ -63,6 +64,69 @@ public class MongodbWorker<T> : IDbWorker<T>
             _logger.LogError(e.Message);
             result.Result = false;
             result.AddError(e.Message);
+        }
+
+        return result;
+    }
+
+    public async Task<OperationResult<bool>> UpdateRecords(Func<T, bool> predicate, Action<T> updateFunc)
+    {
+        OperationResult<bool> result = new OperationResult<bool>();
+
+        long totalUpdated = 0;
+
+        try
+        {
+            var updatingItems = _context.Where(predicate);
+
+            foreach (var updatingItem in updatingItems)
+            {
+                var id = typeof(T).GetProperty("Id")?.GetValue(updatingItem);
+                var filter = Builders<T>.Filter.Eq("_id", id);
+
+                updateFunc(updatingItem);
+
+                var replacementResult = await _context.GetCollection().ReplaceOneAsync(filter, updatingItem);
+                totalUpdated += replacementResult.ModifiedCount;
+            }
+
+            _logger.LogInformation($"Updated {totalUpdated} records");
+            result.Result = true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+
+
+        return result;
+    }
+    public async Task<OperationResult<bool>> DeleteRecords(Func<T, bool> predicate)
+    {
+        var result = new OperationResult<bool>();
+
+        long totalDeleted = 0;
+        try
+        {
+            var deletingItems = _context.Where(predicate);
+
+            foreach (var deletingItem in deletingItems)
+            {
+                var id = typeof(T).GetProperty("Id")?.GetValue(deletingItem);
+                var filter = Builders<T>.Filter.Eq("_id", id);
+
+                var deletingResult = await _context.GetCollection().DeleteOneAsync(filter);
+                totalDeleted += deletingResult.DeletedCount;
+            }
+
+            _logger.LogInformation($"Deleted {totalDeleted} items");
+            result.Result = true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
         }
 
         return result;
