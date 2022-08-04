@@ -58,7 +58,7 @@ jobs:
       - name: Deploy Dockerfile rsync
         run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.DOCKERFILE }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.DOCKERFILE }}
  
-      - name: Restart Node Server
+      - name: Build & run container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER }}
