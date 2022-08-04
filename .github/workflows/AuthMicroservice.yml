@@ -56,9 +56,6 @@ jobs:
       - name: Deploy microservice with rsync
         run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./${{ env.MICROSERVICE_NAME }} ${{ env.USER }}@${{ env.SERVER }}:/var
      
-      - name: Deploy Dockerfile rsync
-        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.DOCKERFILE }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.DOCKERFILE }}
- 
       - name: Build & run container
         uses: appleboy/ssh-action@master
         with:
@@ -68,5 +65,5 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             cd /var/${{ env.MICROSERVICE_NAME }}
-            docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
+            docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f ${{ env.DOCKERFILE }} .
             docker run -d --network dockprom_monitor-net  -p 5000:80 -p 5001:443 -e ASPNETCORE_HTTPS_PORT=5001 -e ASPNETCORE_Kestrel__Certificates__Default__Password=12345678 -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v ${HOME}/.aspnet/https:/https/ --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}" --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} 
