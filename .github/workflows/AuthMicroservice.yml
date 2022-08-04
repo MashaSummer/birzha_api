@@ -6,7 +6,6 @@ env:
   MICROSERVICE_NAME: "AuthMicroservice"
   MICROSERVICE_TAG: "auth"
   DOCKERFILE: "auth_dockerfile"
-  APPSETTINGS: "auth_appsettings.json"
   TEST_WORK_DIR: "AuthMicroservice/AuthMicroservice.Web"
 
   
@@ -71,8 +70,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ env.PORT }}
           script: |
-            rm /var/${{ env.TEST_WORK_DIR }}/appsettings.json
-            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
             cd /var/${{ env.MICROSERVICE_NAME }}
             docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
             docker run -d --network dockprom_monitor-net  -p 5000:80 -p 5001:443 -e ASPNETCORE_HTTPS_PORT=5001 -e ASPNETCORE_Kestrel__Certificates__Default__Password=12345678 -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v ${HOME}/.aspnet/https:/https/ --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}" --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} 
