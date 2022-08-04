@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option csharp_namespace = "Orders";
+
+package orders;
+
+service OrdersService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+}
+
+enum OrderType {
+  ASC = 0;
+  BID = 1;
+}
+
+message DateTime {
+
+  int32 second = 1;
+  int32 minute = 2;
+  int32 hour = 3;
+  int32 day = 4;
+  int32 month = 5;
+  int32 year = 6;
+}
+
+message Success {
+  string success_text = 1;
+}
+
+message Error {
+
+  string error_text = 1;
+  string stack_trace = 2;
+}
+
+message Order {
+  OrderType type = 1;
+
+  string product_id = 2;
+
+  double volume = 3;
+
+  double price = 4;
+
+  bool only_full_execution = 5;
+
+  DateTime deadline = 6;
+
+  string investor_id = 7;
+}
+
+message CreateOrderRequest {
+  
+  Order order_detail = 1;
+  
+}
+
+message CreateOrderResponse {
+  oneof result {
+    Success success = 1;
+    Error error = 2;
+  }
+}
