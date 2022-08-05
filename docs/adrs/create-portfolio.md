@@ -95,6 +95,8 @@
 
 ### Предлагаемые proto-файлы
 
+*Данные запросы с фасада на получение портфеля и на добавление продукта.*
+
 ```protobuf
 service PortfolioService {
 	rpc GetPortfolio(GetPortfolioRequest) returns (PortfolioResponse);
