@@ -12,14 +12,14 @@ namespace OrdersMicroservice.Definitions.Kafka.Handlers;
 public class ValidationHandler : IEventHandler<Null, OrderValidationEvent>
 {
 
-    private readonly IDbWorker<OrderModel> _dbWorker; // TODO get db worker from DI
+    private readonly IRepository<OrderModel> _repository;
     private readonly DepthMarketService _depthMarketService;
     private readonly ILogger<ValidationHandler> _logger;
-    public ValidationHandler(IDbWorker<OrderModel> dbWorker,
+    public ValidationHandler(IRepository<OrderModel> repository,
         DepthMarketService depthMarketService,
         ILogger<ValidationHandler> logger)
     {
-        _dbWorker = dbWorker;
+        _repository = repository;
         _logger = logger;
         _depthMarketService = depthMarketService;
     }
@@ -33,7 +33,10 @@ public class ValidationHandler : IEventHandler<Null, OrderValidationEvent>
     {
         if (message.Value.Valid)
         {
-            await _dbWorker.UpdateRecords(x => x.Id.ToString() == message.Value.OrderId, y => y.Status = OrderStatus.Validated);
+            var order = await _repository.GetByIdAsync(message.Value.OrderId);
+            order.Result.Status = OrderStatus.Validated;
+            
+            await _repository.UpdateAsync(order.Result);
 
             await _depthMarketService.ProcessOrderAsync(message.Value.OrderId);
         }

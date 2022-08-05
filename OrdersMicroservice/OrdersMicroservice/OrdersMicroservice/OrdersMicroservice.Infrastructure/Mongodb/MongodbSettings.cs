@@ -2,6 +2,7 @@ namespace OrdersMicroservice.Infrastructure.Mongodb;
 
 public class MongodbSettings
 {
+
     public string ConnectionString { get; set; } = null!;
 
     public string DbName { get; set; } = null!;

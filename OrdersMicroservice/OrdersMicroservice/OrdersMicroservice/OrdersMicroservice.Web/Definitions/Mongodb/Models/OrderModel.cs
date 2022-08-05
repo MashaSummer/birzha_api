@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using OrdersMicroservice.Infrastructure.Mongodb;
 
 namespace OrdersMicroservice.Definitions.Mongodb.Models;
 
@@ -20,11 +21,12 @@ public enum OrderStatus
     Aborted
 }
 
-public class OrderModel
+public class OrderModel : IMongoModel
 {
     [BsonId]
     [BsonIgnoreIfNull]
-    public ObjectId Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
     
     [BsonElement("type")]
     public OrderTypes OrderType { get; set; }
@@ -44,7 +46,8 @@ public class OrderModel
     
     [BsonElement("deadline")]
     [BsonIgnoreIfNull]
-    public BsonDateTime? Deadline = null;
+    [BsonRepresentation(BsonType.DateTime)]
+    public DateTime? Deadline = null;
 
 
     [BsonElement("status")]

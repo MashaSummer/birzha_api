@@ -11,6 +11,7 @@ public class KafkaConsumerConfig : KafkaConfig
         {
             BootstrapServers = KafkaHost,
             GroupId = Group,
-            AutoOffsetReset = AutoOffsetReset.Earliest
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            EnableAutoCommit = false
         };
 }

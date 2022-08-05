@@ -11,31 +11,27 @@ namespace OrdersMicroservice.Definitions.GrpcServices;
 
 public class OrdersService : Orders.OrdersService.OrdersServiceBase
 {
-    private readonly IDbWorker<OrderModel> _dbWorker;
+    private readonly IRepository<OrderModel> _repository;
     private readonly IMapper _mapper;
     private readonly IEventProducer<Null, OrderCreatedEvent> _eventProducer;
 
-    public OrdersService(IDbWorker<OrderModel> dbWorker, IMapper mapper, IEventProducer<Null, OrderCreatedEvent> eventProducer)
+    public OrdersService(IRepository<OrderModel> repository, IMapper mapper, IEventProducer<Null, OrderCreatedEvent> eventProducer)
     {
-        _dbWorker = dbWorker;
+        _repository = repository;
         _mapper = mapper;
         _eventProducer = eventProducer;
     }
 
     public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
     {
-        // TODO send request to validate
-        
-        // TODO move to kafka handler
-        
         var order = _mapper.Map<OrderModel>(request.OrderDetail);
         order.Status = OrderStatus.Validating;
-        await _dbWorker.AddNewRecord(order);
+        var id = await _repository.AddAsync(order);
 
         await _eventProducer.ProduceAsync(null, new OrderCreatedEvent()
         {
             Order = request.OrderDetail,
-            OrderId = "1111"
+            OrderId = id.Result
         });
 
         return new CreateOrderResponse()
