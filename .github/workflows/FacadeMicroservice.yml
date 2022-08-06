@@ -6,7 +6,6 @@ env:
   MICROSERVICE_NAME: "Facade"
   MICROSERVICE_TAG: "facade"
   DOCKERFILE: "facade_dockerfile"
-  APPSETTINGS: "facade_appsettings.json"
   TEST_WORK_DIR: "Facade/Facade/Facade.Web"
   
 on:
@@ -55,14 +54,8 @@ jobs:
 
       - name: Deploy microservice with rsync
         run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./${{ env.MICROSERVICE_NAME }} ${{ env.USER }}@${{ env.SERVER }}:/var
-     
-      - name: Deploy appsettings.json with rsync
-        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.APPSETTINGS }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.APPSETTINGS }}
-     
-      - name: Deploy Dockerfile rsync
-        run: rsync -avz -e "ssh -p ${{ env.PORT }}" ./additional-files/${{ env.DOCKERFILE }} ${{ env.USER }}@${{ env.SERVER }}:/var/${{ env.DOCKERFILE }}
- 
-      - name: Restart Node Server
+       
+      - name: Build & run container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER }}
@@ -70,8 +63,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ env.PORT }}
           script: |
-            rm /var/${{ env.TEST_WORK_DIR }}/appsettings.json
-            mv /var/${{ env.APPSETTINGS }} /var/${{ env.TEST_WORK_DIR }}/appsettings.json
             cd /var/${{ env.MICROSERVICE_NAME }}
-            docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f /var/${{ env.DOCKERFILE }} .
-            docker run -p 80:80 -p 443:443 -e ASPNETCORE_ENVIRONMENT=Development --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -d
+            docker build -t ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} -f ${{ env.DOCKERFILE }} .
+            docker run -d --network dockprom_monitor-net -p 80:80 -p 443:443 -e ASPNETCORE_ENVIRONMENT=Development --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}" --name ${{ env.MICROSERVICE_NAME }} ${{ env.MICROSERVICE_TAG }}:${{ github.sha }} 
