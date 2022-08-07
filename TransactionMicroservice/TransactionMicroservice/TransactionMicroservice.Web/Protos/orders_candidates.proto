@@ -6,7 +6,7 @@ package orders_candidates;
 
 message CandidatesFoundEvent {
 
-  string ask_order_id = 1;
+  string ask_id = 1;
 
-  string bid_order_id = 2;
+  string bid_id = 2;
 }

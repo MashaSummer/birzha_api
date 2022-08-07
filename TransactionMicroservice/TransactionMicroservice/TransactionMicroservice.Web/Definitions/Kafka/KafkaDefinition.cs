@@ -16,7 +16,7 @@ public class KafkaDefinition : AppDefinition
 
         var producerConfig = configuration.GetSection("Kafka:TransactionsProducer").Get<KafkaProducerConfig>();
 
-        services.AddKafkaProducer<Null, Transaction>(producerConfig);
+        services.AddKafkaProducer<Null, TransactionEvent>(producerConfig);
 
         var consumerConfig = configuration.GetSection("Kafka:CandidatesConsumer").Get<KafkaConsumerConfig>();
 

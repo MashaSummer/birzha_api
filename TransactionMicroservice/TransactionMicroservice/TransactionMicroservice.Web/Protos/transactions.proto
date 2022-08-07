@@ -4,7 +4,7 @@ option csharp_namespace = "Transactions";
 
 package transactions;
 
-message Transaction {
+message TransactionEvent {
   
   string ask_id = 1;
   

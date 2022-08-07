@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OrdersEvent;
 using TransactionMicroservice.Definitions.Mongodb.Models;
 using Transactions;
 
@@ -8,8 +9,10 @@ public class TransactionMapping : Profile
 {
     public TransactionMapping()
     {
-        CreateMap<Transaction, TransactionModel>()
+        CreateMap<CandidatesFoundEvent, TransactionModel>()
             .ForMember(d => d.Id, s => s.Ignore())
             .ForMember(d => d.CreatedTime, s => s.Ignore());
+
+        CreateMap<TransactionModel, TransactionEvent>();
     }
 }

@@ -32,16 +32,35 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
 
     public async Task<OperationResult<bool>> ProcessAsync(Message<Null, CandidatesFoundEvent> message)
     {
-        var transaction = _mapper.Map<TransactionModel>(message.Value);
-        transaction.CreatedTime = DateTime.Now;
+        var transactionModel = _mapper.Map<TransactionModel>(message.Value);
+        transactionModel.CreatedTime = DateTime.Now;
 
-        var addingResult = await _repository.AddAsync(transaction);
-
+        var addingResult = await _repository.AddAsync(transactionModel);
+        
         if (!addingResult.Ok)
         {
             _logger.LogError($"Error in {nameof(CandidatesHandler)}: {addingResult.Error.Message}");
+
+            var result = new OperationResult<bool>();
+            result.AddError(addingResult.Error);
+
+            return result;
         }
 
+        var transaction = _mapper.Map<Transaction>(transactionModel);
+
+        var produceResult = await _eventProducer.ProduceAsync(null, transaction);
+
+
+        if (!produceResult.Ok)
+        {
+            _logger.LogError($"Error in {nameof(CandidatesHandler)}: {produceResult.Error.Message}");
+            var result = new OperationResult<bool>();
+            result.AddError(produceResult.Error);
+
+            return result;
+        }
+        
         return new OperationResult<bool>()
         {
             Result = addingResult.Ok
