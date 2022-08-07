@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Transactions";
+
+package transactions;
+
+message Transaction {
+  
+  string ask_id = 1;
+  
+  string bid_id = 2;
+  
+}
