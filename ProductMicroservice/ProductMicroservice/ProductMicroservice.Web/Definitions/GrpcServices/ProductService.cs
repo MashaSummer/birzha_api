@@ -26,7 +26,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
     {
         _logger.LogInformation("Get all data from database");
 
-        var dbResult = await GetAllProductsFromDb();
+        var dbResult = await _repository.GetAllAsync();
 
         if (!dbResult.Ok)
         {
@@ -53,24 +53,46 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         return response;
     }
 
-    private async Task<OperationResult<IEnumerable<ProductModel>>> GetAllProductsFromDb()
+    public override async Task<ChangePortfolioResponse> AddProduct(ChangePortfolioRequest request, ServerCallContext context)
     {
-        OperationResult<IEnumerable<ProductModel>> result = new OperationResult<IEnumerable<ProductModel>>();
-        try
+        var productFromDb = await _repository.Contains(p => p.Name == request.Name);
+
+        if (productFromDb.Ok && productFromDb.Result)
         {
-            result.Result = await _repository.GetAllAsync();
-            if (result.Result == null)
+            return new ChangePortfolioResponse()
             {
-                result.AddError(new Exception("Failed to get products data from database"));
-            }
-        }
-        
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            result.AddError(e);
+                Error = new Error()
+                {
+                    ErrorMessage = "There is product with the same name",
+                    StackTrace = ""
+                }
+            };
         }
 
-        return result;
+        var productModel = _mapper.Map<ProductModel>(request);
+        var addingResult = await _repository.AddAsync(productModel);
+
+        if (!addingResult.Ok)
+        {
+            _logger.LogError($"Error on product service: {addingResult.Error.Message}");
+            return new ChangePortfolioResponse()
+            {
+                Error = new Error()
+                {
+                    ErrorMessage = addingResult.Error.Message,
+                    StackTrace = addingResult.Error.StackTrace
+                }
+            };
+        }
+        
+        // TODO produce event to Kafka
+
+        return new ChangePortfolioResponse()
+        {
+            Success = new Success()
+            {
+                SuccessText = "New product successfully added"
+            }
+        };
     }
 }

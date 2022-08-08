@@ -23,4 +23,8 @@ public interface IRepository<T>
     Task<OperationResult<long>> DeleteAsync(params T[] entities);
 
     Task<OperationResult<long>> DeleteAsync(Func<T, bool> predicate);
+
+    Task<OperationResult<bool>> Contains(T entity);
+
+    Task<OperationResult<bool>> Contains(Func<T, bool> predicate);
 }

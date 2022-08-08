@@ -224,4 +224,38 @@ public class MongoRepository<T> : IRepository<T> where T : IMongoModel
 
         return result;
     }
+
+    public Task<OperationResult<bool>> Contains(T entity)
+    {
+        var result = new OperationResult<bool>();
+        try
+        {
+            var found = _collection.AsQueryable().FirstOrDefault(x => x.Equals(entity));
+            result.Result = found != null;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+
+        return Task.FromResult(result);
+    }
+
+    public Task<OperationResult<bool>> Contains(Func<T, bool> predicate)
+    {
+        var result = new OperationResult<bool>();
+        try
+        {
+            var found = _collection.AsQueryable().FirstOrDefault(predicate);
+            result.Result = found != null;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+
+        return Task.FromResult(result);
+    }
 }
