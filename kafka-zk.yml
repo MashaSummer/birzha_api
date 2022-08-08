@@ -71,6 +71,30 @@ services:
     depends_on:
       - zoo1
       - kafka1
+      
+  kafka-setup:
+    image: confluentinc/cp-kafka:7.0.1
+    depends_on:
+      - kafka1
+    networks:
+      - localnet
+    entrypoint: ['/bin/sh', '-c']
+    command: |
+      "
+      kafka-topics --bootstrap-server kafka1:29092 --list
+      echo -e 'Creating kafka topics'
+      
+      kafka-topics --bootstrap-server kafka1:29092 --create --if-not-exists --topic Orders_Created --replication-factor 1 --partitions 1
+      
+      kafka-topics --bootstrap-server kafka1:29092 --create --if-not-exists --topic Orders_Validation --replication-factor 1 --partitions 1
+      
+      kafka-topics --bootstrap-server kafka1:29092 --create --if-not-exists --topic Orders_Candidates --replication-factor 1 --partitions 1
+
+      kafka-topics --bootstrap-server kafka1:29092 --create --if-not-exists --topic Transactions --replication-factor 1 --partitions 1
+      
+      echo -e 'Successfully created topics'
+      kafka-topics --bootstrap-server kafka1:29092 --list
+      "
 
   mongo1:
     image: "mongo:4.0-xenial"
