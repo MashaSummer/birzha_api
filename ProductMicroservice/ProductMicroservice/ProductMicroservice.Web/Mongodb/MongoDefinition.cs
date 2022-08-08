@@ -1,12 +1,10 @@
-using AutoMapper;
-using ProductMicroservice.Definitions.Base;
-using ProductMicroservice.Definitions.Mongodb.Models;
-using ProductMicroservice.Infrastructure.Mongodb;
-using ProductMicroservice.Infrastructure.Mongodb.Context;
 using MongoDB.Driver;
+using ProductMicroservice.Definitions.Base;
 using ProductMicroservice.Domain.DbBase;
+using ProductMicroservice.Infrastructure.Mongodb;
+using ProductMicroservice.Mongodb.Models;
 
-namespace ProductMicroservice.Definitions.Mongodb;
+namespace ProductMicroservice.Mongodb;
 
 public class MongoDefinition : AppDefinition
 {
@@ -16,14 +14,17 @@ public class MongoDefinition : AppDefinition
 
         services.AddTransient<IMongoClient>(provider => new MongoClient(connectionString));
 
-        services.AddSingleton<IMongoDbContext<ProductModel>>(provider => new MongodbContext<ProductModel>(
-            new MongodbSettings()
+        services.AddSingleton<IRepository<ProductModel>>(provider =>
+        {
+            var client = provider.GetRequiredService<IMongoClient>();
+            var settings = new MongodbSettings()
             {
                 ConnectionString = connectionString,
                 CollectionName = configuration["Products:Collection"],
                 DbName = configuration["Products:Database"]
-            }, provider.GetRequiredService<IMongoClient>()));
-
-        services.AddSingleton<IDbWorker<ProductModel>, MongodbWorker<ProductModel>>();
+            };
+            var logger = provider.GetRequiredService<ILogger<MongoRepository<ProductModel>>>();
+            return new MongoRepository<ProductModel>(client, settings, logger);
+        });
     }
 }
