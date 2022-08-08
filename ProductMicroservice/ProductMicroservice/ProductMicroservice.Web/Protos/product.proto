@@ -45,3 +45,9 @@ message ChangePortfolioResponse {
   }
 }
 
+message ProductCreatedEvent {
+  
+  ChangePortfolioRequest request = 1;
+  
+}
+
