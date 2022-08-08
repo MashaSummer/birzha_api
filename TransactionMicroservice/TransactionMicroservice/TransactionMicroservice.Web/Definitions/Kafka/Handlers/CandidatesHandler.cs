@@ -1,5 +1,4 @@
-﻿using System.Transactions;
-using AutoMapper;
+﻿using AutoMapper;
 using Calabonga.OperationResults;
 using Confluent.Kafka;
 using OrdersEvent;
@@ -7,6 +6,7 @@ using TransactionMicroservice.Definitions.Mongodb.Models;
 using TransactionMicroservice.Domain.DbBase;
 using TransactionMicroservice.Domain.EventsBase;
 using TransactionMicroservice.EventsBase;
+using Transactions;
 
 namespace TransactionMicroservice.Definitions.Kafka.Handlers;
 
@@ -14,10 +14,10 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
 {
     private readonly IRepository<TransactionModel> _repository;
     private readonly IMapper _mapper;
-    private readonly IEventProducer<Null, Transaction> _eventProducer;
+    private readonly IEventProducer<Null, TransactionEvent> _eventProducer;
     private readonly ILogger<CandidatesHandler> _logger;
 
-    public CandidatesHandler(IRepository<TransactionModel> repository, IMapper mapper, IEventProducer<Null, Transaction> eventProducer, ILogger<CandidatesHandler> logger)
+    public CandidatesHandler(IRepository<TransactionModel> repository, IMapper mapper, IEventProducer<Null, TransactionEvent> eventProducer, ILogger<CandidatesHandler> logger)
     {
         _repository = repository;
         _mapper = mapper;
@@ -47,7 +47,7 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
             return result;
         }
 
-        var transaction = _mapper.Map<Transaction>(transactionModel);
+        var transaction = _mapper.Map<TransactionEvent>(transactionModel);
 
         var produceResult = await _eventProducer.ProduceAsync(null, transaction);
 
