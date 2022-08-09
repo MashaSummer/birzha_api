@@ -8,6 +8,7 @@ env:
   DOCKERFILE: "facade_dockerfile"
   TEST_WORK_DIR: "Facade/Facade/Facade.Web"
   
+  
 on:
   push:
     paths: 
@@ -49,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ${{ env.DOCKERFILE }}
+          file: ${{ env.MICROSERVICE_NAME }}/${{ env.DOCKERFILE }}
           tags: ${{ github.sha }}
           outputs: type=docker,dest=/tmp/${{ env.MICROSERVICE_TAG }}.tar
           
