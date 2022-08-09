@@ -18,7 +18,7 @@
       
     - name: Copy NGINX image 
       copy:
-        src: {{ src_service_name }}
+        src: {{ microservice_name }}
         dest: /opt/docker/
         mode: 0755
         owner: root
@@ -33,7 +33,7 @@
       docker_image:
         name: {{ microservice_name_image }}:{{ sha }}
         build:
-          path: /opt/docker/{{ src_service_name }}/{{ dockerfile }}
+          path: /opt/docker/{{ microservice_name }}/{{ dockerfile }}
           source: build
         state: present
            
