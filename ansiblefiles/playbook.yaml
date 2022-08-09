@@ -31,16 +31,16 @@
   
     - name: build container image
       docker_image:
-        name: {{ microservice_name_image }}:{{ sha }}
+        name: "{{ microservice_name_image }}":"{{ sha }}"
         build:
-          path: /opt/docker/{{ microservice_name }}/{{ dockerfile }}
+          path: /opt/docker/"{{ microservice_name }}"/"{{ dockerfile }}"
           source: build
         state: present
            
     - name: Run 
       docker_container:
-         name: {{ microservice_name }}
-         image: {{ microservice_name_image }}:{{ sha }} 
+         name: "{{ microservice_name }}"
+         image: "{{ microservice_name_image }}":"{{ sha }}"
          state: started
          ports:
           - "80:80"
