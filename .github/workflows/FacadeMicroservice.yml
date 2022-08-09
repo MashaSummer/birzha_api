@@ -49,8 +49,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ${{ env.MICROSERVICE_NAME }}/${{ env.DOCKERFILE }}
+          context: ${{ env.MICROSERVICE_NAME }}
+          file: ${{ env.DOCKERFILE }}
           tags: ${{ github.sha }}
           outputs: type=docker,dest=/tmp/${{ env.MICROSERVICE_TAG }}.tar
           
