@@ -27,7 +27,7 @@
 
 ---
 ## **Добавление пользователя в базу данных.** </br>
-При регистрации нового пользователя, сервис регистрации отправляет об этом сообщение в кафку, которое содержит *id* пользователя, сервис баланса получает его и добавляет новую запись в базу данных с нулевым балансом.
+При регистрации нового пользователя, сервис регистрации отправляет об этом сообщение в кафку, которое содержит *id* пользователя, сервис баланса получает его и добавляет новую запись в базу данных с нулевым балансом, если запись уже существует то сообщение игнорируется.
 
 ---
 
@@ -95,7 +95,6 @@
 На сервисе этот ключ сравнивается с уже ранее записанным: 
   - если они не равны, то операция производится.
   - если равны, то отправляется запрос, что данная операция уже совершена.
-- **на клиенте**, если обратный ответ не пришел (т.к. сервис упал), то блокировать кнопку на пополнение до тех пор, пока не будет получен ответ.
 
 
 ---
@@ -103,13 +102,11 @@
 ## **Предлагаемые proto**
 
 ```protobuf
-service QueryBalanceService {
-	rpc GetBalance(GetBalanceRequest) returns (BalanceResponse);
-}
 
 service CommandBalanceService {
-	rpc AddBalance(ChangeBalanceRequest) returns (BalanceResponse);
-	rpc ReduseBalance(ChangeBalanceRequest) returns (BalanceResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+	rpc AddBalance(ChangeBalanceRequest) returns (GetBalanceResponse);
+  rpc ReduceBalance(ChangeBalanceRequest) returns (GetBalanceResponse)
 }
 
 
@@ -119,15 +116,19 @@ message GetBalanceRequest {
 
 message ChangeBalanceRequest {
 	string id = 1;
-	double value = 2;
+	int value = 2;
+}
+message GetBalanceResponse {
+  int active_balance = 1;
+  int frozen_balance = 2;
+  enum Status {
+    NONE = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+  }
+  Status status = 2;
 }
 
-message BalanceResponse {
-  double active_balance = 1;
-  double frozen_balance = 2;
-  bool error = 3;
-  string error_message = 4;
-}
 ```
 
 ## Последствия
