@@ -1,0 +1,80 @@
+---
+- hosts: deploy
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Install Docker from repository 
+      apt:
+        name: docker.io
+        state: present
+    - name: Install Docker-compose from repository 
+      apt:
+        name: docker-compose
+        state: present
+    - name: Install pip3 package
+      package:
+        update_cache: yes 
+        name: python3-pip
+        state: latest
+    - name: Install Docker SDK for Python
+      pip:
+       name: docker
+       executable: pip3
+    - name: Create Directory for projects
+      file: path=/opt/docker state=directory
+    - name: Copy NGINX image 
+      copy:
+        src: /tmp/nginx.tar
+        dest: /opt/docker/
+        mode: 0755
+        owner: root
+        group: root
+    - name: Copy Flask image 
+      copy:
+        src: /tmp/flask.tar
+        dest: /opt/docker/
+        mode: 0755
+        owner: root
+        group: root
+    - name: Create a network
+      community.docker.docker_network:
+        name: flask
+    - name: extract image nginx
+      docker_image:
+         name: nginx
+         tag: v2
+         load_path: /opt/docker/nginx.tar/nginx.tar
+         state: present
+         source: load
+    - name: extract image flask
+      docker_image:
+         name: flask
+         tag: v1
+         load_path: /opt/docker/flask.tar/flask.tar
+         state: present
+         source: load
+    - name: Run Flask 1
+      docker_container:
+         name: flask1
+         image: flask:v1 
+         state: started
+         exposed_ports: 5000
+         networks:
+           - name: flask
+    - name: Run Flask 2
+      docker_container:
+         name: flask2
+         image: flask:v1 
+         state: started
+         exposed_ports: 5000
+         networks:
+           - name: flask
+    - name: Run Nginx
+      docker_container:
+         name: nginx
+         image: nginx:v2 
+         state: started
+         published_ports: "80:80"
+         exposed_ports: 80
+         networks:
+           - name: flask
