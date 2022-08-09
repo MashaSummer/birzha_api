@@ -74,7 +74,7 @@ jobs:
         with:
           playbook: ansiblefiles/playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          inventory: ansiblefiles/hosts.ini
+          inventory: 185.137.234.190 
           options: -vv --extra-vars "microservice_name_image=facade sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=Facade"
        
       
