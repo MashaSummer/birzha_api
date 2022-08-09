@@ -75,6 +75,6 @@ jobs:
           playbook: ansiblefiles/playbook.yml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: ansiblefiles/hosts
-          options: -vv --extra-vars "microservice_name_image=facade" "sha=${{ github.sha }}" "dockerfile=${{ env.DOCKERFILE }}" "microservice_name=Facade"
+          options: -vv --extra-vars "microservice_name_image=facade sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=Facade"
        
       
