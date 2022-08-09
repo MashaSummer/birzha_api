@@ -83,12 +83,12 @@ jobs:
         with:
           playbook: ansiblefiles/playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          inventory: |
-            [prod]
-            185.137.234.190 
+          #inventory: |
+          #  [prod]
+          #  185.137.234.190 
           options: | 
             -vv 
-            --inventory .hosts 
+            --inventory ansiblefiles/hosts.ini
             -e "microservice_name_image=facade sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=Facade"
        
       
