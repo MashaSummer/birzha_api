@@ -11,7 +11,7 @@ COPY ["Facade/Facade/Facade.Web/Facade.Web.csproj", "Facade/Facade.Web/"]
 COPY ["Facade/Facade/Facade.Infrastructure/Facade.Infrastructure.csproj", "Facade/Facade.Infrastructure/"]
 COPY ["Facade/Facade/Facade.Domain/Facade.Domain.csproj", "Facade/Facade.Domain/"]
 RUN dotnet restore "Facade/Facade.Web/Facade.Web.csproj"
-COPY . .
+COPY Facade/ .
 WORKDIR "/src/Facade/Facade.Web"
 RUN dotnet build "Facade.Web.csproj" -c Release -o /app/build
 
