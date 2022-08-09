@@ -72,7 +72,7 @@ jobs:
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.5.0
         with:
-          playbook: ansiblefiles/playbook.yml
+          playbook: ansiblefiles/playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           inventory: ansiblefiles/hosts
           options: -vv --extra-vars "microservice_name_image=facade sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=Facade"
