@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Facade/Facade.Web/Facade.Web.csproj", "Facade/Facade.Web/"]
-COPY ["Facade/Facade.Infrastructure/Facade.Infrastructure.csproj", "Facade/Facade.Infrastructure/"]
+COPY ["Facde/Facade/Facade.Web/Facade.Web.csproj", "Facade/Facade.Web/"]
+COPY ["Facade/Facade/Facade.Infrastructure/Facade.Infrastructure.csproj", "Facade/Facade.Infrastructure/"]
 COPY ["Facade/Facade/Facade.Domain/Facade.Domain.csproj", "Facade/Facade.Domain/"]
 RUN dotnet restore "Facade/Facade.Web/Facade.Web.csproj"
 COPY . .
