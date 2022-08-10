@@ -89,7 +89,7 @@ jobs:
           playbook: ansiblefiles/playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           options: | 
-            -vvv
+            -vv
             --inventory ansiblefiles/hosts.ini
             -e "microservice_name_image=${{ env.MICROSERVICE_TAG }} sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=${{ env.MICROSERVICE_NAME }}"
        
