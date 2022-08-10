@@ -57,6 +57,6 @@
          log_driver: json-file
          
          log_options:
-           - tag: "{{ microservice_name }}"
+             tag: "{{ microservice_name }}"
           
           
