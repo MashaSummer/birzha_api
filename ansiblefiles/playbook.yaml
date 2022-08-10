@@ -15,12 +15,12 @@
                
     - name: Create Directory for projects
       file: path=/opt/docker state=directory
-      
-    - name: Download 
-      ansible.builtin.get_url:
-        url: "https://github.com/MashaSummer/birzha_api/tree/main/{{ microservice_name }}"
+    
+    - name: Copy image 
+      copy:
+        src: "/tmp/{{ microservice_name_image }}.tar"
         dest: /opt/docker/
-        mode: '755'
+        mode: 0755
         owner: root
         group: root
     
@@ -28,14 +28,22 @@
       community.docker.docker_network:
         name: birzha
   
-    - name: build container image
+    #- name: build container image
+    #  docker_image:
+    #    name: "{{ microservice_name_image }}:{{ sha }}"
+    #    build:
+    #      path: "/opt/docker/{{ microservice_name }}/{{ dockerfile }}"
+    #      source: build
+    #    state: present
+    
+    - name: extract image 
       docker_image:
-        name: "{{ microservice_name_image }}:{{ sha }}"
-        build:
-          path: "/opt/docker/{{ microservice_name }}/{{ dockerfile }}"
-          source: build
-        state: present
-           
+         name: "{{ microservice_name_image }}"
+         tag: {{ sha }}
+         load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
+         state: present
+         source: load
+         
     - name: Run 
       docker_container:
          name: "{{ microservice_name }}"
