@@ -16,13 +16,13 @@
     - name: Create Directory for projects
       file: path=/opt/docker state=directory
       
-    - name: Download foo.conf
+    - name: Download 
       ansible.builtin.get_url:
-      url: "https://github.com/MashaSummer/birzha_api/tree/main/{{ microservice_name }}"
-      dest: /opt/docker/
-      mode: '755'
-      owner: root
-      group: root
+        url: "https://github.com/MashaSummer/birzha_api/tree/main/{{ microservice_name }}"
+        dest: /opt/docker/
+        mode: '755'
+        owner: root
+        group: root
     
     - name: Create a network
       community.docker.docker_network:
