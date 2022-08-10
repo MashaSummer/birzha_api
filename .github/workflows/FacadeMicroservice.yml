@@ -57,8 +57,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.MICROSERVICE_TAG }}.tar
-          path: /tmp/${{ env.MICROSERVICE_TAG }}.tar
+          name: ${{ env.MICROSERVICE_TAG }}:${{ github.sha }}.tar
+          path: /tmp/${{ env.MICROSERVICE_TAG }}:${{ github.sha }}.tar
 
   Deploy:
     runs-on: ubuntu-latest
