@@ -39,7 +39,7 @@
     - name: extract image 
       docker_image:
          name: "{{ microservice_name_image }}"
-         tag: {{ sha }}
+         tag: "{{ sha }}"
          load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
          state: present
          source: load
