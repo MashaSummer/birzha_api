@@ -55,6 +55,6 @@
          networks:
            - name: birzha
          log_options:
-           - tag: "ImageName|Name|ImageFullID|FullID"
+           - tag: "{{ImageName}}|{{Name}}|{{ImageFullID}}|{{FullID}}"
           
           
