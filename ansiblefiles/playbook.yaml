@@ -27,14 +27,6 @@
     - name: Create a network
       community.docker.docker_network:
         name: birzha
-  
-    #- name: build container image
-    #  docker_image:
-    #    name: "{{ microservice_name_image }}:{{ sha }}"
-    #    build:
-    #      path: "/opt/docker/{{ microservice_name }}/{{ dockerfile }}"
-    #      source: build
-    #    state: present
     
     - name: extract image 
       docker_image:
@@ -59,4 +51,4 @@
          log_options:
              tag: "{{ microservice_name }}"
           
-          
+       
