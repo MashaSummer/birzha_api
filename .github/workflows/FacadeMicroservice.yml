@@ -52,13 +52,13 @@ jobs:
           context: .
           file: ${{ env.MICROSERVICE_NAME }}/${{ env.DOCKERFILE }}
           tags: ${{ env.MICROSERVICE_TAG }}:${{ github.sha }}
-          outputs: type=docker,dest=/tmp/${{ env.MICROSERVICE_TAG }}:${{ github.sha }}.tar
+          outputs: type=docker,dest=/tmp/${{ env.MICROSERVICE_TAG }}.tar
           
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.MICROSERVICE_TAG }}:${{ github.sha }}.tar
-          path: /tmp/${{ env.MICROSERVICE_TAG }}:${{ github.sha }}.tar
+          name: ${{ env.MICROSERVICE_TAG }}.tar
+          path: /tmp/${{ env.MICROSERVICE_TAG }}.tar
 
   Deploy:
     runs-on: ubuntu-latest
