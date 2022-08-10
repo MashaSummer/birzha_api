@@ -18,7 +18,7 @@
       
     - name: Copy NGINX image 
       copy:
-        src: "{{ microservice_name }}"
+        remote_src: "{{ microservice_name }}"
         dest: /opt/docker/
         mode: 0755
         owner: root
