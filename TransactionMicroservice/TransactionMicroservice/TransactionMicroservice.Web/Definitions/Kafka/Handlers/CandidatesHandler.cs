@@ -33,7 +33,7 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
     public async Task<OperationResult<bool>> ProcessAsync(Message<Null, CandidatesFoundEvent> message)
     {
         var transactionModel = _mapper.Map<TransactionModel>(message.Value);
-        transactionModel.CreatedTime = DateTime.Now;
+        transactionModel.CreatedTime = DateTime.UtcNow;
 
         var addingResult = await _repository.AddAsync(transactionModel);
         

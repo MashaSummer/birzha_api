@@ -11,9 +11,9 @@ public class TransactionModel : IMongoModel
     [BsonIgnoreIfNull]
     public string Id { get; set; }
 
-    [BsonElement("bid_id")] public string BidId { get; set; } = null!;
+    [BsonElement("bid_id")] public string[] BidIds { get; set; } = null!;
 
-    [BsonElement("ask_id")] public string AskId { get; set; } = null!;
+    [BsonElement("ask_id")] public string[] AskIds { get; set; } = null!;
     
     [BsonElement("created_time")]
     [BsonRepresentation(BsonType.DateTime)]

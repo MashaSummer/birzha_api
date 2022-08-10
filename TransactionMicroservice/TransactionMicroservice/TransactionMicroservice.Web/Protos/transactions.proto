@@ -6,8 +6,8 @@ package transactions;
 
 message TransactionEvent {
   
-  string ask_id = 1;
+  repeated string ask_ids = 1;
   
-  string bid_id = 2;
+  repeated string bid_ids = 2;
   
 }
