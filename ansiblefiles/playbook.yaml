@@ -18,7 +18,7 @@
     
     - name: Copy image 
       copy:
-        src: "/tmp/{{ microservice_name_image }}:{{ sha }}.tar"
+        src: "/tmp/{{ microservice_name_image }}.tar"
         dest: /opt/docker/
         mode: 0755
         owner: root
