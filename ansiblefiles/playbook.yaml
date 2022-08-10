@@ -40,7 +40,7 @@
       docker_image:
          name: "{{ microservice_name_image }}"
          tag: "{{ sha }}"
-         load_path: "/opt/docker/{{ microservice_name_image }}.tar"
+         load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
          state: present
          source: load
          
