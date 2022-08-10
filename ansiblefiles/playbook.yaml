@@ -35,20 +35,9 @@
          load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
          state: present
          source: load
-         
-    - name: Run 
-      docker_container:
-         name: "{{ microservice_name }}"
-         image: "{{ microservice_name_image }}:{{ sha }}"
-         state: started
-         ports:
-          - "80:80"
-          - "443:443"
-         networks:
-           - name: birzha
-         log_driver: json-file
-         
-         log_options:
-             tag: "{{ microservice_name }}"
+    - name: This command will change the working directory to somedir/
+      ansible.builtin.shell:
+         cmd: docker run -d --network dockprom_monitor-net -p 80:80 -p 443:443 --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}" --name "{{ microservice_name }}" "{{ microservice_name_image }}:{{ sha }}"
+  
           
        
