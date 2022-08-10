@@ -55,6 +55,6 @@
          networks:
            - name: birzha
          log_options:
-           - tag: "name: {{ microservice_name }}"
+           - tag: "{{.ImageName}}/{{.Name}}/{{.ImageFullID}}/{{.FullID}}"
           
           
