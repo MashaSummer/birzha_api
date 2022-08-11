@@ -93,7 +93,10 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
 
         await _eventProducer.ProduceAsync(null, new ProductCreatedEvent()
         {
-            Request = request
+            InvestorId = request.Id,
+            ProductId = productModel.Id,
+            StartPrice = request.StartPrice,
+            Volume = request.Volume
         });
 
         return new ChangePortfolioResponse()

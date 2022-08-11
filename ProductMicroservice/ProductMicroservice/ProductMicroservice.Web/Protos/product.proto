@@ -30,8 +30,8 @@ message GetAllProductsResponse {
 message ChangePortfolioRequest {
   string id = 1;
   string name = 2;
-  double volume = 3;
-  double start_price = 4;
+  int32 volume = 3;
+  int32 start_price = 4;
 }
 
 message Success {
@@ -47,7 +47,13 @@ message ChangePortfolioResponse {
 
 message ProductCreatedEvent {
   
-  ChangePortfolioRequest request = 1;
+  string investor_id = 1;
+  
+  string product_id = 2;
+  
+  int32 volume = 3;
+  
+  int32 start_price = 4;
   
 }
 
