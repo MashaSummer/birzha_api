@@ -5,7 +5,10 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using PortfolioGrpc;
+using PortfolioServiceGrpc;
 using ProductGrpc;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Facade.Web.GrpcServices.Portfolio;
 
@@ -23,45 +26,90 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         _serviceUrls = optionsMonitor.CurrentValue;
     }
 
-    public override Task<PortfolioServiceGrpc.PortfolioResponse> GetPortfolio(PortfolioServiceGrpc.GetPortfolioRequest request, ServerCallContext context)
+    public override async Task<PortfolioServiceGrpc.GetPortfolioResponse> GetPortfolio(PortfolioServiceGrpc.GetPortfolioRequest request, ServerCallContext context)
     {
+        var channelPortfolio = GrpcChannel.ForAddress(_serviceUrls.PortfolioService);
+        var channelProduct = GrpcChannel.ForAddress(_serviceUrls.ProductService);
 
-    }
+        var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channelPortfolio);
+        var productClient = new ProductGrpc.ProductService.ProductServiceClient(channelProduct);
 
-    public override async Task<GetAllAssetsResponse> GetAllAssets(GetAllAssetsRequest request, ServerCallContext context)
-    {
-        var channel = GrpcChannel.ForAddress(_serviceUrls.PortfolioService);
-        var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channel);
-        var productsClient = new ProductGrpc.ProductService.ProductServiceClient(channel);
+        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, context);
 
-        var responsePortfolio = await TryGetPortfolio(portfolioClient);
-        if (!responsePortfolio.Ok)
+        if (responsePortfolio.Ok)
         {
-            return new GetAllAssetsResponse()
-            {
-                Error = new PortfolioGrpc.Error()
-                {
-                    ErrorMessage = responsePortfolio.Exception == null ? "Failed to request" : responsePortfolio.Exception.Message,
-                    StackTrace = responsePortfolio.Exception == null ? new Exception().StackTrace : responsePortfolio.Exception.StackTrace
-                }
-            };
+            return responsePortfolio.Result;
         }
 
-        var responseProducts = await TryGetAllProducts(productsClient);
-
-        var productsInPortfolio = responsePortfolio.Result.AssetArray.Assets.Select(product => product.Id);
-        var products = responseProducts.Result.ProductArray.Products.Where(product => productsInPortfolio.Contains(product.Id)).ToList();
-        const double ask = 34;
-        
-
-        return new GetAllAssetsResponse()
+        return new GetPortfolioResponse()
         {
-            Error = new PortfolioGrpc.Error()
+            Error = new PortfolioServiceGrpc.Error()
             {
-                ErrorMessage = responseProducts.Exception == null ? "Failed to request" : responseProducts.Exception.Message,
-                StackTrace = responseProducts.Exception == null ? new Exception().StackTrace : responseProducts.Exception.StackTrace
+                ErrorMessage = responsePortfolio.Exception == null ? "Failed to request" : responsePortfolio.Exception.Message,
+                StackTrace = responsePortfolio.Exception == null ? new Exception().StackTrace : responsePortfolio.Exception.StackTrace
             }
         };
+    }
+
+    private async Task<OperationResult<GetPortfolioResponse>> TryGetPortfolio(
+        PortfolioGrpc.PortfolioService.PortfolioServiceClient portfolioClient, 
+        ProductGrpc.ProductService.ProductServiceClient productClient, ServerCallContext context)
+    {
+        var responsePortfolio = await TryGetAssets(context, portfolioClient);
+        var responseProduct = await TryGetAllProducts(productClient);
+        var result = OperationResult.CreateResult<GetPortfolioResponse>();
+
+        var assetsArray = responsePortfolio.Result.AssetArray.Assets;
+        var productsArray = responseProduct.Result.ProductArray.Products;
+        GetPortfolioResponse portfolioResponse = new GetPortfolioResponse();
+        try
+        {
+            double estimate, spent, earned, delta_abs, delta_rel;
+            for (int i = 0; i < assetsArray.Count(); i++)
+            {
+                var product = productsArray.Where(p => p.Id == assetsArray[i].Id).First();
+                var asset = assetsArray[i];
+                estimate = asset.VolumeActive * product.BestAsk;
+                spent = 50;
+                earned = 50;
+                delta_abs = estimate - spent;
+                delta_rel = (estimate - spent) / spent;
+                portfolioResponse.Portfolio.Products.Add(new PortfolioServiceGrpc.Portfolio.Types.Product
+                {
+                    Id = asset.Id,
+                    Name = product.Name,
+                    BestAsk = product.BestAsk,
+                    Spent = spent,
+                    Earned = earned,
+                    Volume = asset.VolumeActive,
+                    Estimate = estimate,
+                    DeltaAbs = delta_abs,
+                    DeltaRel = delta_rel
+                });
+            }
+            var portfolio = portfolioResponse.Portfolio.Products;
+            portfolioResponse.Portfolio.Total = new PortfolioServiceGrpc.Portfolio.Types.Total
+            {
+                Spent = portfolio.Sum(sp => sp.Spent),
+                Earned = portfolio.Sum(sp => sp.Earned),
+                Estimate = portfolio.Sum(sp => sp.Estimate),
+                DeltaAbs = portfolio.Sum(sp => sp.DeltaAbs),
+                DeltaRel = portfolio.Sum(sp => sp.DeltaRel)
+            };
+
+            result.Result = portfolioResponse;
+            if (result.Result == null)
+            {
+                result.AddError(new Exception("Failed to request"));
+            }
+        }
+        catch(Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+
+        return result;
     }
 
     private async Task<OperationResult<GetAllProductsResponse>> TryGetAllProducts(ProductGrpc.ProductService.ProductServiceClient client)
@@ -85,14 +133,14 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         return result;
     }
 
-
-    private async Task<OperationResult<GetAllAssetsResponse>> TryGetPortfolio(PortfolioGrpc.PortfolioService.PortfolioServiceClient client)
+    private async Task<OperationResult<GetAllAssetsResponse>> TryGetAssets(ServerCallContext context, PortfolioGrpc.PortfolioService.PortfolioServiceClient client)
     {
         var result = OperationResult.CreateResult<GetAllAssetsResponse>();
-
+        var id = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id");
+        
         try
         {
-            result.Result = await client.GetAllAssetsAsync(new GetAllAssetsRequest());
+            result.Result = await client.GetAllAssetsAsync(new GetAllAssetsRequest { Id = id.Value });
             if (result.Result == null)
             {
                 result.AddError(new Exception("Failed to request"));

@@ -5,7 +5,7 @@ option csharp_namespace = "PortfolioServiceGrpc";
 package portfolio_service;
 
 service PortfolioService {
-	rpc GetPortfolio(GetPortfolioRequest) returns (PortfolioResponse);
+	rpc GetPortfolio(GetPortfolioRequest) returns (GetPortfolioResponse);
 }
 
 
@@ -20,7 +20,7 @@ message ChangePortfolioRequest {
     double start_price = 4;
 }
 
-message PortfolioResponse {
+message Portfolio {
     message Product {
         string id = 1;
         string name = 2;
@@ -43,4 +43,16 @@ message PortfolioResponse {
 
     repeated Product products = 1;
     Total total = 2;
+}
+
+message Error {
+    string error_message = 1;
+    string stack_trace = 2;
+}
+
+message GetPortfolioResponse{
+    oneof result {
+        Portfolio portfolio = 1;
+        Error error = 2;
+    }
 }
