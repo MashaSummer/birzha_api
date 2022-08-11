@@ -1,5 +1,6 @@
 ﻿using Calabonga.OperationResults;
 using Facade.Web.Application;
+using Facade.Web.GrpcServices.Portfolio.Aggregation;
 using Facade.Web.GrpcServices.Product;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -53,7 +54,8 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
 
     private async Task<OperationResult<GetPortfolioResponse>> TryGetPortfolio(
         PortfolioGrpc.PortfolioService.PortfolioServiceClient portfolioClient, 
-        ProductGrpc.ProductService.ProductServiceClient productClient, ServerCallContext context)
+        ProductGrpc.ProductService.ProductServiceClient productClient, 
+        ServerCallContext context)
     {
         var responsePortfolio = await TryGetAssets(context, portfolioClient);
         var responseProduct = await TryGetAllProducts(productClient);
@@ -64,40 +66,8 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         GetPortfolioResponse portfolioResponse = new GetPortfolioResponse();
         try
         {
-            double estimate, spent, earned, delta_abs, delta_rel;
-            for (int i = 0; i < assetsArray.Count(); i++)
-            {
-                var product = productsArray.Where(p => p.Id == assetsArray[i].Id).First();
-                var asset = assetsArray[i];
-                estimate = asset.VolumeActive * product.BestAsk;
-                spent = 50;
-                earned = 50;
-                delta_abs = estimate - spent;
-                delta_rel = (estimate - spent) / spent;
-                portfolioResponse.Portfolio.Products.Add(new PortfolioServiceGrpc.Portfolio.Types.Product
-                {
-                    Id = asset.Id,
-                    Name = product.Name,
-                    BestAsk = product.BestAsk,
-                    Spent = spent,
-                    Earned = earned,
-                    Volume = asset.VolumeActive,
-                    Estimate = estimate,
-                    DeltaAbs = delta_abs,
-                    DeltaRel = delta_rel
-                });
-            }
-            var portfolio = portfolioResponse.Portfolio.Products;
-            portfolioResponse.Portfolio.Total = new PortfolioServiceGrpc.Portfolio.Types.Total
-            {
-                Spent = portfolio.Sum(sp => sp.Spent),
-                Earned = portfolio.Sum(sp => sp.Earned),
-                Estimate = portfolio.Sum(sp => sp.Estimate),
-                DeltaAbs = portfolio.Sum(sp => sp.DeltaAbs),
-                DeltaRel = portfolio.Sum(sp => sp.DeltaRel)
-            };
-
-            result.Result = portfolioResponse;
+            var portfolio = PortfolioAggregator.AggregateProducts(portfolioResponse, assetsArray, productsArray).Portfolio.Products;
+            result.Result = PortfolioAggregator.AggregateTotal(portfolioResponse, portfolio);
             if (result.Result == null)
             {
                 result.AddError(new Exception("Failed to request"));
