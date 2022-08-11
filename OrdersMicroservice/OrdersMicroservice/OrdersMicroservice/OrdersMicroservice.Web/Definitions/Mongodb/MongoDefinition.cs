@@ -1,4 +1,3 @@
-using AutoMapper;
 using OrdersMicroservice.Definitions.Base;
 using OrdersMicroservice.Definitions.Mongodb.Models;
 using OrdersMicroservice.Infrastructure.Mongodb;
@@ -51,6 +50,18 @@ public class MongoDefinition : AppDefinition
             };
             var logger = provider.GetRequiredService<ILogger<BidMarketRepository>>();
             return new BidMarketRepository(client, settings, logger);
+        });
+        services.AddSingleton<OrdersRepository>(provider =>
+        {
+            var client = provider.GetRequiredService<IMongoClient>();
+            var settings = new MongodbSettings()
+            {
+                ConnectionString = connectionString,
+                CollectionName = configuration["Asks:Collection"],
+                DbName = configuration["Asks:Database"]
+            };
+            var logger = provider.GetRequiredService<ILogger<OrdersRepository>>();
+            return new OrdersRepository(client, settings, logger);
         });
     }
 }

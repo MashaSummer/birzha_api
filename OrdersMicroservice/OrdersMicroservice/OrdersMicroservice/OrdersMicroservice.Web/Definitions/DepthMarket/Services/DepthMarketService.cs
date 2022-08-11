@@ -1,14 +1,19 @@
-﻿namespace OrdersMicroservice.Definitions.DepthMarket
+﻿using OrdersMicroservice.Definitions.DepthMarket.Repository;
+using OrdersMicroservice.Definitions.Mongodb.Models;
+using OrdersMicroservice.Domain.DbBase;
+
+namespace OrdersMicroservice.Definitions.DepthMarket
 {
-    public class DepthMarketService : IDepthMarketService
+    public class DepthMarketService
     {
-        private readonly IAskMarketRepository _askMarketRepository;
-        private readonly IOrdersRepository _ordersRepository;
-        private readonly IBidMarketRepository _bidMarketRepository;
+        private readonly AskMarketRepository _askMarketRepository;
+
+        private readonly OrdersRepository _ordersRepository;
+        private readonly BidMarketRepository _bidMarketRepository;
         public DepthMarketService(
-            IAskMarketRepository askMarketRepository,
-            IOrdersRepository ordersRepository,
-            IBidMarketRepository bidMarketRepository
+            AskMarketRepository askMarketRepository,
+            BidMarketRepository bidMarketRepository,
+            OrdersRepository ordersRepository
             )
         {
             _askMarketRepository = askMarketRepository;

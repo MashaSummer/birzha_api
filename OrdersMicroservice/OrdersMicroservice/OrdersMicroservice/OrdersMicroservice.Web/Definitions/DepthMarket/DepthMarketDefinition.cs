@@ -1,7 +1,5 @@
-﻿using Orders;
-using OrdersMicroservice.Definitions.Base;
-using OrdersMicroservice.Domain.IServices;
-using OrdersMicroservice.Web.Definitions.DepthMarket.Services;
+﻿using OrdersMicroservice.Definitions.Base;
+
 
 namespace OrdersMicroservice.Definitions.DepthMarket
 {
@@ -9,7 +7,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
     {
         public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IDepthMarketService, DepthMarketService>();
+            services.AddSingleton<DepthMarketService>();
             
         }
     }
