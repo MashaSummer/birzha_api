@@ -28,8 +28,8 @@ message GetAllProductsResponse {
 }
 
 message ChangePortfolioRequest {
-  string id = 1;
-  string name = 2;
+  string investor_id = 1;
+  string product_name = 2;
   int32 volume = 3;
   int32 start_price = 4;
 }

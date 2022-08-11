@@ -61,7 +61,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
 
     public override async Task<ChangePortfolioResponse> AddProduct(ChangePortfolioRequest request, ServerCallContext context)
     {
-        var productFromDb = await _repository.Contains(p => p.Name == request.Name);
+        var productFromDb = await _repository.Contains(p => p.Name == request.ProductName);
 
         if (productFromDb.Ok && productFromDb.Result)
         {
@@ -93,7 +93,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
 
         await _eventProducer.ProduceAsync(null, new ProductCreatedEvent()
         {
-            InvestorId = request.Id,
+            InvestorId = request.InvestorId,
             ProductId = productModel.Id,
             StartPrice = request.StartPrice,
             Volume = request.Volume
