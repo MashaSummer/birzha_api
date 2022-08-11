@@ -22,6 +22,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
         }
         public async Task ProcessOrderAsync(string orderId)
         {
+            
             var order = await _ordersRepository.GetByIdAsync(orderId);
 
             if (order.OrderType is OrderTypes.Ask)
@@ -42,7 +43,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                             Volume = order.Volume,
                             Price = order.Price,
                             OnlyFullExecution = order.OnlyFullExecution,
-                            SubmissionTime = order.SubmissionTime
+                            SubmissionTime = order.SubmittionTime
                         };
                         await _askMarketRepository.CreateNewAsync(marketModel);
                     }
@@ -101,7 +102,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                             Volume = order.Volume,
                             Price = order.Price,
                             OnlyFullExecution = order.OnlyFullExecution,
-                            SubmissionTime = order.SubmissionTime
+                            SubmissionTime = order.SubmittionTime
                         };
                         await _askMarketRepository.CreateNewAsync(marketModel);
                     }
@@ -149,7 +150,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                                 Volume = orderVolume,
                                 Price = order.Price,
                                 OnlyFullExecution = order.OnlyFullExecution,
-                                SubmissionTime = order.SubmissionTime
+                                SubmissionTime = order.SubmittionTime
                             };
                             await _askMarketRepository.CreateNewAsync(marketModel);
                         }
@@ -174,7 +175,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                             Volume = order.Volume,
                             Price = order.Price,
                             OnlyFullExecution = order.OnlyFullExecution,
-                            SubmissionTime = order.SubmissionTime
+                            SubmissionTime = order.SubmittionTime
                         };
                         await _bidMarketRepository.CreateNewAsync(marketModel);
                     }
@@ -233,7 +234,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                             Volume = order.Volume,
                             Price = order.Price,
                             OnlyFullExecution = order.OnlyFullExecution,
-                            SubmissionTime = order.SubmissionTime
+                            SubmissionTime = order.SubmittionTime
                         };
                         await _bidMarketRepository.CreateNewAsync(marketModel);
                     }
@@ -281,7 +282,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
                                 Volume = orderVolume,
                                 Price = order.Price,
                                 OnlyFullExecution = order.OnlyFullExecution,
-                                SubmissionTime = order.SubmissionTime
+                                SubmissionTime = order.SubmittionTime
                             };
                             await _bidMarketRepository.CreateNewAsync(marketModel);
                         }

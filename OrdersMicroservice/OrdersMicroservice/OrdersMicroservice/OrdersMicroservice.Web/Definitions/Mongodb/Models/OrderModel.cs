@@ -46,12 +46,12 @@ public class OrderModel : IMongoModel
     [BsonElement("only_full_execution")]
     public bool OnlyFullExecution { get; set; }
 
-    [BsonElement("limit_time")]
+    [BsonElement("deadline")]
 
-    public DateTime LimitTime { get; set; }
+    public DateTime Deadline { get; set; }
 
     [BsonElement("submittion_time")]
-    public DateTime SubmissionTime { get; set; }
+    public DateTime SubmittionTime { get; set; }
 
 
     [BsonElement("status")]

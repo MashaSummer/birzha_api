@@ -45,8 +45,10 @@ message Order {
   bool only_full_execution = 5;
 
   DateTime deadline = 6;
+  
+  DateTime submittion_time = 7;
 
-  string investor_id = 7;
+  string investor_id = 8;
 }
 
 message CreateOrderRequest {
