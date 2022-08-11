@@ -6,7 +6,7 @@ using TransactionMicroservice.Definitions.Mongodb.Models;
 using TransactionMicroservice.Domain.DbBase;
 using TransactionMicroservice.Domain.EventsBase;
 using TransactionMicroservice.EventsBase;
-using Transactions;
+using TransactionsEvent;
 
 namespace TransactionMicroservice.Definitions.Kafka.Handlers;
 
@@ -14,10 +14,11 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
 {
     private readonly IRepository<TransactionModel> _repository;
     private readonly IMapper _mapper;
-    private readonly IEventProducer<Null, TransactionEvent> _eventProducer;
+    private readonly IEventProducer<Null, TransactionCreatedEvent> _eventProducer;
     private readonly ILogger<CandidatesHandler> _logger;
 
-    public CandidatesHandler(IRepository<TransactionModel> repository, IMapper mapper, IEventProducer<Null, TransactionEvent> eventProducer, ILogger<CandidatesHandler> logger)
+    public CandidatesHandler(IRepository<TransactionModel> repository, IMapper mapper,
+        IEventProducer<Null, TransactionCreatedEvent> eventProducer, ILogger<CandidatesHandler> logger)
     {
         _repository = repository;
         _mapper = mapper;
@@ -47,9 +48,13 @@ public class CandidatesHandler : IEventHandler<Null, CandidatesFoundEvent>
             return result;
         }
 
-        var transaction = _mapper.Map<TransactionEvent>(transactionModel);
+        var transactionEvent = new TransactionCreatedEvent()
+        {
+            AskOrder = message.Value.AskCandidate,
+            BidOrder = message.Value.BidCandidate
+        };
 
-        var produceResult = await _eventProducer.ProduceAsync(null, transaction);
+        var produceResult = await _eventProducer.ProduceAsync(null, transactionEvent);
 
 
         if (!produceResult.Ok)

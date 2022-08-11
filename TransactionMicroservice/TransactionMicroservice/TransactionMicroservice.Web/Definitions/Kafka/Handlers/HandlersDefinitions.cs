@@ -1,5 +1,4 @@
 using Confluent.Kafka;
-using GrpcServices;
 using OrdersEvent;
 using TransactionMicroservice.Definitions.Base;
 using TransactionMicroservice.Domain.EventsBase;
