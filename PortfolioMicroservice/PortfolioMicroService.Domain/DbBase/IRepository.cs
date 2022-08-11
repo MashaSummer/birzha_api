@@ -1,19 +1,26 @@
 ﻿using Calabonga.OperationResults;
 
-namespace PortfolioMicroService.Domain.DbBase;
+namespace LightMicroserviceModule.Domain.DbBase;
 
 public interface IRepository<T>
 {
+    Task<OperationResult<IEnumerable<T>>> GetAllAsync();
 
-    Task<OperationResult<T>> GetUserByIdAsync(string id);
+    Task<OperationResult<T>> GetByIdAsync(string id);
 
-    Task<OperationResult<T>> TryFrozeByIdAsync(string id, string asset_id, int volume);
+    Task<OperationResult<T>> Get(Func<T, bool> predicate);
 
-    Task<OperationResult<T>> TryUnFrozeByIdAsync(string id, string asset_id, int volume);
+    Task<OperationResult<long>> UpdateAsync(T entity);
 
-    Task<OperationResult<long>> UpdateAsync(string id, string asset_id, int volume);
+    Task<OperationResult<long>> UpdateAsync(params T[] entities);
 
-    Task<OperationResult<T>> AddUserAsync(string id);
+    Task<OperationResult<string>> AddAsync(T entity);
 
-    Task<OperationResult<T>> AddAssetAsync(string id, string new_asset_id, int volume);
+    Task<OperationResult<string[]>> AddAsync(params T[] entities);
+
+    Task<OperationResult<bool>> DeleteAsync(T entity);
+
+    Task<OperationResult<long>> DeleteAsync(params T[] entities);
+
+    Task<OperationResult<long>> DeleteAsync(Func<T, bool> predicate);
 }
