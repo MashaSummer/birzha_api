@@ -63,11 +63,11 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
 
         var assetsArray = responsePortfolio.Result.AssetArray.Assets;
         var productsArray = responseProduct.Result.ProductArray.Products;
-        GetPortfolioResponse portfolioResponse = new GetPortfolioResponse();
+        GetPortfolioResponse portfolio = new GetPortfolioResponse();
         try
         {
-            var portfolio = PortfolioAggregator.AggregateProducts(portfolioResponse, assetsArray, productsArray).Portfolio.Products;
-            result.Result = PortfolioAggregator.AggregateTotal(portfolioResponse, portfolio);
+            var productsInPortfolio = PortfolioAggregator.AggregateProducts(portfolio, assetsArray, productsArray).Portfolio.Products;
+            result.Result = PortfolioAggregator.AggregateTotal(portfolio, productsInPortfolio);
             if (result.Result == null)
             {
                 result.AddError(new Exception("Failed to request"));
