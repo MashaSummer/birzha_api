@@ -33,10 +33,10 @@ public class OrderModel : IMongoModel
 
     [BsonElement("product_id")] public string ProductId { get; set; } = null!;
 
-    [BsonElement("volume")] public double Volume;
+    [BsonElement("volume")] public int Volume;
 
     [BsonElement("price")]
-    public double Price;
+    public int Price;
 
     [BsonElement("investor_id")] public string InvestorId = null!;
     
