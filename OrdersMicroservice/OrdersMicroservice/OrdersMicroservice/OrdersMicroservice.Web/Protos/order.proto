@@ -38,9 +38,9 @@ message Order {
 
   string product_id = 2;
 
-  double volume = 3;
+  int32 volume = 3;
 
-  double price = 4;
+  int32 price = 4;
 
   bool only_full_execution = 5;
 
