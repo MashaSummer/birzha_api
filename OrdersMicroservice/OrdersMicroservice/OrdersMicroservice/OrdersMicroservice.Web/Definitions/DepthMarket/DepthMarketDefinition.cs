@@ -1,5 +1,5 @@
 ﻿using OrdersMicroservice.Definitions.Base;
-
+using OrdersMicroservice.Definitions.DepthMarket.Services;
 
 namespace OrdersMicroservice.Definitions.DepthMarket
 {
@@ -8,6 +8,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket
         public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<DepthMarketService>();
+            services.AddSingleton<DepthMarketSearchService>();
             
         }
     }

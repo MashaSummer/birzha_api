@@ -9,19 +9,11 @@ service OrdersService {
 }
 
 enum OrderType {
-  ASC = 0;
+  ASK = 0;
   BID = 1;
 }
 
-message DateTime {
 
-  int32 second = 1;
-  int32 minute = 2;
-  int32 hour = 3;
-  int32 day = 4;
-  int32 month = 5;
-  int32 year = 6;
-}
 
 message Success {
   string success_text = 1;
@@ -44,11 +36,11 @@ message Order {
 
   bool only_full_execution = 5;
 
-  DateTime deadline = 6;
+  google.protobuf.Timestamp deadline = 6;
   
-  DateTime submittion_time = 7;
+  google.protobuf.Timestamp submittion_time = 7;
 
-  string investor_id = 8;
+  string investor_id = 8;   
 }
 
 message CreateOrderRequest {
