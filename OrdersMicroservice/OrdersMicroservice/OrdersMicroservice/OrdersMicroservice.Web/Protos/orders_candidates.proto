@@ -4,9 +4,14 @@ option csharp_namespace = "OrdersEvent";
 
 package orders_candidates;
 
+message Candidate {
+  string order_id = 1;
+  int32 volume = 2;
+}
+
 message CandidatesFoundEvent {
 
-  string ask_order_id = 1;
+  Candidate ask_candidate = 1;
 
-  string bid_order_id = 2;
+  Candidate bid_candidate = 2;
 }
