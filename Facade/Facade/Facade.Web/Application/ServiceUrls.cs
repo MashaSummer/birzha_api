@@ -6,5 +6,6 @@
         public string ProductService { get; set; }
         
         public string BalanceService { get; set; }
+        public string PortfolioService { get; set; }
     }
 }
