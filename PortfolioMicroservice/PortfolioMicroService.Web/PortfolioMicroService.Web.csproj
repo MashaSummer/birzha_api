@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Protos\KafkaProductAddProto.proto" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
@@ -27,6 +31,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Protobuf Include="Protos\KafkaProductAddProto.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\portfolio.proto" GrpcServices="Server" />
     </ItemGroup>
     
@@ -34,6 +39,11 @@
     <ItemGroup>
       <ProjectReference Include="..\PortfolioMicroService.Domain\PortfolioMicroService.Domain.csproj" />
       <ProjectReference Include="..\PortfolioMicroService.Infrastructure\PortfolioMicroService.Infrastructure.csproj" />
+    </ItemGroup>
+    
+    
+    <ItemGroup>
+      <Folder Include="Definitions\Kafka\Models\" />
     </ItemGroup>
 
 </Project>

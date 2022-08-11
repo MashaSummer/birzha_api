@@ -1,5 +1,4 @@
 using Grpc.Core;
-using GrpcServices;
 using AutoMapper;
 using Calabonga.OperationResults;
 using PortfolioMicroService.Definitions.Mongodb.Models;
