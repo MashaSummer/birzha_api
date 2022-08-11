@@ -1,6 +1,6 @@
 ﻿using Calabonga.OperationResults;
 
-namespace LightMicroserviceModule.Domain.DbBase;
+namespace PortfolioMicroservice.Domain.DbBase;
 
 public interface IRepository<T>
 {

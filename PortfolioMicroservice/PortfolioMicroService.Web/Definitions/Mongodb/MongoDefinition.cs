@@ -2,9 +2,10 @@ using AutoMapper;
 using PortfolioMicroService.Definitions.Base;
 using PortfolioMicroService.Definitions.Mongodb.Models;
 using PortfolioMicroService.Definitions.Mongodb.ViewModels;
-using PortfolioMicroService.Domain.DbBase;
 using PortfolioMicroService.Infrastructure.Mongodb;
 using MongoDB.Driver;
+using PortfolioMicroservice.Domain.DbBase;
+using PortfolioMicroserviceModule.Infrastructure.Mongodb;
 
 namespace PortfolioMicroService.Definitions.Mongodb;
 

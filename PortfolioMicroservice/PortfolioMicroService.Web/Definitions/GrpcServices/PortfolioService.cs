@@ -3,7 +3,8 @@ using GrpcServices;
 using AutoMapper;
 using Calabonga.OperationResults;
 using PortfolioMicroService.Definitions.Mongodb.Models;
-using PortfolioMicroService.Domain.DbBase;
+using PortfolioMicroservice.Domain.DbBase;
+
 namespace PortfolioMicroService.Definitions.GrpcServices;
 
 public class PortfolioServices : PortfolioService.PortfolioServiceBase

@@ -18,11 +18,11 @@ public class KafkaDefinition : AppDefinition
 
         var producerConfig = configuration.GetSection("Kafka:ProducerConfig").Get<KafkaProducerConfig>();
 
-        services.AddKafkaProducer<Null, EventPersonModel>(producerConfig);
+        //services.AddKafkaProducer<Null, EventPersonModel>(producerConfig);
 
         var consumerConfig = configuration.GetSection("Kafka:ConsumerConfig").Get<KafkaConsumerConfig>();
 
-        services.AddKafkaConsumer<Null, EventPersonModel>(consumerConfig);
+        //services.AddKafkaConsumer<Null, EventPersonModel>(consumerConfig);
     }
 
 

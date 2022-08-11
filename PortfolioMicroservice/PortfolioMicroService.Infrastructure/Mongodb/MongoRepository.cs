@@ -1,10 +1,11 @@
 ﻿using Calabonga.OperationResults;
-using LightMicroserviceModule.Domain.DbBase;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using PortfolioMicroService.Infrastructure.Mongodb;
+using PortfolioMicroservice.Domain.DbBase;
 
-namespace LightMicroserviceModule.Infrastructure.Mongodb;
+namespace PortfolioMicroserviceModule.Infrastructure.Mongodb;
 
 public class MongoRepository<T> : IRepository<T> where T : IMongoModel
 {
