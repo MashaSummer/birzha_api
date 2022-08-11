@@ -9,14 +9,8 @@ namespace OrdersMicroservice.Definitions.DepthMarket
     {
         public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<DepthMarketService>();
-            //services.AddGrpc();
-        }
-
-        public override void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
-        {/*
-            app.UseRouting();
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<OrdersService>());*/
+            services.AddTransient<IDepthMarketService, DepthMarketService>();
+            
         }
     }
 }

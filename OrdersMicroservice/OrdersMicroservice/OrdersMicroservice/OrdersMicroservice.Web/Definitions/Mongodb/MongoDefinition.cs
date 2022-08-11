@@ -4,6 +4,7 @@ using OrdersMicroservice.Definitions.Mongodb.Models;
 using OrdersMicroservice.Infrastructure.Mongodb;
 using MongoDB.Driver;
 using OrdersMicroservice.Domain.DbBase;
+using OrdersMicroservice.Definitions.DepthMarket.Repository;
 
 namespace OrdersMicroservice.Definitions.Mongodb;
 
@@ -26,6 +27,30 @@ public class MongoDefinition : AppDefinition
             };
             var logger = provider.GetRequiredService<ILogger<MongoRepository<OrderModel>>>();
             return new MongoRepository<OrderModel>(client, settings, logger);
+        });
+        services.AddSingleton<AskMarketRepository>(provider =>
+        {
+            var client = provider.GetRequiredService<IMongoClient>();
+            var settings = new MongodbSettings()
+            {
+                ConnectionString = connectionString,
+                CollectionName = configuration["Asks:Collection"],
+                DbName = configuration["Asks:Database"]
+            };
+            var logger = provider.GetRequiredService<ILogger<AskMarketRepository>>();
+            return new AskMarketRepository(client, settings, logger);
+        });
+        services.AddSingleton<BidMarketRepository>(provider =>
+        {
+            var client = provider.GetRequiredService<IMongoClient>();
+            var settings = new MongodbSettings()
+            {
+                ConnectionString = connectionString,
+                CollectionName = configuration["Asks:Collection"],
+                DbName = configuration["Asks:Database"]
+            };
+            var logger = provider.GetRequiredService<ILogger<BidMarketRepository>>();
+            return new BidMarketRepository(client, settings, logger);
         });
     }
 }
