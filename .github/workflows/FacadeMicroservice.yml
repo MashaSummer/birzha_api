@@ -1,19 +1,19 @@
-name: AuthMicroservice-test-and-deploy
+name: Facade-test-and-deploy
 env:
   SERVER: "84.38.185.78"
   PORT: "22"
   USER: "root"
-  MICROSERVICE_NAME: "AuthMicroservice"
-  MICROSERVICE_TAG: "auth"
-  DOCKERFILE: "auth_dockerfile"
-  TEST_WORK_DIR: "AuthMicroservice/AuthMicroservice.Web"
-
+  MICROSERVICE_NAME: "Facade"
+  MICROSERVICE_TAG: "facade"
+  DOCKERFILE: "facade_dockerfile"
+  TEST_WORK_DIR: "Facade/Facade/Facade.Web"
+  
   
 on:
   push:
     paths: 
-      - "AuthMicroservice/**"
-      - ".github/workflows/AuthMicroservice.yaml"
+      - "Facade/**"
+      - ".github/workflows/Facade.yaml"
 
 jobs:
   build-and-test-app:
@@ -86,11 +86,11 @@ jobs:
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.5.0
         with:
-          playbook: ansiblefiles/auth_playbook.yaml
+          playbook: ansiblefiles/facade_playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           options: | 
             -vv
             --inventory ansiblefiles/hosts.ini
             -e "microservice_name_image=${{ env.MICROSERVICE_TAG }} sha=${{ github.sha }} dockerfile=${{ env.DOCKERFILE }} microservice_name=${{ env.MICROSERVICE_NAME }}"
-            
-   
+       
+      
