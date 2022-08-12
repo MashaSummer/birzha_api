@@ -4,6 +4,8 @@ option csharp_namespace = "Orders";
 
 package orders;
 
+import "google/protobuf/timestamp.proto";
+
 service OrdersService {
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
 }
@@ -38,7 +40,7 @@ message Order {
 
   google.protobuf.Timestamp deadline = 6;
   
-  google.protobuf.Timestamp submittion_time = 7;
+  google.protobuf.Timestamp submission_time = 7;
 
   string investor_id = 8;   
 }

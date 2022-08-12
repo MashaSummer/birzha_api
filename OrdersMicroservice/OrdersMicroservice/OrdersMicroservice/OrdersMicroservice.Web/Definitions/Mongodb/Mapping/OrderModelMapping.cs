@@ -13,7 +13,8 @@ public class OrderModelMapping : Profile
             .ForMember(d => d.Id, s => s.Ignore())
             .ForMember(d => d.OrderType,
                 s => s.MapFrom(x => x.Type == OrderType.Ask ? OrderTypes.Ask : OrderTypes.Bid))
-            .ForMember(d => d.Deadline, s => s.MapFrom(x => x.Deadline.)) // без хуйни, плиз!
-            .ForMember(d => d.Status, s => s.Ignore());
+            .ForMember(d => d.Deadline, s => s.MapFrom(x => x.Deadline.ToDateTime()))
+            .ForMember(d => d.Status, s => s.Ignore())
+            .ForMember(d => d.SubmissionTime, s => s.Ignore());
     }
 }

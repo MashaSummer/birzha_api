@@ -31,17 +31,15 @@ public class OrderModel : IMongoModel
     [BsonElement("type")]
     public OrderTypes OrderType { get; set; }
 
-    [BsonElement("product_id")]
-    public string ProductId { get; set; } = null!;
+    [BsonElement("product_id")] public string ProductId { get; set; } = null!;
 
     [BsonElement("volume")]
-    public double Volume { get; set; }
+    public int Volume { get; set; }
 
     [BsonElement("price")]
-    public double Price { get; set; }
+    public int Price { get; set; }
 
-    [BsonElement("investor_id")]
-    public string InvestorId { get; set; } = null!;
+    [BsonElement("investor_id")] public string InvestorId { get; set; } = null!;
 
     [BsonElement("only_full_execution")]
     public bool OnlyFullExecution { get; set; }
@@ -50,8 +48,8 @@ public class OrderModel : IMongoModel
 
     public DateTime Deadline { get; set; }
 
-    [BsonElement("submittion_time")]
-    public DateTime SubmittionTime { get; set; }
+    [BsonElement("submission_time")]
+    public DateTime SubmissionTime { get; set; }
 
 
     [BsonElement("status")]

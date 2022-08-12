@@ -52,15 +52,20 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
         if (messageValue.AskOrder.Volume < messageValue.BidOrder.Volume)
         {
             askOrder.Status = OrderStatus.Executed;
+            await _repository.UpdateAsync(askOrder);
         }
         else if (messageValue.AskOrder.Volume > messageValue.BidOrder.Volume)
         {
             bidOrder.Status = OrderStatus.Executed;
+            await _repository.UpdateAsync(bidOrder);
         }
         else
         {
             askOrder.Status = OrderStatus.Executed;
             bidOrder.Status = OrderStatus.Executed;
+            
+            await _repository.UpdateAsync(askOrder);
+            await _repository.UpdateAsync(bidOrder);
         }
 
         await _eventProducer.ProduceAsync(null, new OrderExecuteEvent()
@@ -68,7 +73,8 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
             AskInvestorId = askOrder.InvestorId,
             BidInvestorId = bidOrder.InvestorId,
             Price = askOrder.Price,
-            Volume = askOrder.Volume
+            Volume = askOrder.Volume,
+            ProductId = askOrder.ProductId
         });
 
         return result;

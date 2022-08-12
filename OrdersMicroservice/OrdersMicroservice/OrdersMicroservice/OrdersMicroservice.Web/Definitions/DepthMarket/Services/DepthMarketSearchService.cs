@@ -11,9 +11,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
                 if (listItem.OnlyFullExecution)
                 {
                     if (model.Volume == listItem.Volume)
-                    {
                         return listItem;
-                    }
                     continue;
                 }
                 if (listItem.Volume >= model.Volume)
@@ -51,6 +49,5 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
             }
             return candidatesList;
         }
-
     }
 }

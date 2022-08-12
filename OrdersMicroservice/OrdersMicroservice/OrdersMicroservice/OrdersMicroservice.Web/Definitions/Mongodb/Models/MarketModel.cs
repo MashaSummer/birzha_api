@@ -18,10 +18,10 @@ namespace OrdersMicroservice.Definitions.Mongodb.Models
         public string OrderId { get; set; } = null!;
 
         [BsonElement("volume")]
-        public double Volume { get; set; }
+        public int Volume { get; set; }
 
         [BsonElement("price")]
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         [BsonElement("only_full_execution")]
         public bool OnlyFullExecution { get; set; }

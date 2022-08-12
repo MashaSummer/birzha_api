@@ -1,11 +1,11 @@
 ﻿using Calabonga.OperationResults;
 using Confluent.Kafka;
 using OrdersEvent;
+using OrdersMicroservice.Definitions.DepthMarket;
+using OrdersMicroservice.Definitions.DepthMarket.Services;
 using OrdersMicroservice.Definitions.Mongodb.Models;
 using OrdersMicroservice.Domain.DbBase;
 using OrdersMicroservice.Domain.EventsBase;
-using OrdersMicroservice.Domain.IServices;
-using OrdersMicroservice.Web.Definitions.DepthMarket.Services;
 
 namespace OrdersMicroservice.Definitions.Kafka.Handlers;
 

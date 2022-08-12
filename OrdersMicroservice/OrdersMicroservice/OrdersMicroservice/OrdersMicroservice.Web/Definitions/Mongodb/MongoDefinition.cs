@@ -45,8 +45,8 @@ public class MongoDefinition : AppDefinition
             var settings = new MongodbSettings()
             {
                 ConnectionString = connectionString,
-                CollectionName = configuration["Asks:Collection"],
-                DbName = configuration["Asks:Database"]
+                CollectionName = configuration["Bids:Collection"],
+                DbName = configuration["Bids:Database"]
             };
             var logger = provider.GetRequiredService<ILogger<BidMarketRepository>>();
             return new BidMarketRepository(client, settings, logger);
@@ -57,8 +57,8 @@ public class MongoDefinition : AppDefinition
             var settings = new MongodbSettings()
             {
                 ConnectionString = connectionString,
-                CollectionName = configuration["Asks:Collection"],
-                DbName = configuration["Asks:Database"]
+                CollectionName = configuration["Orders:Collection"],
+                DbName = configuration["Orders:Database"]
             };
             var logger = provider.GetRequiredService<ILogger<OrdersRepository>>();
             return new OrdersRepository(client, settings, logger);
