@@ -7,27 +7,29 @@ using PortfolioMicroService.Definitions.Mongodb.Models;
 
 namespace PortfolioMicroService.Definitions.Kafka.Handlers
 {
-    public class AddUserHandler : IEventHandler<Null, ProductAddEvent>
+    public class AuthRegisterHandler : IEventHandler<Null, UserRegisterEvent>
     {
         private readonly IRepository<UserModel> _repository;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public AddUserHandler(IRepository<UserModel> repository, IMapper mapper, ILogger<AddUserHandler> logger)
+        public AuthRegisterHandler(IRepository<UserModel> repository, IMapper mapper, ILogger<AuthRegisterHandler> logger)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
         }
 
-        public void Process(Message<Null, ProductAddEvent> message)
+        public void Process(Message<Null, UserRegisterEvent> message)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult<bool>> ProcessAsync(Message<Null, ProductAddEvent> message)
+        public async Task<OperationResult<bool>> ProcessAsync(Message<Null, UserRegisterEvent> message)
         {
-            throw new NotImplementedException();
+            await _repository.AddAsync(new UserModel() { Id = message.Value.InvestorId});
+
+            return new OperationResult<bool>() { Result = true };
         }
     }
 }

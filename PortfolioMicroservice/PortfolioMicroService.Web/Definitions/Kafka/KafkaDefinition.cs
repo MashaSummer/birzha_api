@@ -19,6 +19,10 @@ public class KafkaDefinition : AppDefinition
         var consumerConfigProductAdd = configuration.GetSection("Kafka:ConsumerConfigProductAdd").Get<KafkaConsumerConfig>();
         services.AddKafkaConsumer<Null, ProductAddEvent>(consumerConfigProductAdd);
 
+        var consumerConfigAuthRegister = configuration.GetSection("Kafka:ConsumerConfigAuthRegister").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, UserRegisterEvent>(consumerConfigAuthRegister);
 
+        var consumerConfigOrdersExecuted = configuration.GetSection("Kafka:ConsumerConfigOrdersExecuted").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, OrderExecuteEvent>(consumerConfigOrdersExecuted);
     }
 }

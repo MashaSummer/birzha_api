@@ -8,7 +8,9 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
     {
         public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IEventHandler<Null, ProductAddEvent>, AddUserHandler>();
+            services.AddTransient<IEventHandler<Null, ProductAddEvent>, AddProductHandler>();
+            services.AddTransient<IEventHandler<Null, UserRegisterEvent>, AuthRegisterHandler>();
+            services.AddTransient<IEventHandler<Null, OrderExecuteEvent>, OrdersExecuteHandler>();
         }
     }
 }
