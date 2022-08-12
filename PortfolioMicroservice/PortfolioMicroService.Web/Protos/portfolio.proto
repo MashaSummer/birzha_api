@@ -15,6 +15,7 @@ message AssetArray {
     string id = 1;
     int32 volume_active = 2;
     int32 volume_frozen = 3;
+    double start_price = 4;
   }
   repeated Asset assets = 1;
 }
