@@ -14,11 +14,14 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
 {
     private readonly IRepository<OrderModel> _repository;
     private readonly IEventProducer<Null, OrderExecuteEvent> _eventProducer;
+    private readonly ILogger<TransactionHandler> _logger;
 
-    public TransactionHandler(IRepository<OrderModel> repository, IEventProducer<Null, OrderExecuteEvent> eventProducer)
+    public TransactionHandler(IRepository<OrderModel> repository, IEventProducer<Null, OrderExecuteEvent> eventProducer,
+        ILogger<TransactionHandler> logger)
     {
         _repository = repository;
         _eventProducer = eventProducer;
+        _logger = logger;
     }
 
     public void Process(Message<Null, TransactionCreatedEvent> message)
@@ -53,11 +56,13 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
         {
             askOrder.Status = OrderStatus.Executed;
             await _repository.UpdateAsync(askOrder);
+            _logger.LogInformation($"Change order {askOrder.Id} status to Executed");
         }
         else if (messageValue.AskOrder.Volume > messageValue.BidOrder.Volume)
         {
             bidOrder.Status = OrderStatus.Executed;
             await _repository.UpdateAsync(bidOrder);
+            _logger.LogInformation($"Change order {bidOrder.Id} status to Executed");
         }
         else
         {
@@ -66,6 +71,9 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
             
             await _repository.UpdateAsync(askOrder);
             await _repository.UpdateAsync(bidOrder);
+            
+            _logger.LogInformation($"Change order {askOrder.Id} status to Executed");
+            _logger.LogInformation($"Change order {bidOrder.Id} status to Executed");
         }
 
         await _eventProducer.ProduceAsync(null, new OrderExecuteEvent()

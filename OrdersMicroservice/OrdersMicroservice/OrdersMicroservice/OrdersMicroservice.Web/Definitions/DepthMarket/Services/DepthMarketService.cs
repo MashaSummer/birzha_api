@@ -66,6 +66,10 @@ public class DepthMarketService
                     matchedOrder.Status = OrderStatus.Executing;
                     order.Status = OrderStatus.Executing;
                     
+                    await _ordersRepository.UpdateAsync(matchedOrder);
+                    await _ordersRepository.UpdateAsync(order);
+                    await _bidMarketRepository.DeleteAsync(matchedMarketModel.Id);
+                    
                     await _eventProducer.ProduceAsync(null, new CandidatesFoundEvent()
                     {
                         AskCandidate = new Candidate()
@@ -81,9 +85,6 @@ public class DepthMarketService
                         }
                     });
 
-                    await _ordersRepository.UpdateAsync(matchedOrder);
-                    await _ordersRepository.UpdateAsync(order);
-                    await _bidMarketRepository.DeleteAsync(matchedMarketModel.Id);
                 }
                 else
                 {
@@ -118,6 +119,10 @@ public class DepthMarketService
                         matchedOrder.Status = OrderStatus.Executing;
                         order.Status = OrderStatus.Executing;
                         
+                        await _ordersRepository.UpdateAsync(matchedOrder);
+                        await _ordersRepository.UpdateAsync(order);
+                        await _bidMarketRepository.DeleteAsync(matchedMarketModel.Id);
+                        
                         await _eventProducer.ProduceAsync(null, new CandidatesFoundEvent()
                         {
                             AskCandidate = new Candidate()
@@ -133,9 +138,6 @@ public class DepthMarketService
                             }
                         });
 
-                        await _ordersRepository.UpdateAsync(matchedOrder);
-                        await _ordersRepository.UpdateAsync(order);
-                        await _bidMarketRepository.DeleteAsync(matchedMarketModel.Id);
                     }
                 }
             }
@@ -245,6 +247,10 @@ public class DepthMarketService
                     matchedOrder.Status = OrderStatus.Executing;
                     order.Status = OrderStatus.Executing;
                     
+                    await _ordersRepository.UpdateAsync(matchedOrder);
+                    await _ordersRepository.UpdateAsync(order);
+                    await _askMarketRepository.DeleteAsync(matchedMarketModel.Id);
+                    
                     await _eventProducer.ProduceAsync(null, new CandidatesFoundEvent()
                     {
                         BidCandidate = new Candidate()
@@ -259,10 +265,6 @@ public class DepthMarketService
                             Volume = matchedOrder.Volume
                         }
                     });
-
-                    await _ordersRepository.UpdateAsync(matchedOrder);
-                    await _ordersRepository.UpdateAsync(order);
-                    await _askMarketRepository.DeleteAsync(matchedMarketModel.Id);
                 }
                 else
                 {
@@ -296,6 +298,10 @@ public class DepthMarketService
                         matchedOrder.Status = OrderStatus.Executing;
                         order.Status = OrderStatus.Executing;
                         
+                        await _ordersRepository.UpdateAsync(matchedOrder);
+                        await _ordersRepository.UpdateAsync(order);
+                        await _askMarketRepository.DeleteAsync(matchedMarketModel.Id);
+                        
                         await _eventProducer.ProduceAsync(null, new CandidatesFoundEvent()
                         {
                             BidCandidate = new Candidate()
@@ -311,9 +317,6 @@ public class DepthMarketService
                             }
                         });
 
-                        await _ordersRepository.UpdateAsync(matchedOrder);
-                        await _ordersRepository.UpdateAsync(order);
-                        await _askMarketRepository.DeleteAsync(matchedMarketModel.Id);
                     }
                 }
             }

@@ -5,6 +5,7 @@ using OrdersMicroservice.Definitions.Kafka.Handlers;
 using OrdersMicroservice.Definitions.Kafka.Models;
 using OrdersMicroservice.EventsBase;
 using OrdersMicroservice.Infrastructure.Kafka.Config;
+using TransactionsEvent;
 
 namespace OrdersMicroservice.Definitions.Kafka;
 
@@ -35,5 +36,9 @@ public class KafkaDefinition : AppDefinition
         var ordersValidationConfig =
             configuration.GetSection("Kafka:OrdersValidationConsumer").Get<KafkaConsumerConfig>();
         services.AddKafkaConsumer<Null, OrderValidationEvent>(ordersValidationConfig);
+        
+        // For "Transactions" topic
+        var transactionConfig = configuration.GetSection("Kafka:TransactionsConsumer").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, TransactionCreatedEvent>(transactionConfig);
     }
 }

@@ -41,10 +41,16 @@ public class KafkaConsumer<TKey, TValue> : IHostedService, IDisposable
             result = _consumer.Consume(TimeSpan.FromMilliseconds(1000));
             if (result == null)
                 continue;
+            
+            
+            Console.WriteLine($"On {typeof(TValue).Name} kafka consumer");
 
             Console.WriteLine($"From consumer: message value: {result.Message.Value}");
-            await _handler.ProcessAsync(result.Message);
-            _consumer.Commit(result);
+            var processResult = await _handler.ProcessAsync(result.Message);
+            if (!processResult.Ok)
+                Console.WriteLine($"Error while consumer error: {processResult.Error?.Message}");
+            else
+                _consumer.Commit(result);
         }
 
         if (result == null)
