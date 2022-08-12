@@ -1,9 +1,15 @@
-﻿using OrdersMicroservice.Definitions.Mongodb.Models;
+﻿using OrdersMicroservice.Definitions.DepthMarket.Repository;
+using OrdersMicroservice.Definitions.Mongodb.Models;
 
 namespace OrdersMicroservice.Definitions.DepthMarket.Services
 {
     public class DepthMarketSearchService
     {
+        private readonly AskMarketRepository _askMarketRepository;
+        public DepthMarketSearchService(AskMarketRepository askMarketRepository)
+        {
+            _askMarketRepository = askMarketRepository;
+        }
         public MarketModel FullExecSearch(OrderModel model, List<MarketModel> relevantMarketList)
         {
             foreach (var listItem in relevantMarketList)
@@ -48,6 +54,15 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
                 }
             }
             return candidatesList;
+        }
+        public async Task GetDepthMarketAsync(string productId)
+        {
+
+        }
+        public async Task<bool> HasAskAsync(string productId) 
+        {
+            return (await _askMarketRepository.GetAllAsync())
+                .Any(x => x.ProductId == productId);
         }
     }
 }
