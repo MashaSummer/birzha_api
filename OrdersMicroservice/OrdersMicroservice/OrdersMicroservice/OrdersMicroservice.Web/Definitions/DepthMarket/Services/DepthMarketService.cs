@@ -220,6 +220,7 @@ public class DepthMarketService
                     order.Status = OrderStatus.Active;
                     await _ordersRepository.UpdateAsync(order);
                     var marketModel = _mapper.Map<MarketModel>(order);
+                    marketModel.Volume = orderVolume;
                     await _askMarketRepository.CreateNewAsync(marketModel);
                 }
             }
