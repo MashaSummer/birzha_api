@@ -10,6 +10,6 @@ public class UserModel : IMongoModel
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
-    [BsonElement("Assets")] 
-    public AssetModel[] Asset { get; set; }
+    [BsonElement("Assets")]
+    public AssetModel[]? Asset { get; set; } = null;
 }

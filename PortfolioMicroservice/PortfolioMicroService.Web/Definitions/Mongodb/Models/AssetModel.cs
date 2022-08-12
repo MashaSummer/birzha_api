@@ -10,7 +10,7 @@ public class AssetModel : IMongoModel
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
-    [BsonElement("Start_price")]
+    [BsonElement("start_price")]
     public double StartPrice { get; set; }
 
     [BsonElement("volume_active")] 

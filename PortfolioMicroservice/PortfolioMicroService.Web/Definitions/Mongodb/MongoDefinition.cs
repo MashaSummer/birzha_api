@@ -1,7 +1,6 @@
 using AutoMapper;
 using PortfolioMicroService.Definitions.Base;
 using PortfolioMicroService.Definitions.Mongodb.Models;
-using PortfolioMicroService.Definitions.Mongodb.ViewModels;
 using PortfolioMicroService.Infrastructure.Mongodb;
 using MongoDB.Driver;
 using PortfolioMicroservice.Domain.DbBase;

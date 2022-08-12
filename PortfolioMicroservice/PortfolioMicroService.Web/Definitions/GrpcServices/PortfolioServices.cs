@@ -1,5 +1,4 @@
 using Grpc.Core;
-using GrpcServices;
 using AutoMapper;
 using Calabonga.OperationResults;
 using PortfolioMicroService.Definitions.Mongodb.Models;
@@ -36,11 +35,15 @@ public class PortfolioServices : PortfolioService.PortfolioServiceBase
                 }
             };
         }
-
+        if (getUser.Result.Asset.Length == 0)
+        {
+            return new GetAllAssetsResponse();
+        }
         var response = new GetAllAssetsResponse()
         {
             AssetArray = new AssetArray()
         };
+
         response.AssetArray.Assets.AddRange(getUser.Result.Asset.Select(x => _mapper.Map<AssetArray.Types.Asset>(x)));
         _logger.LogDebug("All ok");
         return response;
