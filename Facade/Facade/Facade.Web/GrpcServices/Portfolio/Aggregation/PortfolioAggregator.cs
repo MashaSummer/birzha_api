@@ -43,11 +43,11 @@ namespace Facade.Web.GrpcServices.Portfolio.Aggregation
         {
             portfolioResponse.Portfolio.Total = new PortfolioServiceGrpc.Portfolio.Types.Total
             {
-                Spent = portfolio.Sum(sp => sp.Spent),
-                Earned = portfolio.Sum(er => er.Earned),
-                Estimate = portfolio.Sum(est => est.Estimate),
-                DeltaAbs = portfolio.Sum(da => da.DeltaAbs),
-                DeltaRel = portfolio.Sum(dr => dr.DeltaRel)
+                Spent = portfolio.Sum(product => product.Spent),
+                Earned = portfolio.Sum(product => product.Earned),
+                Estimate = portfolio.Sum(product => product.Estimate),
+                DeltaAbs = portfolio.Sum(product => product.DeltaAbs),
+                DeltaRel = portfolio.Sum(product => product.DeltaRel)
             };
 
             return portfolioResponse;
