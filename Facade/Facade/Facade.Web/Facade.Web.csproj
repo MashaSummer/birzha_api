@@ -37,15 +37,7 @@
         <ProjectReference Include="..\Facade.Infrastructure\Facade.Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
-
-        <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\Balance.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\BalanceService.proto" GrpcServices="Client" />
-        <Protobuf Include="Protos\PortfolioService.proto" GrpcServices="Both" />
-        <Protobuf Include="Protos\portfolio.proto" GrpcServices="Client" />
-
-        <!--You can not provide GrpcServices parametr (Both - default)-->
-        <Protobuf Include="Protos\product.proto" GrpcServices="Both" /> 
+        <Protobuf Include="Protos\*.proto" /> 
 	  </ItemGroup>
 
 </Project>
