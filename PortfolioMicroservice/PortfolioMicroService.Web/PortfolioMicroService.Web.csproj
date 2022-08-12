@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <None Remove="Protos\KafkaProductAddProto.proto" />
+      <None Remove="Protos\KafkaProductOrderExecuted.proto" />
     </ItemGroup>
 
     <ItemGroup>
@@ -31,6 +32,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Protobuf Include="Protos\KafkaProductOrderExecuted.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\KafkaProductAddProto.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\portfolio.proto" GrpcServices="Server" />
     </ItemGroup>

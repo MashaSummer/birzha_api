@@ -5,12 +5,8 @@ option csharp_namespace = "PortfolioMicroService";
 package KafkaProductAddProto;
 
 message ProductAddEvent{
-	ChangePortfolioRequest request = 1;
-}
-
-message ChangePortfolioRequest {
-  string investor_id = 1;
-  string product_name = 2;
-  double volume = 3;
-  double start_price = 4;
+	string investor_id = 1;
+	string product_id = 2;
+	double volume = 3;
+	double start_price = 4;
 }

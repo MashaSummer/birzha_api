@@ -16,8 +16,9 @@ public class KafkaDefinition : AppDefinition
 
         //services.AddKafkaProducer<Null, /*proto*/>(producerConfig);
 
-        var consumerConfig = configuration.GetSection("Kafka:ConsumerConfig").Get<KafkaConsumerConfig>();
+        var consumerConfigProductAdd = configuration.GetSection("Kafka:ConsumerConfigProductAdd").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, ProductAddEvent>(consumerConfigProductAdd);
 
-        services.AddKafkaConsumer<Null, ChangePortfolioRequest>(consumerConfig);
+
     }
 }

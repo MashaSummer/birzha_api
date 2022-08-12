@@ -12,5 +12,11 @@ public class AssetMapConfiguration : Profile
             .ForMember(x => x.Id, o => o.MapFrom(c => c.Id))
             .ForMember(x => x.VolumeActive, o => o.MapFrom(c => c.VolumeActive))
             .ForMember(x => x.VolumeFrozen, o => o.MapFrom(c => c.VolumeFrozen));
+
+        CreateMap<ProductAddEvent, UserModel>()
+            .ForMember(x => x.Id, o => o.MapFrom(c => c.InvestorId))
+            .ForMember(x => x.Asset[0].Id, o => o.MapFrom(c => c.ProductId))
+            .ForMember(x => x.Asset[0].StartPrice, o => o.MapFrom(c => c.StartPrice))
+            .ForMember(x => x.Asset[0].VolumeActive, o => o.MapFrom(c => c.Volume));
     }
 }
