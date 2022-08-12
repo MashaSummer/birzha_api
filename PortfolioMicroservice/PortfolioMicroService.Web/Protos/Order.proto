@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option csharp_namespace = "Order";
+
+package orders;
+
+import "google/protobuf/timestamp.proto";
+
+service OrdersService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+}
+
+enum OrderType {
+  ASK = 0;
+  BID = 1;
+}
+
+
+
+message Success {
+  string success_text = 1;
+}
+
+message Error {
+
+  string error_text = 1;
+  string stack_trace = 2;
+}
+
+message Order {
+  OrderType type = 1;
+
+  string product_id = 2;
+
+  int32 volume = 3;
+
+  int32 price = 4;
+
+  bool only_full_execution = 5;
+
+  google.protobuf.Timestamp deadline = 6;
+  
+  google.protobuf.Timestamp submission_time = 7;
+
+  string investor_id = 8;   
+}
+
+message CreateOrderRequest {
+  
+  Order order_detail = 1;
+  
+}
+
+message CreateOrderResponse {
+  oneof result {
+    Success success = 1;
+    Error error = 2;
+  }
+}

@@ -24,5 +24,9 @@ public class KafkaDefinition : AppDefinition
 
         var consumerConfigOrdersExecuted = configuration.GetSection("Kafka:ConsumerConfigOrdersExecuted").Get<KafkaConsumerConfig>();
         services.AddKafkaConsumer<Null, OrderExecuteEvent>(consumerConfigOrdersExecuted);
+        var consumerConfigOrdersCreated = configuration.GetSection("Kafka:ConsumerConfigOrdersCreate").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, OrderCreatedEvent>(consumerConfigOrdersCreated);
+        var producerConfigOrdersValidate = configuration.GetSection("Kafka:ProducerConfigOrdersValidate").Get<KafkaProducerConfig>();
+        services.AddKafkaProducer<Null, OrderValidationEvent>(producerConfigOrdersValidate);
     }
 }
