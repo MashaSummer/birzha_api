@@ -12,10 +12,6 @@ public class KafkaDefinition : AppDefinition
         if (!isEnableKafka)
             return;
 
-        //var producerConfig = configuration.GetSection("Kafka:ProducerConfig").Get<KafkaProducerConfig>();
-
-        //services.AddKafkaProducer<Null, /*proto*/>(producerConfig);
-
         var consumerConfigProductAdd = configuration.GetSection("Kafka:ConsumerConfigProductAdd").Get<KafkaConsumerConfig>();
         services.AddKafkaConsumer<Null, ProductAddEvent>(consumerConfigProductAdd);
 

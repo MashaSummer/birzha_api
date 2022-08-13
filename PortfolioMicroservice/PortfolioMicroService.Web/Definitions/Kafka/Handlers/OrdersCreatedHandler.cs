@@ -32,7 +32,12 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
         public async Task<OperationResult<bool>> ProcessAsync(Message<Null, OrderCreatedEvent> message)
         {
             var portfolio = await _repository.GetByIdAsync(message.Value.Order.InvestorId);
-            var Asset = portfolio.Result.Asset.Where(x => x.Id == message.Value.Order.ProductId).First();
+            var index = 0;
+            var Asset = portfolio.Result.Asset.Where((x, _index) =>
+            {
+                index = _index;
+                return x.Id == message.Value.Order.ProductId;                   
+            }).First();
             var producerEvent = new OrderValidationEvent() { OrderId = message.Value.OrderId};
 
 
@@ -47,6 +52,7 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
                 await _repository.UpdateAsync(portfolio.Result);
                 producerEvent.Valid = true;
             }
+            portfolio.Result.Asset[index] = Asset;
             var produceResult = await _eventProducer.ProduceAsync(null,producerEvent);
             if (!produceResult.Ok)
             {
