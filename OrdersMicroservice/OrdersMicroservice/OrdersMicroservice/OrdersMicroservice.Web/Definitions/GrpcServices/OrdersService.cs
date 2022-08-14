@@ -34,10 +34,10 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
         var order = _mapper.Map<OrderModel>(request.OrderDetail);
         var hasAsk = await _depthMarketSearchService.HasAskAsync(order.ProductId);
         
-        order.Status = hasAsk ? OrderStatus.Validating : OrderStatus.Aborted;
+        order.Status = hasAsk || order.OrderType == OrderTypes.Ask ? OrderStatus.Validating : OrderStatus.Aborted;
         var id = await _repository.AddAsync(order);
 
-        if (!hasAsk)
+        if (!hasAsk && order.OrderType == OrderTypes.Bid)
         {
             return new CreateOrderResponse()
             {
