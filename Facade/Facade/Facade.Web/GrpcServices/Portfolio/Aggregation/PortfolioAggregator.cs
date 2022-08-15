@@ -2,6 +2,7 @@
 using PortfolioGrpc;
 using PortfolioServiceGrpc;
 using ProductGrpc;
+using Orders;
 
 namespace Facade.Web.GrpcServices.Portfolio.Aggregation
 {
@@ -9,23 +10,26 @@ namespace Facade.Web.GrpcServices.Portfolio.Aggregation
     {
         public static GetPortfolioResponse AggregateProducts(GetPortfolioResponse portfolioResponse, 
             Google.Protobuf.Collections.RepeatedField<AssetArray.Types.Asset> assetsArray,
-            Google.Protobuf.Collections.RepeatedField<ProductArray.Types.Product> productsArray)
+            Google.Protobuf.Collections.RepeatedField<ProductArray.Types.Product> productsArray,
+            Google.Protobuf.Collections.RepeatedField<UserProductInfo> userProductInfo)
         {
             double estimate, spent, earned, delta_abs, delta_rel;
             for (int i = 0; i < assetsArray.Count(); i++)
             {
-                var product = productsArray.Where(p => p.Id == assetsArray[i].Id).First();
                 var asset = assetsArray[i];
-                estimate = asset.VolumeActive * product.BestAsk;
-                spent = 50;
-                earned = 50;
+                var product = productsArray.Where(p => p.Id == asset.Id).First();
+                var ordersPerProduct = userProductInfo.Where(upi => upi.ProductId == asset.Id).First();
+                
+                estimate = asset.VolumeActive * ordersPerProduct.BestAsk;
+                spent = ordersPerProduct.Spent;
+                earned = ordersPerProduct.Earned;
                 delta_abs = estimate - spent;
                 delta_rel = (estimate - spent) / spent;
                 portfolioResponse.Portfolio.Products.Add(new PortfolioServiceGrpc.Portfolio.Types.Product
                 {
                     Id = asset.Id,
                     Name = product.Name,
-                    BestAsk = product.BestAsk,
+                    BestAsk = ordersPerProduct.BestAsk,
                     Spent = spent,
                     Earned = earned,
                     Volume = asset.VolumeActive,

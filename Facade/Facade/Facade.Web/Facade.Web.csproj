@@ -39,5 +39,8 @@
     <ItemGroup>
         <Protobuf Include="Protos\*.proto" /> 
 	  </ItemGroup>
+    <ItemGroup>
+      <None Remove="Protos\order.proto" />
+    </ItemGroup>
 
 </Project>
