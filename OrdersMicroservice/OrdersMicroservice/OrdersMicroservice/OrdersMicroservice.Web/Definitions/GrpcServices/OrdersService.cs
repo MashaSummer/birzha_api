@@ -1,5 +1,6 @@
 using AutoMapper;
 using Confluent.Kafka;
+using Google.Protobuf.Collections;
 using Grpc.Core;
 using Orders;
 using OrdersEvent;
@@ -61,5 +62,35 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
                 SuccessText = "Order is processing"
             }
         };
+    }
+
+    public override async Task<UserProductsResponse> GetUserProductsInfo(UserProductsRequest request,
+        ServerCallContext context)
+    {
+        try
+        {
+            var productInfoDtos =
+                await _depthMarketSearchService.GetProductsInfoAsync(request.InvestorId, request.ProductsId.ToList());
+
+            var response = new UserProductsResponse()
+            {
+                Success = new ProductInfoArray()
+            };
+
+            response.Success.Products.AddRange(productInfoDtos.Select(p => _mapper.Map<ProductInfo>(p)));
+
+            return response;
+        }
+        catch (Exception e)
+        {
+            return new UserProductsResponse()
+            {
+                Error = new Orders.Error()
+                {
+                    ErrorText = e.Message,
+                    StackTrace = e.StackTrace
+                }
+            };
+        }
     }
 }
