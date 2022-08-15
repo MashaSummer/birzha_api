@@ -35,11 +35,11 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
                 return new OperationResult<bool>() { Result = false }; 
             }
 
-            portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message));
+            portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message)).ToArray();
 
             await _repository.UpdateAsync(portfolio.Result);
 
-            return new OperationResult<bool>() { Result = true};
+            return new OperationResult<bool>() { Result = true };
         }
     }
 }

@@ -49,10 +49,11 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             {                
                 Asset.VolumeActive -= message.Value.Order.Volume;
                 Asset.VolumeFrozen += message.Value.Order.Volume;
+                portfolio.Result.Asset[index] = Asset;
                 await _repository.UpdateAsync(portfolio.Result);
                 producerEvent.Valid = true;
             }
-            portfolio.Result.Asset[index] = Asset;
+
             var produceResult = await _eventProducer.ProduceAsync(null,producerEvent);
             if (!produceResult.Ok)
             {
