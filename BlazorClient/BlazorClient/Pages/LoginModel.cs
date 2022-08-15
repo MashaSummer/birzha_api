@@ -24,7 +24,7 @@ namespace BlazorClient.Pages
                 ExpiredAt = DateTime.UtcNow.AddDays(1)
             };
             await localStorageService.SetAsync(nameof(SecurityToken), token);
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/", true);
         }
     }
 
