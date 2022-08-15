@@ -59,5 +59,12 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Repository
         {
             await _bidsCollection.DeleteOneAsync(x => x.OrderId == orderId);
         }
+
+        public async Task<int> BestBidByProductIdAsync(string productId)
+        {
+            var bestAsk = await _bidsCollection.Find(m => m.ProductId == productId)
+                .SortBy(m => m.Price).SortBy(m => m.SubmissionTime).FirstOrDefaultAsync();
+            return bestAsk.Price;
+        }
     }
 }

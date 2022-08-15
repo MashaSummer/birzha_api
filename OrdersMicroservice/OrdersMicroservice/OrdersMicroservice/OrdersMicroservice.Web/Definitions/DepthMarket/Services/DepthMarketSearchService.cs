@@ -1,4 +1,5 @@
-﻿using OrdersMicroservice.Definitions.DepthMarket.Repository;
+﻿using OrdersMicroservice.Definitions.DepthMarket.Dto;
+using OrdersMicroservice.Definitions.DepthMarket.Repository;
 using OrdersMicroservice.Definitions.Mongodb.Models;
 
 namespace OrdersMicroservice.Definitions.DepthMarket.Services
@@ -6,9 +7,17 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
     public class DepthMarketSearchService
     {
         private readonly AskMarketRepository _askMarketRepository;
-        public DepthMarketSearchService(AskMarketRepository askMarketRepository)
+        private readonly OrdersRepository _ordersRepository;
+        private readonly BidMarketRepository _bidMarketRepository;
+        public DepthMarketSearchService(
+            AskMarketRepository askMarketRepository,
+            OrdersRepository ordersRepository,
+            BidMarketRepository bidMarketRepository
+            )
         {
             _askMarketRepository = askMarketRepository;
+            _ordersRepository = ordersRepository;
+            _bidMarketRepository = bidMarketRepository;
         }
         public MarketModel FullExecSearch(OrderModel model, List<MarketModel> relevantMarketList)
         {
@@ -64,5 +73,30 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
             return (await _askMarketRepository.GetAllAsync())
                 .Any(x => x.ProductId == productId);
         }
+        public async Task<List<ProductInfoDto>> GetProductsInfoAsync (string investorId, List<string> productsId)
+        {
+            var dtosList = new List<ProductInfoDto>();
+            foreach(var productId in productsId)
+            {
+                var productInfoDto = new ProductInfoDto();
+                productInfoDto.Earned = await _ordersRepository.GetEarnedAsync(investorId, productId);
+
+                productInfoDto.Spent = await _ordersRepository.GetSpentAsync(investorId, productId);
+                productInfoDto.ProductId = productId;
+
+                productInfoDto.BestAsk = await GetBestAskAsync(productId);
+                productInfoDto.BestBid = await GetBestBidAsync(productId);
+
+                dtosList.Add(productInfoDto);
+
+            }
+            return dtosList;
+        }
+
+        public async Task<int> GetBestBidAsync(string productId) => await _askMarketRepository.BestAskByProductIdAsync(productId);
+        
+        public async Task<int> GetBestAskAsync(string productId) => await _bidMarketRepository.BestBidByProductIdAsync(productId);
+
+
     }
 }
