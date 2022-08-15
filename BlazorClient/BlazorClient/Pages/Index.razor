@@ -6,4 +6,11 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+    <Authorized>
+        Welcome
+    </Authorized>
+    <NotAuthorized>
+        You are not authorized. Go to <a href="/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
