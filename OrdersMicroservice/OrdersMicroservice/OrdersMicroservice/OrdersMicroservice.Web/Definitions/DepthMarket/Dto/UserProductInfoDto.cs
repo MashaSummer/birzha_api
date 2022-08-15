@@ -1,6 +1,6 @@
 ﻿namespace OrdersMicroservice.Definitions.DepthMarket.Dto
 {
-    public class ProductInfoDto
+    public class UserProductInfoDto
     {
         public int Spent { get; set; }
         public int Earned { get; set; }

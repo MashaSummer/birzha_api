@@ -74,16 +74,48 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
 
             var response = new UserProductsResponse()
             {
-                Success = new ProductInfoArray()
+                Success = new UserProductInfoArray()
             };
 
-            response.Success.Products.AddRange(productInfoDtos.Select(p => _mapper.Map<ProductInfo>(p)));
+            response.Success.Products.AddRange(productInfoDtos.Select(p => _mapper.Map<UserProductInfo>(p)));
 
             return response;
         }
         catch (Exception e)
         {
             return new UserProductsResponse()
+            {
+                Error = new Orders.Error()
+                {
+                    ErrorText = e.Message,
+                    StackTrace = e.StackTrace
+                }
+            };
+        }
+    }
+
+    public override async Task<ProductInfoResponse> GetProductsInfo(ProductInfoRequest request, ServerCallContext context)
+    {
+        try
+        {
+            var infoList = new List<ProductInfo>();
+            foreach (var productId in request.ProductsId)
+            {
+                infoList.Add(new ProductInfo()
+                {
+                    BestAsk = await _depthMarketSearchService.GetBestAskAsync(productId),
+                    BestBid = await _depthMarketSearchService.GetBestBidAsync(productId),
+                    ProductId = productId
+                });
+            }
+
+            var response = new ProductInfoResponse();
+            response.Success.ProductsInfo.Add(infoList);
+            return response;
+        }
+        catch (Exception e)
+        {
+            return new ProductInfoResponse()
             {
                 Error = new Orders.Error()
                 {

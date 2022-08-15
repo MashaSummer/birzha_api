@@ -62,7 +62,7 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Repository
         {
             var bestAsk = await _asksCollection.Find(m => m.ProductId == productId)
                 .SortByDescending(m => m.Price).SortBy(m => m.SubmissionTime).FirstOrDefaultAsync();
-            return bestAsk.Price;
+            return bestAsk?.Price ?? -1;
         }
 
     }

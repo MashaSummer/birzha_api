@@ -73,12 +73,12 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
             return (await _askMarketRepository.GetAllAsync())
                 .Any(x => x.ProductId == productId);
         }
-        public async Task<List<ProductInfoDto>> GetProductsInfoAsync (string investorId, List<string> productsId)
+        public async Task<List<UserProductInfoDto>> GetProductsInfoAsync (string investorId, List<string> productsId)
         {
-            var dtosList = new List<ProductInfoDto>();
+            var dtosList = new List<UserProductInfoDto>();
             foreach(var productId in productsId)
             {
-                var productInfoDto = new ProductInfoDto();
+                var productInfoDto = new UserProductInfoDto();
                 productInfoDto.Earned = await _ordersRepository.GetEarnedAsync(investorId, productId);
 
                 productInfoDto.Spent = await _ordersRepository.GetSpentAsync(investorId, productId);
