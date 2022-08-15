@@ -30,16 +30,22 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             var askPortfolio = await _repository.GetByIdAsync(message.Value.AskInvestorId);
             var bidPortfolio = await _repository.GetByIdAsync(message.Value.BidInvestorId);
 
-            askPortfolio.Result.Asset.Where(x => x.Id == message.Value.ProductId).First().VolumeFrozen -= message.Value.Volume;
-            var bidAsset = bidPortfolio.Result.Asset.Where(x => x.Id == message.Value.ProductId);
+            int index = 0;
+
+            askPortfolio.Result.Asset!.Where(x => x.Id == message.Value.ProductId).First().VolumeFrozen -= message.Value.Volume;
+            var bidAsset = bidPortfolio.Result.Asset!.Where((x, _index) => 
+            {
+                index = _index;
+                return x.Id == message.Value.ProductId;
+            } );
 
             if (bidAsset.Count() == 0)
             {
-                bidPortfolio.Result.Asset.Append(_mapper.Map<AssetModel>(message));
+                bidPortfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message));
             }
             else
             {
-                bidAsset.First().VolumeFrozen += message.Value.Volume; // TODO test
+                bidPortfolio.Result.Asset[index].VolumeActive += message.Value.Volume;
             }
 
             await _repository.UpdateAsync(bidPortfolio.Result);
