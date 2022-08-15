@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 
 service OrdersService {
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetUserProductsInfo(UserProductsRequest) returns (UserProductsResponse);
 }
 
 enum OrderType {
@@ -55,5 +56,33 @@ message CreateOrderResponse {
   oneof result {
     Success success = 1;
     Error error = 2;
+  }
+}
+
+message UserProductsRequest {
+  string investor_id = 1;
+  repeated string products_id = 2;
+}
+
+
+message ProductInfo {
+  int32 spent = 1;
+  int32 earned = 2;
+  int32 best_ask = 3;
+  int32 best_bid = 4;
+  string product_id = 5;
+}
+
+
+message ProductInfoArray {
+  
+  
+  repeated ProductInfo products = 1;
+}
+
+message UserProductsResponse {
+  oneof result {
+    Error error = 1;
+    ProductInfoArray success = 2;
   }
 }
