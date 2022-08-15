@@ -37,17 +37,26 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Repository
             await _ordersCollection.DeleteOneAsync(x => x.Id == id);
         }
 
-        public async Task<int> GetEarnedAsync(string investorId, string productId) =>
+        public async Task<int> GetEarnedAsync(string investorId, string productId)
+        {
 
-           (await _ordersCollection.Find(x => x.InvestorId.Equals(investorId)
-                        && x.ProductId.Equals(productId)
-                        && x.Status == OrderStatus.Executed
-                        && x.OrderType == OrderTypes.Ask).ToListAsync()).Sum(x => x.Price);
-        public async Task<int> GetSpentAsync(string investorId, string productId) =>
+            var collection = await _ordersCollection.Find(x => x.InvestorId.Equals(investorId)
+                                                               && x.ProductId.Equals(productId)
+                                                               && x.Status == OrderStatus.Executed
+                                                               && x.OrderType == OrderTypes.Ask).ToListAsync();
+            if (collection == null)
+                return 0;
 
-           (await _ordersCollection.Find(x => x.InvestorId.Equals(investorId)
-                        && x.ProductId.Equals(productId)
-                        && x.Status == OrderStatus.Executed
-                        && x.OrderType == OrderTypes.Bid).ToListAsync()).Sum(x => x.Price);
+            return collection.Sum(x => x.Price);
+        }
+
+        public async Task<int> GetSpentAsync(string investorId, string productId)
+        {
+            var collection = await _ordersCollection.Find(x => x.InvestorId.Equals(investorId)
+                                                               && x.ProductId.Equals(productId)
+                                                               && x.Status == OrderStatus.Executed
+                                                               && x.OrderType == OrderTypes.Bid).ToListAsync();
+            return collection?.Sum(x => x.Price) ?? 0;
+        }
     }
 }

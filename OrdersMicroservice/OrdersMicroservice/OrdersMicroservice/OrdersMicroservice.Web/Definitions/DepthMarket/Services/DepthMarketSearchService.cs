@@ -93,9 +93,9 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Services
             return dtosList;
         }
 
-        public async Task<int> GetBestBidAsync(string productId) => await _askMarketRepository.BestAskByProductIdAsync(productId);
+        public async Task<int> GetBestBidAsync(string productId) => await _bidMarketRepository.BestBidByProductIdAsync(productId);
         
-        public async Task<int> GetBestAskAsync(string productId) => await _bidMarketRepository.BestBidByProductIdAsync(productId);
+        public async Task<int> GetBestAskAsync(string productId) => await _askMarketRepository.BestAskByProductIdAsync(productId);
 
 
     }

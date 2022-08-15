@@ -62,9 +62,9 @@ namespace OrdersMicroservice.Definitions.DepthMarket.Repository
 
         public async Task<int> BestBidByProductIdAsync(string productId)
         {
-            var bestAsk = await _bidsCollection.Find(m => m.ProductId == productId)
+            var bestBid = await _bidsCollection.Find(m => m.ProductId == productId)
                 .SortBy(m => m.Price).SortBy(m => m.SubmissionTime).FirstOrDefaultAsync();
-            return bestAsk.Price;
+            return bestBid?.Price ?? -1;
         }
     }
 }
