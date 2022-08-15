@@ -4,24 +4,19 @@ option csharp_namespace = "Orders";
 
 package orders;
 
+import "google/protobuf/timestamp.proto";
+
 service OrdersService {
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetUserProductsInfo(UserProductsRequest) returns (UserProductsResponse);
 }
 
 enum OrderType {
-  ASC = 0;
+  ASK = 0;
   BID = 1;
 }
 
-message DateTime {
 
-  int32 second = 1;
-  int32 minute = 2;
-  int32 hour = 3;
-  int32 day = 4;
-  int32 month = 5;
-  int32 year = 6;
-}
 
 message Success {
   string success_text = 1;
@@ -38,15 +33,17 @@ message Order {
 
   string product_id = 2;
 
-  double volume = 3;
+  int32 volume = 3;
 
-  double price = 4;
+  int32 price = 4;
 
   bool only_full_execution = 5;
 
-  DateTime deadline = 6;
+  google.protobuf.Timestamp deadline = 6;
+  
+  google.protobuf.Timestamp submission_time = 7;
 
-  string investor_id = 7;
+  string investor_id = 8;   
 }
 
 message CreateOrderRequest {
@@ -59,5 +56,33 @@ message CreateOrderResponse {
   oneof result {
     Success success = 1;
     Error error = 2;
+  }
+}
+
+message UserProductsRequest {
+  string investor_id = 1;
+  repeated string products_id = 2;
+}
+
+
+message ProductInfo {
+  int32 spent = 1;
+  int32 earned = 2;
+  int32 best_ask = 3;
+  int32 best_bid = 4;
+  string product_id = 5;
+}
+
+
+message ProductInfoArray {
+  
+  
+  repeated ProductInfo products = 1;
+}
+
+message UserProductsResponse {
+  oneof result {
+    Error error = 1;
+    ProductInfoArray success = 2;
   }
 }
