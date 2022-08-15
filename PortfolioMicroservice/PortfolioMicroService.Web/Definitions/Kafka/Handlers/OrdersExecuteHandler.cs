@@ -30,28 +30,34 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             var askPortfolio = await _repository.GetByIdAsync(message.Value.AskInvestorId);
             var bidPortfolio = await _repository.GetByIdAsync(message.Value.BidInvestorId);
 
-            int index = 0;
+            
+            await _repository.UpdateAsync(EncreaseBid(bidPortfolio.Result, message.Value));
+            await _repository.UpdateAsync(DecreaseAsk(askPortfolio.Result, message.Value.ProductId, message.Value.Volume));
 
-            askPortfolio.Result.Asset!.Where(x => x.Id == message.Value.ProductId).First().VolumeFrozen -= message.Value.Volume;
-            var bidAsset = bidPortfolio.Result.Asset!.Where((x, _index) => 
-            {
-                index = _index;
-                return x.Id == message.Value.ProductId;
-            } );
-
-            if (bidAsset.Count() == 0)
-            {
-                bidPortfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message));
-            }
-            else
-            {
-                bidPortfolio.Result.Asset[index].VolumeActive += message.Value.Volume;
-            }
-
-            await _repository.UpdateAsync(bidPortfolio.Result);
-            await _repository.UpdateAsync(askPortfolio.Result);
 
             return new OperationResult<bool>() { Result = true };
+        }
+
+        private UserModel DecreaseAsk(UserModel askPortfolio, string assetId, int volume)
+        {
+            int index = askPortfolio.Asset.ToList().FindIndex(x => x.Id == assetId);
+
+            askPortfolio.Asset[index].VolumeFrozen -= volume;
+            return askPortfolio;
+        } 
+
+        private UserModel EncreaseBid(UserModel bidPortfolio, OrderExecuteEvent message)
+        {
+            int index = bidPortfolio.Asset.ToList().FindIndex(x => x.Id == message.ProductId);
+
+            if (index == -1)
+            {
+                bidPortfolio.Asset = bidPortfolio.Asset.Append(_mapper.Map<AssetModel>(message)).ToArray();
+                return bidPortfolio;
+            }
+
+            bidPortfolio.Asset[index].VolumeActive += message.Volume;
+            return bidPortfolio;
         }
     }
 }
