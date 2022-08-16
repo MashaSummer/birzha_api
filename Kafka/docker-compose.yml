@@ -37,15 +37,16 @@ services:
       "
 
       kafka-topics --bootstrap-server broker:29092 --list
-
       echo -e 'Creating kafka topics'
-
+      
       kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic Orders_Created --replication-factor 1 --partitions 1
-
+      
       kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic Orders_Validation --replication-factor 1 --partitions 1
+      
+      kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic Orders_Candidates --replication-factor 1 --partitions 1
 
-
+      kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic Transactions --replication-factor 1 --partitions 1
+      
       echo -e 'Successfully created topics'
-
       kafka-topics --bootstrap-server broker:29092 --list
       "
