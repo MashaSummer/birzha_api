@@ -34,10 +34,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\BalanceService.proto" GrpcServices="Server" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\" />
+    <Protobuf Include="Protos\order*" />
   </ItemGroup>
 
 </Project>
