@@ -35,6 +35,7 @@ services:
     entrypoint: ['/bin/sh', '-c']
     command: |
       "
+
       kafka-topics --bootstrap-server broker:29092 --list
       echo -e 'Creating kafka topics'
       

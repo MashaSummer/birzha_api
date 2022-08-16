@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrdersEvent";
+
+import "Protos/order.proto";
+
+package order_validation;
+
+message OrderValidationEvent {
+  
+  string order_id = 1;
+  
+  bool valid = 2;
+  
+}

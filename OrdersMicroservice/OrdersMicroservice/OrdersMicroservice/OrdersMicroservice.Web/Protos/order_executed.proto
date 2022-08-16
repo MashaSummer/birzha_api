@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrdersEvent";
+
+package order_executed;
+
+message OrderExecuteEvent {
+  
+  string ask_investor_id = 1;
+  
+  string bid_investor_id = 2;
+  
+  string product_id = 3;
+  
+  int32 price = 4;
+  
+  int32 volume = 5;
+  
+}
