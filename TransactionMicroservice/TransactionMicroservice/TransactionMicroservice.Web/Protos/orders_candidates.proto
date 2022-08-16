@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "OrdersEvent";
+
+package orders_candidates;
+
+message Candidate {
+  string order_id = 1;
+  int32 volume = 2;
+}
+
+message CandidatesFoundEvent {
+
+  Candidate ask_candidate = 1;
+
+  Candidate bid_candidate = 2;
+}

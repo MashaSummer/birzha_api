@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "TransactionsEvent";
+
+package transactions;
+
+import "Protos/orders_candidates.proto";
+
+message TransactionCreatedEvent {
+  
+  orders_candidates.Candidate ask_order = 1;
+  
+  orders_candidates.Candidate bid_order = 2;
+  
+}
