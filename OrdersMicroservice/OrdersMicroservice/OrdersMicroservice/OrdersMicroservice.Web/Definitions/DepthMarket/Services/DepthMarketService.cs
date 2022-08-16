@@ -3,7 +3,7 @@ using Confluent.Kafka;
 using OrdersEvent;
 using OrdersMicroservice.Definitions.DepthMarket.Repository;
 using OrdersMicroservice.Definitions.Mongodb.Models;
-using OrdersMicroservice.EventsBase;
+using OrdersMicroservice.Domain.EventsBase;
 
 namespace OrdersMicroservice.Definitions.DepthMarket.Services;
 

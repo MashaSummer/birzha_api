@@ -3,7 +3,6 @@ using OrdersEvent;
 using OrdersMicroservice.Definitions.Base;
 using OrdersMicroservice.Definitions.Kafka.Handlers;
 using OrdersMicroservice.Definitions.Kafka.Models;
-using OrdersMicroservice.EventsBase;
 using OrdersMicroservice.Infrastructure.Kafka.Config;
 using TransactionsEvent;
 

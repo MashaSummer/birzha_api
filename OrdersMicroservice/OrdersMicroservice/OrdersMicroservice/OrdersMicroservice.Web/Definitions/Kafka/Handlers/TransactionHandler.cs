@@ -5,7 +5,6 @@ using OrdersEvent;
 using OrdersMicroservice.Definitions.Mongodb.Models;
 using OrdersMicroservice.Domain.DbBase;
 using OrdersMicroservice.Domain.EventsBase;
-using OrdersMicroservice.EventsBase;
 using TransactionsEvent;
 
 namespace OrdersMicroservice.Definitions.Kafka.Handlers;

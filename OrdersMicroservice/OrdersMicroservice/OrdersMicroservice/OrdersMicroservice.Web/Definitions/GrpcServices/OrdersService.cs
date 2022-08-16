@@ -7,7 +7,7 @@ using OrdersEvent;
 using OrdersMicroservice.Definitions.DepthMarket.Services;
 using OrdersMicroservice.Definitions.Mongodb.Models;
 using OrdersMicroservice.Domain.DbBase;
-using OrdersMicroservice.EventsBase;
+using OrdersMicroservice.Domain.EventsBase;
 
 namespace OrdersMicroservice.Definitions.GrpcServices;
 
