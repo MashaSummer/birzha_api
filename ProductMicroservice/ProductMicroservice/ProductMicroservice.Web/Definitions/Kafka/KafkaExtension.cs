@@ -36,16 +36,16 @@ public static class KafkaExtension
     }
 
 
-    public static IServiceCollection AddKafkaConsumer<Tk, Tv>(this IServiceCollection services,
-        KafkaConsumerConfig consumerConfig, IDeserializer<Tv> deserializer, IEventHandler<Tk, Tv> handler)
+    public static IServiceCollection AddKafkaConsumer<TKey, TValue>(this IServiceCollection services,
+        KafkaConsumerConfig consumerConfig, IDeserializer<TValue> deserializer, IEventHandler<TKey, TValue> handler)
     {
-        services.AddTransient<IConsumer<Tk, Tv>>(provider =>
-            new ConsumerBuilder<Tk, Tv>(consumerConfig.ConsumerConfig).SetValueDeserializer(deserializer).Build());
+        services.AddTransient<IConsumer<TKey, TValue>>(provider =>
+            new ConsumerBuilder<TKey, TValue>(consumerConfig.ConsumerConfig).SetValueDeserializer(deserializer).Build());
 
         services.AddSingleton(handler);
 
-        services.AddHostedService<KafkaConsumer<Tk, Tv>>(provider =>
-            new KafkaConsumer<Tk, Tv>(consumerConfig, provider.GetRequiredService<IConsumer<Tk, Tv>>(), handler));
+        services.AddHostedService<KafkaConsumer<TKey, TValue>>(provider =>
+            new KafkaConsumer<TKey, TValue>(consumerConfig, provider.GetRequiredService<IConsumer<TKey, TValue>>(), handler));
 
         return services;
     }
