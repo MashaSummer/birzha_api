@@ -3,9 +3,9 @@ using Confluent.Kafka;
 
 namespace TransactionMicroservice.Domain.EventsBase;
 
-public interface IEventHandler<Tk, Tv>
+public interface IEventHandler<TKey, TValue>
 {
-    void Process(Message<Tk, Tv> message);
+    void Process(Message<TKey, TValue> message);
 
-    Task<OperationResult<bool>> ProcessAsync(Message<Tk, Tv> message);
+    Task<OperationResult<bool>> ProcessAsync(Message<TKey, TValue> message);
 }

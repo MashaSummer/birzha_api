@@ -2,7 +2,7 @@ using Calabonga.OperationResults;
 
 namespace TransactionMicroservice.EventsBase;
 
-public interface IEventProducer<Tk, Tv>
+public interface IEventProducer<TKey, TValue>
 {
-    Task<OperationResult<bool>> ProduceAsync(Tk key, Tv value);
+    Task<OperationResult<bool>> ProduceAsync(TKey key, TValue value);
 }
