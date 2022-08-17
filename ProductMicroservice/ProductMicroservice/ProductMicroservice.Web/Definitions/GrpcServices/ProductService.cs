@@ -1,32 +1,38 @@
 using AutoMapper;
 using Calabonga.OperationResults;
+using Confluent.Kafka;
 using Grpc.Core;
 using ProductGrpc;
-using ProductMicroservice.Definitions.Mongodb.Models;
 using ProductMicroservice.Domain.DbBase;
+using ProductMicroservice.Domain.EventsBase;
+using ProductMicroservice.Mongodb.Models;
+using Error = ProductGrpc.Error;
 
 namespace ProductMicroservice.Definitions.GrpcServices;
 
 public class ProductService : ProductGrpc.ProductService.ProductServiceBase
 {
-    private readonly IDbWorker<ProductModel> _dbWorker;
+    private readonly IRepository<ProductModel> _repository;
 
     private readonly ILogger<ProductService> _logger;
 
     private readonly IMapper _mapper;
-    
-    public ProductService(IDbWorker<ProductModel> dbWorker, ILogger<ProductService> logger, IMapper mapper)
+
+    private readonly IEventProducer<Null, ProductCreatedEvent> _eventProducer;
+
+    public ProductService(IRepository<ProductModel> repository, ILogger<ProductService> logger, IMapper mapper, IEventProducer<Null, ProductCreatedEvent> eventProducer)
     {
-        _dbWorker = dbWorker;
+        _repository = repository;
         _logger = logger;
         _mapper = mapper;
+        _eventProducer = eventProducer;
     }
 
     public override async Task<GetAllProductsResponse> GetAllProducts(GetAllProductsRequest request, ServerCallContext context)
     {
         _logger.LogInformation("Get all data from database");
 
-        var dbResult = await GetAllProductsFromDb();
+        var dbResult = await _repository.GetAllAsync();
 
         if (!dbResult.Ok)
         {
@@ -53,24 +59,52 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         return response;
     }
 
-    private async Task<OperationResult<IEnumerable<ProductModel>>> GetAllProductsFromDb()
+    public override async Task<ChangePortfolioResponse> AddProduct(ChangePortfolioRequest request, ServerCallContext context)
     {
-        OperationResult<IEnumerable<ProductModel>> result = new OperationResult<IEnumerable<ProductModel>>();
-        try
+        var productFromDb = await _repository.Contains(p => p.Name == request.ProductName);
+
+        if (productFromDb.Ok && productFromDb.Result)
         {
-            result.Result = await _dbWorker.GetAllRecords();
-            if (result.Result == null)
+            return new ChangePortfolioResponse()
             {
-                result.AddError(new Exception("Failed to get products data from database"));
-            }
-        }
-        
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            result.AddError(e);
+                Error = new Error()
+                {
+                    ErrorMessage = "There is product with the same name",
+                    StackTrace = ""
+                }
+            };
         }
 
-        return result;
+        var productModel = _mapper.Map<ProductModel>(request);
+        var addingResult = await _repository.AddAsync(productModel);
+
+        if (!addingResult.Ok)
+        {
+            _logger.LogError($"Error on product service: {addingResult.Error.Message}");
+            return new ChangePortfolioResponse()
+            {
+                Error = new Error()
+                {
+                    ErrorMessage = addingResult.Error.Message,
+                    StackTrace = addingResult.Error.StackTrace
+                }
+            };
+        }
+
+        await _eventProducer.ProduceAsync(null, new ProductCreatedEvent()
+        {
+            InvestorId = request.InvestorId,
+            ProductId = productModel.Id,
+            StartPrice = request.StartPrice,
+            Volume = request.Volume
+        });
+
+        return new ChangePortfolioResponse()
+        {
+            Success = new Success()
+            {
+                SuccessText = "New product successfully added"
+            }
+        };
     }
 }

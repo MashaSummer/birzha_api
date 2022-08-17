@@ -7,18 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Kafka"/>
+        <Folder Include="Kafka" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Confluent.Kafka" Version="1.9.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1"/>
-        <PackageReference Include="MongoDB.Driver" Version="2.17.0"/>
+        <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.21.3" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+        <PackageReference Include="MongoDB.Driver" Version="2.17.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ProductMicroservice.Domain\ProductMicroservice.Domain.csproj"/>
+        <ProjectReference Include="..\ProductMicroservice.Domain\ProductMicroservice.Domain.csproj" />
     </ItemGroup>
 
 </Project>
