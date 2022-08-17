@@ -20,8 +20,9 @@ namespace BalanceMicroservice.Web.BalanceService
 
             return new BalanceResponse
             {
-                Balance = balanceTask == null ? 0 : balanceTask.Balance
-            };
+                BalanceActive = balanceTask == null ? 0 : balanceTask.BalanceActive,
+                BalanceFrozen = balanceTask == null ? 0 : balanceTask.BalanceFrozen
+        };
         }
     }
 }
