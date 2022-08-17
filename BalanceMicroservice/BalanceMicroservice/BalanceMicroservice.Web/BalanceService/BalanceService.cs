@@ -4,11 +4,11 @@ using BalanceMicroservice.Web.MongoService.ViewModels;
 
 namespace BalanceMicroservice.Web.BalanceService
 {
-    public class CommandBalanceService : BalanceMicroservice.CommandBalanceService.CommandBalanceServiceBase
+    public class BalanceService : BalanceMicroservice.BalanceService.BalanceServiceBase
     {
         private readonly MongoBalanceService _database;
-        private readonly ILogger<CommandBalanceService> _logger;
-        public CommandBalanceService(MongoBalanceService mongo, ILogger<CommandBalanceService> logger)
+        private readonly ILogger<BalanceService> _logger;
+        public BalanceService(MongoBalanceService mongo, ILogger<BalanceService> logger)
         {
             _database = mongo;
             _logger = logger;
