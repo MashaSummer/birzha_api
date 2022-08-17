@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package order.created;
+
+option csharp_namespace = "OrdersEvent";
+
+import "Protos/order.proto";
+
+
+message OrderCreatedEvent {
+  
+  string order_id = 1;
+  
+  orders.Order order = 2;
+  
+}

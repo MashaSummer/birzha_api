@@ -6,14 +6,13 @@ package product;
 
 service ProductService {
   rpc GetAllProducts (GetAllProductsRequest) returns (GetAllProductsResponse);
+  rpc AddProduct(ChangePortfolioRequest) returns (ChangePortfolioResponse);
 }
 message GetAllProductsRequest {}
 message ProductArray {
   message Product {
     string id = 1;
     string name = 2;
-    double best_ask = 3;
-    double best_bid = 4;
   }
   repeated Product products = 1;
 }
@@ -27,3 +26,34 @@ message GetAllProductsResponse {
     Error error = 2;
   }
 }
+
+message ChangePortfolioRequest {
+  string investor_id = 1;
+  string product_name = 2;
+  int32 volume = 3;
+  int32 start_price = 4;
+}
+
+message Success {
+  string success_text = 1;
+}
+
+message ChangePortfolioResponse {
+  oneof result {
+    Success success = 1;
+    Error error = 2;
+  }
+}
+
+message ProductCreatedEvent {
+  
+  string investor_id = 1;
+  
+  string product_id = 2;
+  
+  int32 volume = 3;
+  
+  int32 start_price = 4;
+  
+}
+
