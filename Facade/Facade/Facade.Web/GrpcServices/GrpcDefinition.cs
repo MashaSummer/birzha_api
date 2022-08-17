@@ -1,9 +1,10 @@
-﻿using Facade.Domain.Base;
+using Facade.Domain.Base;
 using Facade.Web.Application;
 using Facade.Web.Auth;
 using Facade.Web.Definitions.Base;
 using Facade.Web.GrpcServices.Balance;
 using Facade.Web.GrpcServices.Portfolio;
+using Facade.Web.GrpcServices.Orders;
 using Facade.Web.GrpcServices.Product;
 
 namespace Facade.Web.GrpcServices
@@ -27,6 +28,7 @@ namespace Facade.Web.GrpcServices
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>());
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<PortfolioService>());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<OrderService>());
             app.MapGrpcReflectionService();
         }
     }

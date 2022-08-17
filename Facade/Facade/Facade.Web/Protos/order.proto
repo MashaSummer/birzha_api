@@ -1,4 +1,4 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 option csharp_namespace = "Orders";
 
@@ -44,7 +44,7 @@ message Order {
 
   google.protobuf.Timestamp submission_time = 7;
 
-  string investor_id = 8;   
+  string investor_id = 8;
 }
 
 message CreateOrderRequest {
@@ -106,4 +106,4 @@ message ProductInfoResponse {
     Error error = 1;
     ProductInfoArray success = 2;
   }
-} 
+}
