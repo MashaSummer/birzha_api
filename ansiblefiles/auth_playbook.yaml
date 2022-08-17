@@ -38,7 +38,7 @@
     
     - name: Download foo.conf
       ansible.builtin.get_url:
-        url: https://github.com/MashaSummer/birzha_api/tree/main/ansiblefiles/aspnetapp.pfx
+        url: https://github.com/MashaSummer/birzha_api/raw/main/ansiblefiles/aspnetapp.pfx
         dest: /root/.aspnet/https
         mode: '777'
     
