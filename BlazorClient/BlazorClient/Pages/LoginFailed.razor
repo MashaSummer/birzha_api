@@ -1,13 +1,15 @@
 ﻿@page "/loginFailed";
 @inject NavigationManager NavigationManager
 <p>
-    Invalid login or password. After @WaitTime seconds you will be able to re-enter your credentials.
+    Invalid login or password.
 </p>
+<button onclick="@ReEnter"> ReEnter</button>
 @code{
     public int WaitTime { get; set; } = 5;
-    protected override void OnInitialized()
+    
+    public void ReEnter()
     {
-        Task.Delay(WaitTime * 1000);
         NavigationManager.NavigateTo("/login", true);
     }
+
 }

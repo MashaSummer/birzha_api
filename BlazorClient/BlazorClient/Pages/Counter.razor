@@ -1,7 +1,10 @@
 ﻿@page "/counter"
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+@inject NavigationManager NavigationManager
+
 <PageTitle>Counter</PageTitle>
+
+<NotAuthorized>@{ NavigationManager.NavigateTo("/login"); }</NotAuthorized>
 
 <h1>Counter</h1>
 

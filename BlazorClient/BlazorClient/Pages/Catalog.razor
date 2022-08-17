@@ -1,0 +1,63 @@
+﻿@page "/catalog"
+<header class="py-5 bg-light border-bottom mb-4">
+     <div class="container">
+          <div class="text-center my-2">
+               <h3 class="fw-bolder">Exchange catalog</h3>
+          </div>
+     </div>
+</header>
+<form>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Find product</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                </div>
+            </div>
+            <div class="col col-lg-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Product List</h3>
+
+            </div>
+        </div>
+        <div class="card-body table-responsive p-0" >
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Best Ask</th>
+                        <th>Best Bid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <a href="/product/123" class="">Apple</a>
+                        </td>
+                        <td>
+                            172.04
+                        </td>
+                        <td>
+                            169.32
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@code {
+
+}
