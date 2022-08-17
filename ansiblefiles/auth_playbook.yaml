@@ -48,8 +48,8 @@
          image: "{{ microservice_name_image }}:{{ sha }}"
          state: started
          ports:
-          - "5000:80"
-          - "5001:443"
+          - "5000:5000"
+          - "5001:5001"
          networks:
           - name: birzha
          log_driver: json-file
