@@ -13,12 +13,12 @@ COPY ["AuthMicroservice/AuthMicroservice.Web/AuthMicroservice.Web.csproj", "Auth
 COPY ["AuthMicroservice/AuthMicroservice.Infrastructure/AuthMicroservice.Infrastructure.csproj", "AuthMicroservice.Infrastructure/"]
 COPY ["AuthMicroservice/AuthMicroservice.Domain/AuthMicroservice.Domain.csproj", "AuthMicroservice.Domain/"]
 RUN dotnet restore "AuthMicroservice.Web/AuthMicroservice.Web.csproj"
-COPY . .
+COPY AuthMicroservice/ .
 WORKDIR "/src/AuthMicroservice.Web"
-RUN dotnet build "AuthMicroservice.Web/AuthMicroservice.Web.csproj" -c Release -o /app/build
+RUN dotnet build "AuthMicroservice.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AuthMicroservice.Web/AuthMicroservice.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish "AuthMicroservice.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
