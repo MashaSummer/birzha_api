@@ -35,7 +35,6 @@ namespace BalanceMicroservice.Web.BalanceService
                 _logger.LogError($"User {id} tried to use negative value ({value})");
                 return new BalanceResponse
                 {
-                    Balance = 0,
                     Error = true,
                     ErrorMessage = "You can`t use negative or zero value"
                 };
@@ -44,10 +43,12 @@ namespace BalanceMicroservice.Web.BalanceService
             if (negative) { value *= -1; }
 
             await _database.UpdateAsync(CalculateNewBalance(await GetBalance(id), value));
+            var UserBalance = await _database.GetByIdAsync(new Guid(id));
 
             return new BalanceResponse
             {
-                Balance = (await _database.GetByIdAsync(new Guid(id))).Balance
+                BalanceActive = UserBalance.BalanceActive,
+                BalanceFrozen = UserBalance.BalanceFrozen
             };
         }
 
@@ -57,7 +58,8 @@ namespace BalanceMicroservice.Web.BalanceService
             return new BalanceViewModel
             {
                 Id = oldValue.Id,
-                Balance = oldValue.Balance + newValue
+                BalanceActive = oldValue.BalanceActive + newValue,
+                BalanceFrozen = oldValue.BalanceFrozen,
             };
         }
 
@@ -82,7 +84,8 @@ namespace BalanceMicroservice.Web.BalanceService
                     new BalanceViewModel
                     {
                         Id = userId,
-                        Balance = 0
+                        BalanceActive = 0,
+                        BalanceFrozen = 0,
                     });
                 _logger.LogInformation($"Record for user {id} successfully created");
                 balance = await _database.GetByIdAsync(userId);
