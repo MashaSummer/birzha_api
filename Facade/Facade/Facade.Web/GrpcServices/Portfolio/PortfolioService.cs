@@ -28,8 +28,6 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         _serviceUrls = optionsMonitor.CurrentValue;
     }
 
-    
-
     public override async Task<PortfolioServiceGrpc.GetPortfolioResponse> GetPortfolio(PortfolioServiceGrpc.GetPortfolioRequest request, ServerCallContext context)
     {
         var channelPortfolio = GrpcChannel.ForAddress(_serviceUrls.PortfolioService);
@@ -56,7 +54,6 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
             }
         };
     }
-    
 
     private async Task<OperationResult<GetPortfolioResponse>> TryGetPortfolio(
         PortfolioGrpc.PortfolioService.PortfolioServiceClient portfolioClient, 

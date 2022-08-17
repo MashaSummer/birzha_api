@@ -6,7 +6,6 @@ package portfolio_service;
 
 service PortfolioService {
 	rpc GetPortfolio(GetPortfolioRequest) returns (GetPortfolioResponse);
-    rpc AddProduct(ChangePortfolioRequest) returns (AddProductResponse);
 }
 
 
@@ -17,8 +16,8 @@ message GetPortfolioRequest {
 message ChangePortfolioRequest {
     string investor_id = 1;
     string product_name = 2;
-	double volume = 3;
-    double start_price = 4;
+	int32 volume = 3;
+    int32 start_price = 4;
 }
 
 message Portfolio {
@@ -54,13 +53,6 @@ message Error {
 message GetPortfolioResponse {
     oneof result {
         Portfolio portfolio = 1;
-        Error error = 2;
-    }
-}
-
-message AddProductResponse {
-    oneof result {
-        string info = 1;
         Error error = 2;
     }
 }
