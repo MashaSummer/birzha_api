@@ -36,9 +36,9 @@
          state: present
          source: load
     
-    - name: Copy conf
-      Copy:
-        src: ansiblefiles/aspnetapp.pfx
+    - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://github.com/MashaSummer/birzha_api/tree/main/ansiblefiles/aspnetapp.pfx
         dest: /root/.aspnet/https
         mode: '777'
     
