@@ -24,6 +24,14 @@
         owner: root
         group: root
     
+    -name: Copy cpf
+     copy:
+       src: ansiblefiles/aspnetapp.pfx
+       dest: /root/.aspnet/https/
+       mode: 0755
+       owner: root
+       group: root
+    
     - name: Create a network
       community.docker.docker_network:
         name: birzha
