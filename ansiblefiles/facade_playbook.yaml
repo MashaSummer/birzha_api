@@ -38,7 +38,7 @@
          
     - name: copy foo.conf
       copy:
-        src: "ansiblefiles/aspnetapp.pfx"
+        src: aspnetapp.pfx
         dest: /root/.aspnet/https
         mode: '755'     
          
