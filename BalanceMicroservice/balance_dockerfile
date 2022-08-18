@@ -12,7 +12,7 @@ COPY ["BalanceMicroservice/BalanceMicroservice.Web/BalanceMicroservice.Web.cspro
 COPY ["BalanceMicroservice/BalanceMicroservice.Infrastructure/BalanceMicroservice.Infrastructure.csproj", "BalanceMicroservice/BalanceMicroservice.Infrastructure/"]
 COPY ["BalanceMicroservice/BalanceMicroservice.Domain/BalanceMicroservice.Domain.csproj", "BalanceMicroservice/BalanceMicroservice.Domain/"]
 RUN dotnet restore "BalanceMicroservice/BalanceMicroservice.Web/BalanceMicroservice.Web.csproj"
-COPY . .
+COPY BalanceMicroservice/ .
 WORKDIR "/src/BalanceMicroservice/BalanceMicroservice.Web/"
 RUN dotnet build "BalanceMicroservice.Web.csproj" -c Release -o /app/build
 
