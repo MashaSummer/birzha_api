@@ -24,13 +24,11 @@
         owner: root
         group: root
     
-   - name: Copy cpf
-     copy:
-       src: ansiblefiles/aspnetapp.pfx
-       dest: /root/.aspnet/https/
-       mode: 0755
-       owner: root
-       group: root
+   - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://github.com/MashaSummer/birzha_api/raw/main/ansiblefiles/aspnetapp.pfx
+        dest: /root/.aspnet/https
+        mode: '777'
     
     - name: Create a network
       community.docker.docker_network:
