@@ -24,12 +24,6 @@
         owner: root
         group: root
     
-   - name: Download foo.conf
-      ansible.builtin.get_url:
-        url: https://github.com/mysticms/birzha_api/raw/main/ansiblefiles/aspnetapp.pfx
-        dest: /root/.aspnet/https
-        mode: '777'
-    
     - name: Create a network
       community.docker.docker_network:
         name: birzha
@@ -41,6 +35,12 @@
          load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
          state: present
          source: load
+         
+    - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://github.com/mysticms/birzha_api/raw/main/ansiblefiles/aspnetapp.pfx
+        dest: /root/.aspnet/https
+        mode: '777'     
          
     - name: Run 
       docker_container:
