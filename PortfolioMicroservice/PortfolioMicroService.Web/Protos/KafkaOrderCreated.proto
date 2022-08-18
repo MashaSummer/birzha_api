@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "PortfolioMicroService";
+
+import "Protos/order.proto";
+
+package order.created;
+ 
+message OrderCreatedEvent {
+  
+  string order_id = 1;
+  
+  orders.Order order = 2;
+  
+}
