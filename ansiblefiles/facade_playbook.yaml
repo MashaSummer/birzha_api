@@ -36,11 +36,11 @@
          state: present
          source: load
          
-    - name: Download foo.conf
-      ansible.builtin.get_url:
-        url: https://github.com/mysticms/birzha_api/raw/main/ansiblefiles/aspnetapp.pfx
+    - name: copy foo.conf
+      copy:
+        src: "ansiblefiles/aspnetapp.pfx"
         dest: /root/.aspnet/https
-        mode: '777'     
+        mode: '755'     
          
     - name: Run 
       docker_container:
