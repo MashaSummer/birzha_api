@@ -14,6 +14,18 @@ namespace BalanceMicroservice.Web.BalanceService
             _logger = logger;
         }
 
+        public override async Task<BalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
+        {
+            _logger.LogInformation($"User {request.Id} asked for the balance");
+            var balance = await _database.GetByIdAsync(new Guid(request.Id));
+
+            return new BalanceResponse
+            {
+                BalanceActive = balance == null ? 0 : balance.BalanceActive,
+                BalanceFrozen = balance == null ? 0 : balance.BalanceFrozen
+            };
+        }
+
         public override Task<BalanceResponse> AddBalance(ChangeBalanceRequest request, ServerCallContext context)
         {
             _logger.LogInformation($"Add balance request for user {request.Id} in the amount of {request.Value} units");
