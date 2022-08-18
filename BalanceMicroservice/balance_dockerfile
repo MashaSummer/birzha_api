@@ -8,9 +8,9 @@ ENV ASPNETCORE_URLS="https://*:30001"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["BalanceMicroservice/BalanceMicroservice.Web/BalanceMicroservice.Web.csproj", "BalanceMicroservice/BalanceMicroservice.Web/"]
-COPY ["BalanceMicroservice/BalanceMicroservice.Infrastructure/BalanceMicroservice.Infrastructure.csproj", "BalanceMicroservice/BalanceMicroservice.Infrastructure/"]
-COPY ["BalanceMicroservice/BalanceMicroservice.Domain/BalanceMicroservice.Domain.csproj", "BalanceMicroservice/BalanceMicroservice.Domain/"]
+COPY ["BalanceMicroservice/BalanceMicroservice/BalanceMicroservice.Web/BalanceMicroservice.Web.csproj", "BalanceMicroservice/BalanceMicroservice.Web/"]
+COPY ["BalanceMicroservice/BalanceMicroservice/BalanceMicroservice.Infrastructure/BalanceMicroservice.Infrastructure.csproj", "BalanceMicroservice/BalanceMicroservice.Infrastructure/"]
+COPY ["BalanceMicroservice/BalanceMicroservice/BalanceMicroservice.Domain/BalanceMicroservice.Domain.csproj", "BalanceMicroservice/BalanceMicroservice.Domain/"]
 RUN dotnet restore "BalanceMicroservice/BalanceMicroservice.Web/BalanceMicroservice.Web.csproj"
 COPY BalanceMicroservice/ .
 WORKDIR "/src/BalanceMicroservice/BalanceMicroservice.Web/"
