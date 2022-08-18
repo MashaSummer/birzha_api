@@ -36,7 +36,7 @@
          state: present
          source: load
          
-    - name: copy foo.conf
+    - name: copy aspnetapp.pfx
       copy:
         src: aspnetapp.pfx
         dest: /root/.aspnet/https
