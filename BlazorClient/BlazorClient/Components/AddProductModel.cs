@@ -1,4 +1,5 @@
 ﻿using BlazorClient.Attributes;
+using BlazorClient.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,10 +12,12 @@ namespace BlazorClient.Pages
         public string ModalClass = "fade";
         public bool ShowBackdrop = false;
         public AddProductViewModel addProductViewModel = new();
+        [Inject] PriceDefineService priceDefineService { get; set; }
 
         public async Task HandleValidSubmitAsync()
         {
             var t = addProductViewModel;
+            var price = await priceDefineService.DefinePriceAsync(t.StartPrice);
             // Process the valid form
         }
 

@@ -24,7 +24,11 @@ namespace BlazorClient.Attributes
                     try
                     {
                         var intValue = Convert.ToInt32(unitsNanos[0]);
-                        return true;
+                        if(intValue > 0)
+                        {
+                            return true;
+                        }
+                        return false;
                     }
                     catch(Exception ex)
                     {
