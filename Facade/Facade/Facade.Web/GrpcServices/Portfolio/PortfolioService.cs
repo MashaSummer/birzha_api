@@ -37,9 +37,9 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
 
         var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channelPortfolio);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channelProduct);
-        var ordersClient = new Orders.OrdersService.OrdersServiceClient(channelOrders);
+        var ordersClient = new OrdersService.OrdersServiceClient(channelOrders);
 
-        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context);
+        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context, request.Id);
 
         if (responsePortfolio.Ok)
         {
@@ -59,16 +59,17 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
     private async Task<OperationResult<GetPortfolioResponse>> TryGetPortfolio(
         PortfolioGrpc.PortfolioService.PortfolioServiceClient portfolioClient, 
         ProductGrpc.ProductService.ProductServiceClient productClient,
-        Orders.OrdersService.OrdersServiceClient ordersClient,
-        ServerCallContext context)
+        OrdersService.OrdersServiceClient ordersClient,
+        ServerCallContext context,
+        string id)
     {
-        var responsePortfolio = await TryGetAssets(context, portfolioClient);
+        var responsePortfolio = await TryGetAssets(context, portfolioClient, id);
         var assetsArray = responsePortfolio.Result.AssetArray.Assets;
 
         var responseProduct = await TryGetAllProducts(productClient);
         var productsArray = responseProduct.Result.ProductArray.Products;
 
-        var responseOrders = await TryGetOrders(context, ordersClient, productsArray);
+        var responseOrders = await TryGetOrders(context, ordersClient, productsArray, id);
         var userProductsInfo = responseOrders.Result.Success.Products;
 
         var result = OperationResult.CreateResult<GetPortfolioResponse>();
@@ -113,14 +114,13 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         return result;
     }
 
-    private async Task<OperationResult<GetAllAssetsResponse>> TryGetAssets(ServerCallContext context, PortfolioGrpc.PortfolioService.PortfolioServiceClient client)
+    private async Task<OperationResult<GetAllAssetsResponse>> TryGetAssets(ServerCallContext context, PortfolioGrpc.PortfolioService.PortfolioServiceClient client, string id)
     {
         var result = OperationResult.CreateResult<GetAllAssetsResponse>();
-        var id = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id");
         
         try
         {
-            result.Result = await client.GetAllAssetsAsync(new GetAllAssetsRequest { Id = id.Value });
+            result.Result = await client.GetAllAssetsAsync(new GetAllAssetsRequest { Id = id });
             if (result.Result == null)
             {
                 result.AddError(new Exception("Failed to request"));
@@ -135,17 +135,17 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         return result;
     }
 
-    private async Task<OperationResult<UserProductsResponse>> TryGetOrders(ServerCallContext context, Orders.OrdersService.OrdersServiceClient client,
-        Google.Protobuf.Collections.RepeatedField<ProductArray.Types.Product> productsArray)
+    private async Task<OperationResult<UserProductsResponse>> TryGetOrders(ServerCallContext context, OrdersService.OrdersServiceClient client,
+        Google.Protobuf.Collections.RepeatedField<ProductArray.Types.Product> productsArray,
+        string id)
     {
         var result = OperationResult.CreateResult<UserProductsResponse>();
-        var id = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id");
         
         try
         {
             UserProductsRequest userProductsRequest = new UserProductsRequest();
 
-            userProductsRequest.InvestorId = id.Value;
+            userProductsRequest.InvestorId = id;
             foreach (var product in productsArray) 
             { 
                 userProductsRequest.ProductsId.Add(product.Id); 
