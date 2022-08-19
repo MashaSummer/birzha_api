@@ -1,4 +1,4 @@
-﻿using Calabonga.OperationResults;
+using Calabonga.OperationResults;
 using Facade.Web.Application;
 using Facade.Web.GrpcServices.Portfolio.Aggregation;
 using Facade.Web.GrpcServices.Product;
