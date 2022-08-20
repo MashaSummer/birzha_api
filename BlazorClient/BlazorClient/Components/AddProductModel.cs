@@ -15,10 +15,8 @@ namespace BlazorClient.Pages
         public string ModalClass = "fade";
         public bool ShowBackdrop = false;
         public AddProductViewModel addProductViewModel = new();
-        [Inject] NavigationManager NavigationManager { get; set; }
         [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IConfiguration config { get; set; }
-
         [Inject] IToastService toastService { get; set; }
 
         public async Task HandleValidSubmitAsync()
@@ -36,6 +34,7 @@ namespace BlazorClient.Pages
                     ProductName = addProductViewModel.ProductName,
                     StartPrice = priceDefineService.DefinePrice(addProductViewModel.StartPrice),
                 };
+
                 addProductResponse = await client.AddProductAsync(changePortfolioRequest);
 
                 if (addProductResponse == null || addProductResponse.Error != null)

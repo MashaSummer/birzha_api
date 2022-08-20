@@ -64,7 +64,31 @@
                             169.32
                         </td>
                     </tr>
-                </tbody>
+                    @foreach (var product in products)
+                        {
+                        <tr>
+                            <td>
+                                <a href="/product/@product.Id"
+                                    class="">
+                                    @product.Name
+                                </a>
+                            </td>
+                            <td>
+                                @{
+                                    var bestAsk = product.BestAsk == 0 ? "-" : product.BestAsk.ToString();
+                                }
+                                @bestAsk
+                            </td>
+                            <td>
+                                 @{
+                                    var bestBid = product.BestBid == 0 ? "-" : product.BestBid.ToString();
+                                }
+                                @bestBid
+                            </td>
+                        </tr>
+                        }       
+                  </tbody>
+                
             </table>
         </div>
     </div>
