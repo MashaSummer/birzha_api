@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+option csharp_namespace = "Orders";
+
+package orders;
+
+import "google/protobuf/timestamp.proto";
+
+service OrdersService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetUserProductsInfo(UserProductsRequest) returns (UserProductsResponse);
+  rpc GetProductsInfo(ProductInfoRequest) returns (ProductInfoResponse);
+}
+
+enum OrderType {
+  ASK = 0;
+  BID = 1;
+}
+
+
+
+message Success {
+  string success_text = 1;
+}
+
+message Error {
+
+  string error_text = 1;
+  string stack_trace = 2;
+}
+
+message Order {
+  OrderType type = 1;
+
+  string product_id = 2;
+
+  int32 volume = 3;
+
+  int32 price = 4;
+
+  bool only_full_execution = 5;
+
+  google.protobuf.Timestamp deadline = 6;
+
+  google.protobuf.Timestamp submission_time = 7;
+
+  string investor_id = 8;
+}
+
+message CreateOrderRequest {
+
+  Order order_detail = 1;
+
+}
+
+message CreateOrderResponse {
+  oneof result {
+    Success success = 1;
+    Error error = 2;
+  }
+}
+
+message UserProductsRequest {
+  string investor_id = 1;
+  repeated string products_id = 2;
+}
+
+
+message UserProductInfo {
+  int32 spent = 1;
+  int32 earned = 2;
+  int32 best_ask = 3;
+  int32 best_bid = 4;
+  string product_id = 5;
+}
+
+message ProductInfo {
+  int32 best_ask = 1;
+  int32 best_bid = 2;
+  string product_id = 3;
+}
+
+
+message UserProductInfoArray {
+  repeated UserProductInfo products = 1;
+}
+
+message UserProductsResponse {
+  oneof result {
+    Error error = 1;
+    UserProductInfoArray success = 2;
+  }
+}
+
+
+message ProductInfoRequest {
+  repeated string products_id = 1;
+}
+
+message ProductInfoArray {
+  repeated ProductInfo products_info = 1;
+}
+
+message ProductInfoResponse {
+  oneof result {
+    Error error = 1;
+    ProductInfoArray success = 2;
+  }
+}
