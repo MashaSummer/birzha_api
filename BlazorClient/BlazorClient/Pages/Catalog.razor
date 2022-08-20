@@ -1,5 +1,6 @@
 ﻿@using Components
 @page "/catalog"
+@inherits CatalogModel
 
 <AddProductModal @ref="Modal"></AddProductModal>
 
@@ -68,6 +69,4 @@
         </div>
     </div>
 </div>
-@code {
-    private Components.AddProductModal Modal { get; set; }
-}
+

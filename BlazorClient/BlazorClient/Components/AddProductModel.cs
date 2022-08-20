@@ -18,6 +18,7 @@ namespace BlazorClient.Pages
         {
             var t = addProductViewModel;
             var price = await priceDefineService.DefinePriceAsync(t.StartPrice);
+            Close();
             // Process the valid form
         }
 
