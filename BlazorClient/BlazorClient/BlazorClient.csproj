@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.Toast" Version="3.2.2" />
     <PackageReference Include="Google.Protobuf" Version="3.21.5" />
     <PackageReference Include="Grpc.Core" Version="2.46.3" />
     <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
@@ -22,5 +23,8 @@
   </ItemGroup>
 	<ItemGroup>
 		<Protobuf Include="Protos\auth.proto" GrpcServices="Client" />
+	</ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\product.proto" GrpcServices="Client" />
 	</ItemGroup>
 </Project>

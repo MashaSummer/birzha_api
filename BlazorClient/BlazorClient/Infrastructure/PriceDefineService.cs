@@ -6,7 +6,7 @@
         {
 
         }
-        public async Task<int> DefinePriceAsync(double value)
+        public int DefinePrice(double value)
         {
             var stringValue = value.ToString();
             var unitNanos = stringValue.Split(".");
@@ -18,6 +18,10 @@
             {
                 return Convert.ToInt32(unitNanos[0]) * 100 + Convert.ToInt32(unitNanos[1]);
             }
+        }
+        public double DefineNormalPrice(int value)
+        {
+            return ((double)value) / 100;
         }
     }
 }

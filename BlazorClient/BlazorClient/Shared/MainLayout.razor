@@ -1,4 +1,6 @@
 ﻿@using BlazorClient.Pages;
+@using Blazored.Toast.Configuration
+
 @inherits LayoutComponentBase
 
 <div class="page">
@@ -14,5 +16,10 @@
         <article class="content px-4">
             @Body
         </article>
+        <BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="4"
+                IconType="IconType.Material"
+                ShowProgressBar="true"
+                WarningIcon="warning" />
     </main>
 </div>
