@@ -1,6 +1,7 @@
 ﻿using BlazorClient.Attributes;
 using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using Orders;
@@ -23,6 +24,7 @@ namespace BlazorClient.Components
 
         public async Task HandleValidSubmitAsync()
         {
+            var t = postOrderViewModel;
             var address = config["FacadeBaseURL"];
             CreateOrderResponse createOrderResponse = new();
             try
@@ -32,7 +34,13 @@ namespace BlazorClient.Components
                 var client = new OrdersService.OrdersServiceClient(channel);
                 var orderDetail = new Order()
                 {
-                    Type = OrderType.Ask
+                    ProductId = ProductId,
+                    Volume = postOrderViewModel.Volume,
+                    Price = priceDefineService.DefinePrice(postOrderViewModel.Price),
+                    OnlyFullExecution = postOrderViewModel.OnlyFullExecution,
+                    SubmissionTime = Timestamp.FromDateTime(postOrderViewModel.SubmissionTime),
+                    Deadline = Timestamp.FromDateTime(postOrderViewModel.Deadline),
+                    InvestorId = null
                 };
                 var postOrderRequest = new CreateOrderRequest() { OrderDetail = orderDetail };
                 
@@ -76,8 +84,6 @@ namespace BlazorClient.Components
     }
     public class PostOrderViewModel
     {
-        [Required]
-        public OrderType OrderType { get; set; }
         public string ProductId { get; set; } = null!;
         [Required]
         public int Volume { get; set; }

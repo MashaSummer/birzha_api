@@ -16,14 +16,6 @@
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="form-group">
-                    <select class="form-select" @bind="@postOrderViewModel.OrderType" aria-label="Default select example" >
-                        <option selected>OrderType</option>
-                        @foreach(OrderType orderType in Enum.GetValues(typeof(OrderType))) {
-                            <option value="@((int)orderType)">@orderType.GetDisplayName()</option>   
-                        }
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="volume">Volume</label>
                     <InputNumber id="volume" min="1" class="form-control modal-input" @bind-Value="@postOrderViewModel.Volume" />
                 </div>
@@ -32,13 +24,13 @@
                     <InputNumber id="volume" min="0" class="form-control modal-input" @bind-Value="@postOrderViewModel.Price" />
                 </div> 
                 <div class="form-group">
-                     <InputCheckbox @bind-Value="@postOrderViewModel.OnlyFullExecution">Full execution</InputCheckbox>
+                     <InputCheckbox id="onlyFullExecution" class="form-check-input modal-input" @bind-Value="@postOrderViewModel.OnlyFullExecution"></InputCheckbox>
+                     <label for="onlyFullExecution">Full execution</label>
                 </div>
                 <div class="form-group">
                     <label for="deadline">Retention Time</label>
                     <InputDate id="deadline"  class="form-control modal-input" @bind-Value="@postOrderViewModel.Deadline" />
                 </div>
-                
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Add</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
