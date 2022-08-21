@@ -16,8 +16,8 @@
             <table class="table table-dark text-nowrap">
                 <thead>
                     <tr>
-                        <th>Total</th>
                         <th>Spent</th>
+                        <th>Earned</th>
                         <th>Estimate</th>
                         <th>&#916;Abs</th>
                         <th>&#916;Rel</th>
@@ -41,10 +41,32 @@
                             123
                         </td>
                     </tr>
+                    @if(portfolio.Total != null)
+                    {
+                     <tr>
+                        <td>
+                            @portfolio.Total?.Spent?
+                        </td>
+                        <td>
+                            @portfolio.Total?.Earned?
+                        </td>
+                        <td>
+                            @portfolio.Total?.Estimate?
+                        </td>
+                        <td>
+                            @portfolio.Total?.DeltaAbs?
+                        </td>
+                        <td>
+                            @portfolio.Total?.DeltaRel?
+                        </td>
+                    </tr>
+                    }
+                    
+
                 </tbody>
             </table>
         </div>
-               Total spent earned estimate &#916;Abs &#916;Rel
+               
           </div>
      
 </header>
@@ -54,8 +76,10 @@
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th>Total</th>
+                        <th>Price</th>
+                        <th>Volume</th>
                         <th>Spent</th>
+                        <th>Earned</th>
                         <th>Estimate</th>
                         <th>&#916;Abs</th>
                         <th>&#916;Rel</th>
@@ -81,6 +105,51 @@
                         <td>
                             123
                         </td>
+                        <td>
+                            123
+                        </td>
+                        <td>
+                            123
+                        </td>
                     </tr>
+                    @if(portfolio.Products != null)
+        {
+            @foreach (var product in portfolio.Products)
+                        {
+                        <tr>
+                            <td>
+                                <a href="/product/@product.Id"
+                                    class="">
+                                    @product.Name
+                                </a>
+                            </td>
+                            <td>
+                                @{
+                                    var price = product.Price == 0 ? "-" : product.Price.ToString();
+                                }
+                                @price
+                            </td>
+                            <td>
+                                @product.Volume
+                            </td>
+                            <td>
+                                @product.Spent
+                            </td>
+                            <td>
+                                @product.Earned
+                            </td>
+                            <td>
+                                @product.Estimate
+                            </td>
+                            <td>
+                                @product.DeltaAbs
+                            </td>
+                            <td>
+                                @product.DeltaRel
+                            </td>
+                        </tr>
+                        }
+        }
+               
                 </tbody>
             </table>

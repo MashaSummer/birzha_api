@@ -12,10 +12,11 @@ namespace BlazorClient.Pages
         [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IToastService toastService { get; set; }
         public Components.AddProductModal Modal { get; set; }
-        public IEnumerable<AllProductViewModel> products { get; set; }
+        public List<AllProductViewModel> products { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            products = new();
             var address = config["FacadeBaseURL"];
             GetAllProductsResponse getAllProductsResponse = new();
             try
@@ -40,7 +41,7 @@ namespace BlazorClient.Pages
                     Name = x.Name,
                     BestAsk = x.BestAsk,
                     BestBid = x.BestBid
-                });
+                }).ToList();
             }
             catch (Exception ex)
             {

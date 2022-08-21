@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 using ProductGrpc;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorClient.Pages
+namespace BlazorClient.Components
 {
     public class AddProductModel : ComponentBase
     {
@@ -40,21 +40,20 @@ namespace BlazorClient.Pages
                 if (addProductResponse == null || addProductResponse.Error != null)
                 {
                     Close();
-                    toastService.ShowError($"Enable to add {addProductViewModel.ProductName}", "SUCCESS");
+                    toastService.ShowError($"Enable to add {addProductViewModel.ProductName}");
                     return;
                 }
             }
             catch (Exception ex)
             {
                 Close();
-                toastService.ShowError($"Enable to add {addProductViewModel.ProductName}", "SUCCESS");
+                toastService.ShowError($"Enable to add {addProductViewModel.ProductName}");
                 return;
             }
 
 
             Close();
             toastService.ShowSuccess($"Product {addProductViewModel.ProductName} succesfully added", "SUCCESS");
-            // Process the valid form
         }
 
 

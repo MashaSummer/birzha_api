@@ -1,5 +1,6 @@
 ﻿@page "/product/{Id}"
-
+@using Orders
+<PostOrderModal @ref="Modal"></PostOrderModal>
 <div class="container-fluid">
         <div class="row">
           <div class="col-md-3">
@@ -17,18 +18,10 @@
                 </ul>
                 <div class="row">
                     <div class="col">
-                        <form action="~/users/delete/123" method="post">
-                            <div class="input-group-prepend">
-                                <button type="submit" class="btn btn-primary">Buy</button>
-                            </div>
-                        </form>
+                        <button class="btn btn-primary" @onclick="() => Modal.Open(Id, OrderType.Bid)">Buy</button>
                     </div>
                     <div class="col col-lg-4">
-                        <form action="~/users/delete/123" method="post">
-                            <div class="input-group-prepend">
-                                <button type="submit" class="btn btn-danger">Sell</button>
-                            </div>
-                        </form>
+                        <button class="btn btn-primary" @onclick="() => Modal.Open(Id, OrderType.Ask)">Sell</button>
                     </div>
                 </div>
                 
@@ -120,4 +113,5 @@
 @code {
     [Parameter]
     public string? Id { get; set; }
+    public Components.PostOrderModal Modal { get; set; }
 }
