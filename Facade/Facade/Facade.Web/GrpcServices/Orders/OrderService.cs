@@ -15,7 +15,10 @@ public class OrderService : OrdersService.OrdersServiceBase
     
     public OrderService(IOptionsMonitor<ServiceUrls> optionsMonitor)
     {
-        var channel = GrpcChannel.ForAddress(optionsMonitor.CurrentValue.OrdersService);
+         var httpHandler = new HttpClientHandler();
+         httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        var channel = GrpcChannel.ForAddress(optionsMonitor.CurrentValue.OrdersService,  new GrpcChannelOptions { HttpHandler = httpHandler });
         _client = new OrdersService.OrdersServiceClient(channel);
     }
 
