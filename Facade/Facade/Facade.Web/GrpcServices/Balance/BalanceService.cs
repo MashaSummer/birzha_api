@@ -24,7 +24,6 @@ namespace Facade.Web.GrpcServices.Balance
             _serviceUrls = optionsMonitor.CurrentValue;
         }
 
-
         public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context) =>
             (await RequestsToService(
                 context,  
@@ -52,7 +51,11 @@ namespace Facade.Web.GrpcServices.Balance
             Func<BalanceServiceProto.BalanceServiceProtoClient, string, ValueRequest, Task<BalanceResponse>> func, 
             ValueRequest request = null)
         {
-            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
+            var httpHandler = new HttpClientHandler();
+            httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService, new GrpcChannelOptions { HttpHandler = httpHandler });
+
             var result = OperationResult.CreateResult<BalanceData>();
             var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id")!.Value;
             response responseDelegate = new response(func);

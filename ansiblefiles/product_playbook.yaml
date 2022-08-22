@@ -48,17 +48,16 @@
          image: "{{ microservice_name_image }}:{{ sha }}"
          state: started
          ports:
-          - "5000:5000"
-          - "5001:5001"
+          - "36000:36000"
+          - "36001:36001"
          networks:
           - name: birzha
          log_driver: json-file
          log_options:
              tag: "{{ microservice_name }}"
          env:
-             ASPNETCORE_HTTPS_PORT: "5001"
+             ASPNETCORE_HTTPS_PORT: "36001"
              ASPNETCORE_Kestrel__Certificates__Default__Password: "123456789"
              ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
          volumes:
           - /root/.aspnet/https:/https/ 
-   
