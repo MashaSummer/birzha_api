@@ -24,7 +24,10 @@ namespace Facade.Web.GrpcServices.Balance
 
         public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
         {
-            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
+            var httpHandler = new HttpClientHandler();
+            httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService, new GrpcChannelOptions { HttpHandler = httpHandler });
 
             var result = OperationResult.CreateResult<BalanceData>();
             var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
