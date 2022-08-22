@@ -24,13 +24,14 @@ message Portfolio {
     message Product {
         string id = 1;
         string name = 2;
-        int32 volume = 3; 
-        double spent = 4;
-        double earned = 5;
-        double best_ask = 6;
-        double estimate = 7;
-        double delta_abs = 8;
-        double delta_rel = 9;
+        int32 volume_active = 3; 
+        int32 volume_frozen = 4; 
+        double spent = 5;
+        double earned = 6;
+        int32 best_ask = 7;
+        double estimate = 8;
+        double delta_abs = 9;
+        double delta_rel = 10;
     }
 
     message Total {
