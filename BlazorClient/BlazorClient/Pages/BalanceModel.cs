@@ -1,6 +1,7 @@
 ﻿using Balances;
 using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 
@@ -8,32 +9,27 @@ namespace BlazorClient.Pages
 {
     public class BalanceModel : ComponentBase
     {
-        [Inject] IConfiguration config { get; set; }
         [Inject] IToastService toastService { get; set; }
-
+        [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] Balance.BalanceClient Client { get; set; }
         public Components.DepositModal Modal { get; set; }
         public double Balance { get; set; }
         public double Frozen { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-
-            var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             BalanceData balanceResponse = new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token}");
 
-                var client = new Balance.BalanceClient(channel);
-
-
-                balanceResponse = await client.GetBalanceAsync(new EmptyRequest());
-
+                balanceResponse = await Client.GetBalanceAsync(new EmptyRequest(), headers);
 
                 if (balanceResponse == null || balanceResponse.Status == BalanceData.Types.Status.Failed)
                 {
-
-                    toastService.ShowError($"Enable to fetch balance, please try again.");
+                    toastService.ShowError($"Unable to fetch balance, please try again.");
                     return;
                 }
                 Balance = balanceResponse.Balance;
@@ -41,7 +37,7 @@ namespace BlazorClient.Pages
             }
             catch (Exception ex)
             {
-                toastService.ShowError($"Enable to fetch balance, please try again.");
+                toastService.ShowError($"Unable to fetch balance, please try again.");
                 return;
             }
         }

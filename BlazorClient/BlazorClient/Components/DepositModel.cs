@@ -1,6 +1,8 @@
 ﻿using Balances;
 using BlazorClient.Attributes;
+using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
@@ -14,37 +16,36 @@ namespace BlazorClient.Components
         public string ModalClass = "fade";
         public bool ShowBackdrop = false;
         public AddBalanceViewModel addBalanceViewModel = new();
-        [Inject] IConfiguration config { get; set; }
+        [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] Balance.BalanceClient Client { get; set; }
         [Inject] IToastService toastService { get; set; }
 
         public async Task HandleValidSubmitAsync()
         {
-            var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             BalanceData balanceData= new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
-
-                var client = new Balance.BalanceClient(channel);
-
-                balanceData = await client.AddBalanceAsync(new ValueRequest() { Value = addBalanceViewModel.Value});
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token}");
+                balanceData = await Client.AddBalanceAsync(new ValueRequest() { Value = addBalanceViewModel.Value}, headers);
 
                 if (balanceData == null || balanceData.Status == BalanceData.Types.Status.Failed)
                 {
                     Close();
-                    toastService.ShowError($"Unable to deposite balance");
+                    toastService.ShowError($"Unable to deposite balance.");
                     return;
                 }
             }
             catch (Exception ex)
             {
                 Close();
-                toastService.ShowError($"Unable to deposite balance");
+                toastService.ShowError($"Unable to deposite balance.");
                 return;
             }
 
             Close();
-            toastService.ShowSuccess($"{addBalanceViewModel.Value} y.e succesfully added", "SUCCESS");
+            toastService.ShowSuccess($"{addBalanceViewModel.Value} y.e. succesfully added.", "SUCCESS");
         }
 
 

@@ -2,6 +2,7 @@
 using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using Orders;
@@ -19,18 +20,19 @@ namespace BlazorClient.Components
         public bool ShowBackdrop = false;
         public PostOrderViewModel postOrderViewModel = new();
         [Inject] PriceDefineService priceDefineService { get; set; }
-        [Inject] IConfiguration config { get; set; }
+        [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] OrdersService.OrdersServiceClient Client { get; set; }
         [Inject] IToastService toastService { get; set; }
 
         public async Task HandleValidSubmitAsync()
         {
-            var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             CreateOrderResponse createOrderResponse = new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
-
-                var client = new OrdersService.OrdersServiceClient(channel);
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token}");
+                
                 var orderDetail = new Order()
                 {
                     ProductId = ProductId,
@@ -43,23 +45,23 @@ namespace BlazorClient.Components
                 };
                 var postOrderRequest = new CreateOrderRequest() { OrderDetail = orderDetail };
                 
-                createOrderResponse = await client.CreateOrderAsync(postOrderRequest);
+                createOrderResponse = await Client.CreateOrderAsync(postOrderRequest, headers);
 
                 if (createOrderResponse == null || createOrderResponse.Error != null)
                 {
                     Close();
-                    toastService.ShowError($"Enable to post order");
+                    toastService.ShowError($"Unable to post order.");
                     return;
                 }
             }
             catch (Exception ex)
             {
                 Close();
-                toastService.ShowError($"Enable to post order");
+                toastService.ShowError($"Unable to post order.");
                 return;
             }
             Close();
-            toastService.ShowSuccess($"Order succesfully added");  
+            toastService.ShowSuccess($"Order succesfully added.");  
         }
 
 
