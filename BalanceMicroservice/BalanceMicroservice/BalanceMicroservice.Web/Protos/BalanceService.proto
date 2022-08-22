@@ -3,7 +3,7 @@
 option csharp_namespace = "BalanceMicroservice";
 
 
-service BalanceService {
+service BalanceServiceProto {
 	rpc GetBalance(GetBalanceRequest) returns (BalanceResponse);
 	rpc AddBalance(ChangeBalanceRequest) returns (BalanceResponse);
 	rpc ReduseBalance(ChangeBalanceRequest) returns (BalanceResponse);
@@ -16,7 +16,7 @@ message GetBalanceRequest {
 
 message ChangeBalanceRequest {
 	string id = 1;
-	double value = 2;
+	int32 value = 2;
 }
 
 message BalanceResponse {

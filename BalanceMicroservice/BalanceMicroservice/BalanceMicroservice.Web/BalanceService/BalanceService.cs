@@ -4,7 +4,7 @@ using BalanceMicroservice.Web.MongoService.ViewModels;
 
 namespace BalanceMicroservice.Web.BalanceService
 {
-    public class BalanceService : BalanceMicroservice.BalanceService.BalanceServiceBase
+    public class BalanceService : BalanceMicroservice.BalanceServiceProto.BalanceServiceProtoBase
     {
         private readonly MongoBalanceService _database;
         private readonly ILogger<BalanceService> _logger;
@@ -40,8 +40,9 @@ namespace BalanceMicroservice.Web.BalanceService
 
 
 
-        private async Task<BalanceResponse> ChangeBalance(string id, double value, bool negative)
+        private async Task<BalanceResponse> ChangeBalance(string id, decimal value, bool negative)
         {
+            value /= 100;
             if (value <= 0)
             {
                 _logger.LogError("User {0} tried to use negative value ({1})", id, value);
@@ -65,7 +66,7 @@ namespace BalanceMicroservice.Web.BalanceService
         }
 
 
-        private static BalanceViewModel CalculateNewBalance(BalanceViewModel oldValue, double newValue)
+        private static BalanceViewModel CalculateNewBalance(BalanceViewModel oldValue, decimal newValue)
         {
             return new BalanceViewModel
             {

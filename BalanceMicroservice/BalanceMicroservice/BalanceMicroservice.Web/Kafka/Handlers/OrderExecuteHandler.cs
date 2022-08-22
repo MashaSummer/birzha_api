@@ -22,7 +22,7 @@ public class OrderExecuteHandler : IEventHandler<Null, OrderExecuteEvent>
 
     public async Task<OperationResult<bool>> ProcessAsync(Message<Null, OrderExecuteEvent> message)
     {
-        double price = (double)message.Value.Price * message.Value.Volume / 100;
+        decimal price = (decimal)message.Value.Price * message.Value.Volume / 100;
 
         var bidUser = await _database.GetByIdAsync(new Guid(message.Value.BidInvestorId));
         var askUser = await _database.GetByIdAsync(new Guid(message.Value.AskInvestorId));
