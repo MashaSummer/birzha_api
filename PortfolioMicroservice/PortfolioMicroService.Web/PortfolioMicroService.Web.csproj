@@ -36,7 +36,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Protobuf Include="Protos\Order.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\order.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\KafkaAuthRegisterProto.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\KafkaValidate.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\KafkaOrderCreated.proto" GrpcServices="Server" />
