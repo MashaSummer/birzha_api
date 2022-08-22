@@ -1,4 +1,4 @@
-﻿using BalanceMicroservice;
+﻿using Balances;
 using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
 using Grpc.Net.Client;
@@ -9,7 +9,6 @@ namespace BlazorClient.Pages
     public class BalanceModel : ComponentBase
     {
         [Inject] IConfiguration config { get; set; }
-        [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IToastService toastService { get; set; }
         public Components.AddProductModal Modal { get; set; }
         public double Balance { get; set; }
@@ -18,28 +17,28 @@ namespace BlazorClient.Pages
         {
 
             var address = config["FacadeBaseURL"];
-            BalanceResponse balanceResponse = new();
+            BalanceData balanceResponse = new();
             try
             {
                 var channel = GrpcChannel.ForAddress(address);
 
-                var client = new QueryBalanceService.QueryBalanceServiceClient(channel);
+                var client = new Balance.BalanceClient(channel);
 
 
-                balanceResponse = await client.GetBalanceAsync(new GetBalanceRequest { Id = null });
+                balanceResponse = await client.GetBalanceAsync(new EmptyRequest());
 
 
-                if (balanceResponse == null || balanceResponse.Error != null)
+                if (balanceResponse == null || balanceResponse.Status == BalanceData.Types.Status.Failed)
                 {
 
-                    toastService.ShowError($"Enable to fetch portfolio, please try again.");
+                    toastService.ShowError($"Enable to fetch balance, please try again.");
                     return;
                 }
                 Balance = balanceResponse.Balance;
             }
             catch (Exception ex)
             {
-                toastService.ShowError($"Enable to fetch products, please try again");
+                toastService.ShowError($"Enable to fetch balance, please try again.");
                 return;
             }
         }
