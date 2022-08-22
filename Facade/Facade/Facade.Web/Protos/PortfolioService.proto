@@ -28,7 +28,7 @@ message Portfolio {
         int32 volume_frozen = 4; 
         double spent = 5;
         double earned = 6;
-        double best_ask = 7;
+        int32 best_ask = 7;
         double estimate = 8;
         double delta_abs = 9;
         double delta_rel = 10;
