@@ -1,4 +1,4 @@
-name: PortfolioMicroservice-test-and-deploy
+name: ProductMicroservice-test-and-deploy
 env:
   SERVER: "84.38.185.78"
   PORT: "22"
