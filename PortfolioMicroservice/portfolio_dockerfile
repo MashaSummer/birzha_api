@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["PortfolioMicroService/PortfolioMicroService.Web/PortfolioMicroService.Web.csproj", "PortfolioMicroservice/PortfolioMicroService.Web/"]
 COPY ["PortfolioMicroService/PortfolioMicroService.Infrastructure/PortfolioMicroService.Infrastructure.csproj", "PortfolioMicroservice/PortfolioMicroService.Infrastructure/"]
-COPY ["PortfolioMicroService/PortfolioMicroService.Domain/PortfolioMicroService.Domain.csproj", "PortfolioMicroservice/PortfolioMicroService.Domain/"]
+COPY ["PortfolioMicroservice/PortfolioMicroService.Domain/PortfolioMicroService.Domain.csproj", "PortfolioMicroservice/PortfolioMicroService.Domain/"]
 RUN dotnet restore "PortfolioMicroService.Web/PortfolioMicroService.Web.csproj"
 COPY . .
 WORKDIR "/src/PortfolioMicroservice/PortfolioMicroService.Web"
