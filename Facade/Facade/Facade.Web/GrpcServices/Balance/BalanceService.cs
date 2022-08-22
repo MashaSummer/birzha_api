@@ -6,6 +6,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using BalanceMicroservice;
 
 namespace Facade.Web.GrpcServices.Balance
 {
@@ -23,54 +24,39 @@ namespace Facade.Web.GrpcServices.Balance
             _serviceUrls = optionsMonitor.CurrentValue;
         }
 
-        public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
-        {
-            var respon =  await RequestsToService(context,  async (service, id, _) => await service.GetBalanceAsync(new GetBalanceRequest { Id = id }));
 
-            if (!respon.Ok)
-            {
-                return new BalanceData
-                {
-                    Status = BalanceData.Types.Status.Failed
-                };
-            }
-            return respon.Result;
-            
+        public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context) =>
+            (await RequestsToService(
+                context,  
+                async (service, id, _) => await service.GetBalanceAsync(new GetBalanceRequest { Id = id }))
+            ).Result;
 
-        }
-        public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context)
-        {
-            var respon = await RequestsToService(context, async (service, id, value) => await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), request);
 
-            if (!respon.Ok)
-            {
-                return new BalanceData
-                {
-                    Status = BalanceData.Types.Status.Failed
-                };
-            }
-            return respon.Result;
-        }
-        public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context)
-        {
-            var respon = await RequestsToService(context, async (service, id, value) => await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), request);
+        public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context) =>
+            (await RequestsToService(
+                context, 
+                async (service, id, value) => await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), 
+                request)
+            ).Result;
 
-            if (!respon.Ok)
-            {
-                return new BalanceData
-                {
-                    Status = BalanceData.Types.Status.Failed
-                };
-            }
-            return respon.Result;
-        }
 
-        private async Task<OperationResult<BalanceData>> RequestsToService(ServerCallContext context, Func<BalanceMicroservice.BalanceService.BalanceServiceClient,string, ValueRequest, Task<BalanceResponse>> func, ValueRequest request = null)
+        public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context) => 
+            (await RequestsToService(context, 
+                async (service, id, value) => await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), 
+                request)
+            ).Result;
+
+
+        private async Task<OperationResult<BalanceData>> RequestsToService(
+            ServerCallContext context, 
+            Func<BalanceServiceProto.BalanceServiceProtoClient, string, ValueRequest, Task<BalanceResponse>> func, 
+            ValueRequest request = null)
         {
             var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
             var result = OperationResult.CreateResult<BalanceData>();
             var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id")!.Value;
-            response resp= new response(func); 
+            response responseDelegate = new response(func); 
+
             if (id == null)
             {
                 _logger.LogError($"Invalid id");
@@ -78,19 +64,20 @@ namespace Facade.Web.GrpcServices.Balance
             }
             try
             {
-                var service = new BalanceMicroservice.BalanceService.BalanceServiceClient(channel);
-                 var responesdata = await  resp(service,id!, request);
-                if (responesdata == null || responesdata.Error)
+                var service = new BalanceServiceProto.BalanceServiceProtoClient(channel);
+                var responseData = await responseDelegate(service, id, request);
+
+                if (responseData == null || responseData.Error)
                 {
-                    _logger.LogError("Bad response : {0}", responesdata.ErrorMessage);
-                    result.AddError("Bad response" + responesdata.ErrorMessage);
+                    _logger.LogError("Bad response : {0}", responseData.ErrorMessage);
+                    result.AddError("Bad response" + responseData.ErrorMessage);
                 }
                 else
                 {
                     result.Result = new BalanceData 
                     {
-                        Balance = responesdata.BalanceActive,
-                        FrozenBalance = responesdata.BalanceFrozen,
+                        Balance = (double)responseData.BalanceActive / 100,
+                        FrozenBalance = (double)responseData.BalanceFrozen / 100,
                         Status = BalanceData.Types.Status.Success 
                     };
                 }
@@ -100,6 +87,15 @@ namespace Facade.Web.GrpcServices.Balance
                 _logger.LogError("Error on Balance method reduce {0}", ex.Message);
                 result.AddError(ex.Message);
             }
+
+            if (!result.Ok)
+            {
+                return new BalanceData
+                {
+                    Status = BalanceData.Types.Status.Failed
+                };
+            }
+
             return result;
         }
     }
