@@ -14,12 +14,13 @@ message EmptyRequest{
 }
 message BalanceData {
   double  balance = 1;
+  double frozen_balance = 2;
   enum Status {
     NONE = 0;
     SUCCESS = 1;
     FAILED = 2;
   }
-  Status status = 2;
+  Status status = 3;
 }
 message ValueRequest{
     double value = 1;

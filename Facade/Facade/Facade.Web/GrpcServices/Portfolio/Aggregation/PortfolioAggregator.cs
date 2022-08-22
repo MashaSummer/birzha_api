@@ -32,7 +32,8 @@ namespace Facade.Web.GrpcServices.Portfolio.Aggregation
                     BestAsk = ordersPerProduct.BestAsk,
                     Spent = spent,
                     Earned = earned,
-                    Volume = asset.VolumeActive,
+                    VolumeActive = asset.VolumeActive,
+                    VolumeFrozen = asset.VolumeFrozen,
                     Estimate = estimate,
                     DeltaAbs = delta_abs,
                     DeltaRel = delta_rel
