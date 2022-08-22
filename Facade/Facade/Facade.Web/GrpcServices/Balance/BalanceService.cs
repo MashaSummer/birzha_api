@@ -16,7 +16,7 @@ namespace Facade.Web.GrpcServices.Balance
         private readonly ILogger<BalanceService> _logger;
         
         private readonly ServiceUrls _serviceUrls;
-        delegate Task<BalanceResponse> response(BalanceMicroservice.BalanceService.BalanceServiceClient service,string id , ValueRequest value);
+        delegate Task<BalanceResponse> response(BalanceMicroservice.BalanceServiceProto.BalanceServiceProtoClient service,string id , ValueRequest value);
         
         public BalanceService(ILogger<BalanceService> logger, IOptionsMonitor<ServiceUrls> optionsMonitor)
         {
@@ -35,14 +35,14 @@ namespace Facade.Web.GrpcServices.Balance
         public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context) =>
             (await RequestsToService(
                 context, 
-                async (service, id, value) => await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), 
+                async (service, id, value) => await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id, Value = (int)(value.Value * 100) }), 
                 request)
             ).Result;
 
 
         public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context) => 
             (await RequestsToService(context, 
-                async (service, id, value) => await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id, Value = value.Value }), 
+                async (service, id, value) => await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id, Value = (int)(value.Value * 100)  }), 
                 request)
             ).Result;
 
@@ -55,8 +55,7 @@ namespace Facade.Web.GrpcServices.Balance
             var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
             var result = OperationResult.CreateResult<BalanceData>();
             var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id")!.Value;
-            response responseDelegate = new response(func); 
-
+            response responseDelegate = new response(func);
             if (id == null)
             {
                 _logger.LogError($"Invalid id");
@@ -76,24 +75,21 @@ namespace Facade.Web.GrpcServices.Balance
                 {
                     result.Result = new BalanceData 
                     {
-                        Balance = (double)responseData.BalanceActive / 100,
-                        FrozenBalance = (double)responseData.BalanceFrozen / 100,
+                        Balance = (double)responseData.BalanceActive / 100f,
+                        FrozenBalance = (double)responseData.BalanceFrozen / 100f,
                         Status = BalanceData.Types.Status.Success 
                     };
                 }
             }
             catch(Exception ex)
             {
-                _logger.LogError("Error on Balance method reduce {0}", ex.Message);
+                _logger.LogError("Error on Balance method  {0}", ex.Message);
                 result.AddError(ex.Message);
             }
 
             if (!result.Ok)
             {
-                return new BalanceData
-                {
-                    Status = BalanceData.Types.Status.Failed
-                };
+                result.Result = new BalanceData { Status = BalanceData.Types.Status.Failed };
             }
 
             return result;
