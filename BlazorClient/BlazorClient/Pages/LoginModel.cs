@@ -10,9 +10,8 @@ namespace BlazorClient.Pages
     public class LoginModel : ComponentBase
     {
         [Inject] public ILocalStorageService localStorageService { get; set; }
-
         [Inject] public NavigationManager NavigationManager { get; set; }
-
+        [Inject] AuthService.AuthServiceClient Client { get; set; }
         [Inject] IConfiguration config { get; set; }
         public LoginModel()
         {
@@ -22,14 +21,10 @@ namespace BlazorClient.Pages
         public LoginViewModel LoginData { get; set; }
         protected async Task LoginAsync()
         {
-            var address = config["FacadeBaseURL"];
             TokenData tokenData = new TokenData();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
-
-                var client = new AuthService.AuthServiceClient(channel);
-                tokenData = await client.LoginAsync(new LoginData
+                tokenData = await Client.LoginAsync(new LoginData
                 {
                     Email = LoginData.UserName,
                     Password = LoginData.Password

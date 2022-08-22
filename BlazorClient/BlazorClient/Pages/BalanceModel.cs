@@ -10,8 +10,10 @@ namespace BlazorClient.Pages
     {
         [Inject] IConfiguration config { get; set; }
         [Inject] IToastService toastService { get; set; }
-        public Components.AddProductModal Modal { get; set; }
+
+        public Components.DepositModal Modal { get; set; }
         public double Balance { get; set; }
+        public double Frozen { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,6 +37,7 @@ namespace BlazorClient.Pages
                     return;
                 }
                 Balance = balanceResponse.Balance;
+                Frozen = balanceResponse.FrozenBalance;
             }
             catch (Exception ex)
             {

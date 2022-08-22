@@ -24,7 +24,6 @@ namespace BlazorClient.Components
 
         public async Task HandleValidSubmitAsync()
         {
-            var t = postOrderViewModel;
             var address = config["FacadeBaseURL"];
             CreateOrderResponse createOrderResponse = new();
             try

@@ -1,9 +1,10 @@
 ﻿@using BlazorClient.Pages
 @inherits BalanceModel
-<h3>BalanceDisplay</h3>
+<DepositModal @ref="Modal"></DepositModal>
 <AuthorizeView>
     <Authorized>
-        Balance: @Balance
+        Balance: @Balance/ <span style="color:gray"@Frozen</span>
+        <button class="btn btn-primary" @onclick="() => Modal.Open()">Deposite</button>
     </Authorized>
     <NotAuthorized>
     </NotAuthorized>

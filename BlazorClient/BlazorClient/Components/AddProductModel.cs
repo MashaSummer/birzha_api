@@ -15,6 +15,7 @@ namespace BlazorClient.Components
         public string ModalClass = "fade";
         public bool ShowBackdrop = false;
         public AddProductViewModel addProductViewModel = new();
+        [Inject] public ILocalStorageService localStorageService { get; set; }
         [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IConfiguration config { get; set; }
         [Inject] IToastService toastService { get; set; }
@@ -22,6 +23,7 @@ namespace BlazorClient.Components
         public async Task HandleValidSubmitAsync()
         {
             var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             ChangePortfolioResponse addProductResponse = new();
             try
             {

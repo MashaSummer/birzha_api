@@ -26,7 +26,7 @@ namespace BlazorClient.Pages
                 var client = new PortfolioService.PortfolioServiceClient(channel);
 
 
-                getPortfolioResponse = await client.GetPortfolioAsync(new GetPortfolioRequest() { Id = null});
+                getPortfolioResponse = await client.GetPortfolioAsync(new GetPortfolioRequest());
 
 
                 if (getPortfolioResponse == null || getPortfolioResponse.Error != null)
@@ -39,7 +39,8 @@ namespace BlazorClient.Pages
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Volume = x.Volume,
+                    VolumeActive = x.VolumeActive,
+                    VolumeFrozen = x.VolumeFrozen,
                     Spent = x.Spent,
                     Earned = x.Earned,
                     Price = x.BestAsk,
@@ -72,7 +73,8 @@ namespace BlazorClient.Pages
     {
         public string Id { get; set; } = null!;
         public string Name { get; set; } = null!;
-        public double Volume { get; set; }
+        public int VolumeActive { get; set; }
+        public int VolumeFrozen { get; set; }
         public double Spent { get; set; }
         public double Earned { get; set; }
         public double Price { get; set; }
