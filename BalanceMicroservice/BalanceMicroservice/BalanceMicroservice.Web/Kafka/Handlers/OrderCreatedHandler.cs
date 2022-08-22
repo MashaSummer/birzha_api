@@ -32,7 +32,7 @@ public class OrderCreatedHandler : IEventHandler<Null, OrderCreatedEvent>
 
         bool isOrderValid = false;
 
-        double totalPrice = (double)message.Value.Order.Price * message.Value.Order.Volume / 100;
+        decimal totalPrice = (decimal)message.Value.Order.Price * message.Value.Order.Volume / 100;
         if (userBalance.BalanceActive >= totalPrice)
         {
             isOrderValid = true;

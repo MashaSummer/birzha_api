@@ -76,8 +76,8 @@ namespace Facade.Web.GrpcServices.Balance
                 {
                     result.Result = new BalanceData 
                     {
-                        Balance = (double)responseData.BalanceActive / 100,
-                        FrozenBalance = (double)responseData.BalanceFrozen / 100,
+                        Balance = (decimal)responseData.BalanceActive / 100,
+                        FrozenBalance = (decimal)responseData.BalanceFrozen / 100,
                         Status = BalanceData.Types.Status.Success 
                     };
                 }

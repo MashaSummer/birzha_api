@@ -40,7 +40,7 @@ namespace BalanceMicroservice.Web.BalanceService
 
 
 
-        private async Task<BalanceResponse> ChangeBalance(string id, double value, bool negative)
+        private async Task<BalanceResponse> ChangeBalance(string id, decimal value, bool negative)
         {
             if (value <= 0)
             {
@@ -65,7 +65,7 @@ namespace BalanceMicroservice.Web.BalanceService
         }
 
 
-        private static BalanceViewModel CalculateNewBalance(BalanceViewModel oldValue, double newValue)
+        private static BalanceViewModel CalculateNewBalance(BalanceViewModel oldValue, decimal newValue)
         {
             return new BalanceViewModel
             {
