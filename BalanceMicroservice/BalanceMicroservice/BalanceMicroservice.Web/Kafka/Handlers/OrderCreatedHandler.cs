@@ -24,18 +24,21 @@ public class OrderCreatedHandler : IEventHandler<Null, OrderCreatedEvent>
 
     public async Task<OperationResult<bool>> ProcessAsync(Message<Null, OrderCreatedEvent> message)
     {
+        if (message.Value.Order.Type != Orders.OrderType.Bid) { return new OperationResult<bool> { Result = false }; }
+
         _logger.LogInformation($"Get {nameof(OrderCreatedEvent)} event");
 
         var userBalance = await _database.GetByIdAsync(new Guid(message.Value.Order.InvestorId));
 
         bool isOrderValid = false;
 
-        if(userBalance.BalanceActive >= message.Value.Order.Price)
+        double totalPrice = (double)message.Value.Order.Price * message.Value.Order.Volume / 100;
+        if (userBalance.BalanceActive >= totalPrice)
         {
             isOrderValid = true;
 
-            userBalance.BalanceActive -= message.Value.Order.Price;
-            userBalance.BalanceFrozen += message.Value.Order.Price;
+            userBalance.BalanceActive -= totalPrice;
+            userBalance.BalanceFrozen += totalPrice;
             await _database.UpdateAsync(userBalance);
         }
 

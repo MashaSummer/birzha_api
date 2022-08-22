@@ -7,6 +7,10 @@ namespace BalanceMicroservice.Web.Kafka.Handlers
 {
     public class HandlersDefinitions : AppDefinition
     {
-        public override void ConfigureServices(IServiceCollection services, IConfiguration configuration) => services.AddTransient<IEventHandler<Null, OrderCreatedEvent>, OrderCreatedHandler>();
+        public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<IEventHandler<Null, OrderCreatedEvent>, OrderCreatedHandler>();
+            services.AddTransient<IEventHandler<Null, OrderExecuteEvent>, OrderExecuteHandler>();
+        }
     }
 }

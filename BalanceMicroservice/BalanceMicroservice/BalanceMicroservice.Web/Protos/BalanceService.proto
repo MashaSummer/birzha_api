@@ -20,8 +20,8 @@ message ChangeBalanceRequest {
 }
 
 message BalanceResponse {
-	double balance_active = 1;
-	double balance_frozen = 2;
+	int32 balance_active = 1;
+	int32 balance_frozen = 2;
 	bool error = 3;
 	string error_message = 4;
 }
