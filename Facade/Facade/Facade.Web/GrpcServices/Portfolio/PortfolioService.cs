@@ -6,10 +6,10 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using Orders;
 using PortfolioGrpc;
 using PortfolioServiceGrpc;
 using ProductGrpc;
-using Orders;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Facade.Web.GrpcServices.Portfolio;
@@ -27,7 +27,6 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         _logger = logger;
         _serviceUrls = optionsMonitor.CurrentValue;
     }
-
 
     public override async Task<PortfolioServiceGrpc.GetPortfolioResponse> GetPortfolio(PortfolioServiceGrpc.GetPortfolioRequest request, ServerCallContext context)
     {

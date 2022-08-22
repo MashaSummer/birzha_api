@@ -24,6 +24,31 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         _logger = logger;
         _serviceUrls = optionsMonitor.CurrentValue;
     }
+
+    public override async Task<ChangePortfolioResponse> AddProduct(ChangePortfolioRequest request, ServerCallContext context)
+    {
+
+        //Validation for negative volume of products
+        var addProductResponse = OperationResult.CreateResult<ChangePortfolioResponse>();
+        if(request.Volume <= 0)
+        {
+            return HandleErrorForAdd(addProductResponse, "Failed to request, check your volume of products");
+        }
+
+        // Creating channel and client for request to product microservice
+        var productChannel = GrpcChannel.ForAddress(_serviceUrls.ProductService);
+        var productClient = new ProductGrpc.ProductService.ProductServiceClient(productChannel);
+
+        // Handling response from product microservice
+        addProductResponse = await TryAddProduct(request , productClient, context);
+        if (!addProductResponse.Ok)
+        {
+            return HandleErrorForAdd(addProductResponse, "Failed to request to product microservice");
+        }
+
+        return addProductResponse.Result;
+    }
+
     public override async Task<GetAllProductsResponse> GetAllProducts(
         GetAllProductsRequest request, 
         ServerCallContext context)
@@ -122,11 +147,47 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         return result;
     }
 
+    private async Task<OperationResult<ChangePortfolioResponse>> TryAddProduct(ChangePortfolioRequest request, ProductGrpc.ProductService.ProductServiceClient client,
+        ServerCallContext context)
+    {
+        var id = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id");
+        var result = OperationResult.CreateResult<ChangePortfolioResponse>();
+
+        try
+        {
+            result.Result = await client.AddProductAsync(new ChangePortfolioRequest
+            {
+                InvestorId = id.Value,
+                ProductName = request.ProductName,
+                StartPrice = request.StartPrice,
+                Volume = request.Volume
+            });
+            if(result.Result == null)
+            {
+                result.AddError(new Exception("Failed to request!"));
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            result.AddError(e);
+        }
+        return result;
+    }
+
     private GetAllProductsResponse HandleError(OperationResult result, string alternativeText) => new GetAllProductsResponse()
     {
         Error = new Error()
         {
             ErrorMessage = result?.Exception?.Message ?? alternativeText, 
+            StackTrace = result?.Exception?.StackTrace ?? new Exception().StackTrace
+        }
+    };
+    private ChangePortfolioResponse HandleErrorForAdd(OperationResult result, string alternativeText) => new ChangePortfolioResponse()
+    {
+        Error = new Error()
+        {
+            ErrorMessage = result?.Exception?.Message ?? alternativeText,
             StackTrace = result?.Exception?.StackTrace ?? new Exception().StackTrace
         }
     };

@@ -14,10 +14,10 @@ message GetPortfolioRequest {
 }
 
 message ChangePortfolioRequest {
-    string id = 1;
-	string name = 2;
-	double volume = 3;
-    double start_price = 4;
+    string investor_id = 1;
+    string product_name = 2;
+	int32 volume = 3;
+    int32 start_price = 4;
 }
 
 message Portfolio {
@@ -51,7 +51,7 @@ message Error {
     string stack_trace = 2;
 }
 
-message GetPortfolioResponse{
+message GetPortfolioResponse {
     oneof result {
         Portfolio portfolio = 1;
         Error error = 2;
