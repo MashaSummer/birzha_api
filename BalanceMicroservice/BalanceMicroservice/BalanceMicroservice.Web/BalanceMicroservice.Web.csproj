@@ -37,4 +37,8 @@
     <Protobuf Include="Protos\order*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Update="Protos\order_executed.proto" GrpcServices="Both" />
+  </ItemGroup>
+
 </Project>
