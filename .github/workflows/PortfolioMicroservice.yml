@@ -12,8 +12,8 @@ env:
 on:
   push:
     paths: 
-      - "PortfolioMicroService/**"
-      - ".github/workflows/PortfolioMicroService.yaml"
+      - "PortfolioMicroservice/**"
+      - ".github/workflows/PortfolioMicroservice.yml"
 
 jobs:
   build-and-test-app:
