@@ -8,8 +8,8 @@ ENV ASPNETCORE_URLS="http://*:35000;https://*:35001"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["PortfolioMicroService/PortfolioMicroService.Web/PortfolioMicroService.Web.csproj", "PortfolioMicroservice/PortfolioMicroService.Web/"]
-COPY ["PortfolioMicroService/PortfolioMicroService.Infrastructure/PortfolioMicroService.Infrastructure.csproj", "PortfolioMicroservice/PortfolioMicroService.Infrastructure/"]
+COPY ["PortfolioMicroservice/PortfolioMicroService.Web/PortfolioMicroService.Web.csproj", "PortfolioMicroservice/PortfolioMicroService.Web/"]
+COPY ["PortfolioMicroservice/PortfolioMicroService.Infrastructure/PortfolioMicroService.Infrastructure.csproj", "PortfolioMicroservice/PortfolioMicroService.Infrastructure/"]
 COPY ["PortfolioMicroservice/PortfolioMicroService.Domain/PortfolioMicroService.Domain.csproj", "PortfolioMicroservice/PortfolioMicroService.Domain/"]
 RUN dotnet restore "PortfolioMicroService.Web/PortfolioMicroService.Web.csproj"
 COPY . .
