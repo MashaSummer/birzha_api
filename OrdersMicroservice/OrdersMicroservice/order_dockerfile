@@ -11,7 +11,7 @@ WORKDIR /src
 COPY ["OrdersMicroservice/OrdersMicroservice/OrdersMicroservice/OrdersMicroservice.Web/OrdersMicroservice.Web.csproj", "OrdersMicroservice/OrdersMicroservice.Web/"]
 COPY ["OrdersMicroservice/OrdersMicroservice/OrdersMicroservice/OrdersMicroservice.Infrastructure/OrdersMicroservice.Infrastructure.csproj", "OrdersMicroservice/OrdersMicroservice.Infrastructure/"]
 COPY ["OrdersMicroservice/OrdersMicroservice/OrdersMicroservice/OrdersMicroservice.Domain/OrdersMicroservice.Domain.csproj", "/OrdersMicroservice/OrdersMicroservice.Domain/"]
-RUN dotnet restore "OrdersMicroservice/OrdersMicroservice.Domain/OrdersMicroservice.Domain.csproj"
+RUN dotnet restore "OrdersMicroservice/OrdersMicroservice.Web/OrdersMicroservice.Web.csproj"
 COPY OrdersMicroservice/OrdersMicroservice/ .
 WORKDIR "/src/OrdersMicroservice/OrdersMicroservice.Web"
 RUN dotnet build "OrdersMicroservice.Web.csproj" -c Release -o /app/build
