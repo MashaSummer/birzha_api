@@ -37,7 +37,7 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
 
         var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channelPortfolio);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channelProduct);
-        var ordersClient = new Orders.OrdersService.OrdersServiceClient(channelOrders);
+        var ordersClient = new OrdersService.OrdersServiceClient(channelOrders);
 
         var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context);
 
@@ -59,7 +59,7 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
     private async Task<OperationResult<GetPortfolioResponse>> TryGetPortfolio(
         PortfolioGrpc.PortfolioService.PortfolioServiceClient portfolioClient, 
         ProductGrpc.ProductService.ProductServiceClient productClient,
-        Orders.OrdersService.OrdersServiceClient ordersClient,
+        OrdersService.OrdersServiceClient ordersClient,
         ServerCallContext context)
     {
         var responsePortfolio = await TryGetAssets(context, portfolioClient);
@@ -135,7 +135,7 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         return result;
     }
 
-    private async Task<OperationResult<UserProductsResponse>> TryGetOrders(ServerCallContext context, Orders.OrdersService.OrdersServiceClient client,
+    private async Task<OperationResult<UserProductsResponse>> TryGetOrders(ServerCallContext context, OrdersService.OrdersServiceClient client,
         Google.Protobuf.Collections.RepeatedField<ProductArray.Types.Product> productsArray)
     {
         var result = OperationResult.CreateResult<UserProductsResponse>();
