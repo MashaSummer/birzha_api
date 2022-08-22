@@ -1,14 +1,17 @@
 ﻿using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
+using Orders;
 using PortfolioServiceGrpc;
 
 namespace BlazorClient.Pages
 {
     public class PortfolioModel : ComponentBase
     {
-        [Inject] IConfiguration config { get; set; }
+        [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] PortfolioService.PortfolioServiceClient Client { get; set; }
         [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IToastService toastService { get; set; }
         public Components.AddProductModal Modal { get; set; }
@@ -17,22 +20,19 @@ namespace BlazorClient.Pages
         protected override async Task OnInitializedAsync()
         {
             portfolio = new();
-            var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             GetPortfolioResponse getPortfolioResponse = new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token}");
 
-                var client = new PortfolioService.PortfolioServiceClient(channel);
-
-
-                getPortfolioResponse = await client.GetPortfolioAsync(new GetPortfolioRequest());
-
+                getPortfolioResponse = await Client.GetPortfolioAsync(new GetPortfolioRequest());
 
                 if (getPortfolioResponse == null || getPortfolioResponse.Error != null)
                 {
 
-                    toastService.ShowError($"Enable to fetch portfolio, please try again.");
+                    toastService.ShowError($"Unable to fetch portfolio, please try again.");
                     return;
                 }
                 portfolio.Products = getPortfolioResponse.Portfolio.Products.Select(x => new ProductViewModel
@@ -47,7 +47,9 @@ namespace BlazorClient.Pages
                     Estimate = x.Estimate,
                     DeltaAbs = x.DeltaAbs,
                     DeltaRel = x.DeltaRel
-                }).ToList();
+                })
+                    .ToList();
+
                 portfolio.Total = new Total
                 {
                     Spent = getPortfolioResponse.Portfolio.Total.Spent,
@@ -59,7 +61,7 @@ namespace BlazorClient.Pages
             }
             catch (Exception ex)
             {
-                toastService.ShowError($"Enable to fetch products, please try again");
+                toastService.ShowError($"Unable to fetch products, please try again.");
                 return;
             }
         }

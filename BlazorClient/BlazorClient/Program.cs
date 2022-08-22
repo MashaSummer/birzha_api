@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Orders;
+using PortfolioServiceGrpc;
+using ProductGrpc;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -35,6 +37,21 @@ builder.Services.AddSingleton(services =>
 	var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions { HttpClient = httpClient });
 	return new OrdersService.OrdersServiceClient(channel);
 });
+builder.Services.AddSingleton(services =>
+{
+	var httpClient = new HttpClient(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()));
+	var baseUri = builder.Configuration["FacadeBaseURL"];
+	var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions { HttpClient = httpClient });
+	return new PortfolioService.PortfolioServiceClient(channel);
+});
+builder.Services.AddSingleton(services =>
+{
+	var httpClient = new HttpClient(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()));
+	var baseUri = builder.Configuration["FacadeBaseURL"];
+	var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions { HttpClient = httpClient });
+	return new ProductService.ProductServiceClient(channel);
+});
+
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredToast();

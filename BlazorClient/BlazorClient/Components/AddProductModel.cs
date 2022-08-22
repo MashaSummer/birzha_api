@@ -1,6 +1,7 @@
 ﻿using BlazorClient.Attributes;
 using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using ProductGrpc;
@@ -16,20 +17,19 @@ namespace BlazorClient.Components
         public bool ShowBackdrop = false;
         public AddProductViewModel addProductViewModel = new();
         [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] ProductService.ProductServiceClient Client { get; set; }
         [Inject] PriceDefineService priceDefineService { get; set; }
-        [Inject] IConfiguration config { get; set; }
         [Inject] IToastService toastService { get; set; }
 
         public async Task HandleValidSubmitAsync()
         {
-            var address = config["FacadeBaseURL"];
+            
             var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             ChangePortfolioResponse addProductResponse = new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
-
-                var client = new ProductService.ProductServiceClient(channel);
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token}");
                 var changePortfolioRequest = new ChangePortfolioRequest()
                 {
                     InvestorId = null,
@@ -37,25 +37,25 @@ namespace BlazorClient.Components
                     StartPrice = priceDefineService.DefinePrice(addProductViewModel.StartPrice),
                 };
 
-                addProductResponse = await client.AddProductAsync(changePortfolioRequest);
+                addProductResponse = await Client.AddProductAsync(changePortfolioRequest, headers);
 
                 if (addProductResponse == null || addProductResponse.Error != null)
                 {
                     Close();
-                    toastService.ShowError($"Enable to add {addProductViewModel.ProductName}");
+                    toastService.ShowError($"Unable to add {addProductViewModel.ProductName}");
                     return;
                 }
             }
             catch (Exception ex)
             {
                 Close();
-                toastService.ShowError($"Enable to add {addProductViewModel.ProductName}");
+                toastService.ShowError($"Unable to add {addProductViewModel.ProductName}.");
                 return;
             }
 
 
             Close();
-            toastService.ShowSuccess($"Product {addProductViewModel.ProductName} succesfully added", "SUCCESS");
+            toastService.ShowSuccess($"Product {addProductViewModel.ProductName} succesfully added.", "SUCCESS");
         }
 
 
