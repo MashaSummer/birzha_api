@@ -1,4 +1,4 @@
-using BalanceMicroservice.Infrastructure.Kafka.Config;
+﻿using BalanceMicroservice.Infrastructure.Kafka.Config;
 using BalanceMicroservice.Web.Definitions.Base;
 using Confluent.Kafka;
 using OrdersEvent;
@@ -20,7 +20,11 @@ public class KafkaDefinition : AppDefinition
         // For "Orders_Created" topic
         var ordersCreatedConfig = configuration.GetSection("Kafka:OrdersCreatedConsumer").Get<KafkaConsumerConfig>();
         services.AddKafkaConsumer<Null, OrderCreatedEvent>(ordersCreatedConfig);
-        
+
+        // For "Orders_execeuted" topic
+        var ordersExecutedConfig = configuration.GetSection("Kafka:OrdersExecutedConsumer").Get<KafkaConsumerConfig>();
+        services.AddKafkaConsumer<Null, OrderExecuteEvent>(ordersExecutedConfig);
+
         // For "Orders_Validation" topic
         var ordersValidationConfig = configuration.GetSection("Kafka:ValidationProducer").Get<KafkaProducerConfig>();
         services.AddKafkaProducer<Null, OrderValidationEvent>(ordersValidationConfig);

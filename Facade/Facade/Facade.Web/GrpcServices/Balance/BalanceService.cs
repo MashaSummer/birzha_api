@@ -6,6 +6,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using BalanceMicroservice;
 
 namespace Facade.Web.GrpcServices.Balance
 {
@@ -15,6 +16,7 @@ namespace Facade.Web.GrpcServices.Balance
         private readonly ILogger<BalanceService> _logger;
         
         private readonly ServiceUrls _serviceUrls;
+        delegate Task<BalanceResponse> response(BalanceMicroservice.BalanceServiceProto.BalanceServiceProtoClient service,string id , ValueRequest value);
         
         public BalanceService(ILogger<BalanceService> logger, IOptionsMonitor<ServiceUrls> optionsMonitor)
         {
@@ -22,104 +24,75 @@ namespace Facade.Web.GrpcServices.Balance
             _serviceUrls = optionsMonitor.CurrentValue;
         }
 
-        public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context)
+
+        public override async Task<BalanceData> GetBalance(EmptyRequest request, ServerCallContext context) =>
+            (await RequestsToService(
+                context,  
+                async (service, id, _) => await service.GetBalanceAsync(new GetBalanceRequest { Id = id }))
+            ).Result;
+
+
+        public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context) =>
+            (await RequestsToService(
+                context, 
+                async (service, id, value) => await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id, Value = (int)(value.Value * 100) }), 
+                request)
+            ).Result;
+
+
+        public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context) => 
+            (await RequestsToService(context, 
+                async (service, id, value) => await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id, Value = (int)(value.Value * 100)  }), 
+                request)
+            ).Result;
+
+
+        private async Task<OperationResult<BalanceData>> RequestsToService(
+            ServerCallContext context, 
+            Func<BalanceServiceProto.BalanceServiceProtoClient, string, ValueRequest, Task<BalanceResponse>> func, 
+            ValueRequest request = null)
         {
             var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
-
             var result = OperationResult.CreateResult<BalanceData>();
-            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
-            if (id == null)
-            {
-                _logger.LogError($"invalid id");
-                result.AddError("invalid id");
-            }
-            BalanceResponse response = new BalanceResponse();
-            try
-            {
-                var service = new QueryBalanceService.QueryBalanceServiceClient(channel);
-                response = await service.GetBalanceAsync(new GetBalanceRequest { Id = id.Value });
-                if (response == null || response.Error)
-                {
-                    _logger.LogError("Bad response : {0}", response.ErrorMessage);
-                    result.AddError("Bad response" + response.ErrorMessage);
-                }
-                else
-                {
-                    result.Result = new BalanceData { Balance = response.Balance, Status = BalanceData.Types.Status.Success };
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error on Balance method get {0}", ex.Message);
-                result.AddError(ex.Message);
-            }
-            return result.Exception != null ? new BalanceData { Status = BalanceData.Types.Status.Failed } : result.Result;
-        }
-        public override async Task<BalanceData> AddBalance(ValueRequest request, ServerCallContext context)
-        {
-            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
-
-            var result = OperationResult.CreateResult<BalanceData>();
-            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
+            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id")!.Value;
+            response responseDelegate = new response(func);
             if (id == null)
             {
                 _logger.LogError($"Invalid id");
                 result.AddError("Invalid id");
             }
-            BalanceResponse response = new BalanceResponse();
             try
             {
-                var service = new CommandBalanceService.CommandBalanceServiceClient(channel);
-                response = await service.AddBalanceAsync(new ChangeBalanceRequest { Id = id.Value, Value = request.Value });
-                if (response == null || response.Error)
-                {
-                    _logger.LogError("Bad response : {0}", response.ErrorMessage);
-                    result.AddError("Bad response" + response.ErrorMessage);
-                }
-                else
-                {
-                    result.Result = new BalanceData { Balance = response.Balance, Status = BalanceData.Types.Status.Success };
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error on Balance method Add {0}", ex.Message);
-                result.AddError(ex.Message);
-            }
-            return result.Exception != null ? new BalanceData { Status = BalanceData.Types.Status.Failed } : result.Result;
-        }
-        public override async Task<BalanceData> ReduceBalance(ValueRequest request, ServerCallContext context)
-        {
-            var channel = GrpcChannel.ForAddress(_serviceUrls.BalanceService);
+                var service = new BalanceServiceProto.BalanceServiceProtoClient(channel);
+                var responseData = await responseDelegate(service, id, request);
 
-            var result = OperationResult.CreateResult<BalanceData>();
-            var id = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id");
-            if (id == null)
-            {
-                _logger.LogError($"Invalid id");
-                result.AddError("Invalid id");
-            }
-            BalanceResponse response = new BalanceResponse();
-            try
-            {
-                var service = new CommandBalanceService.CommandBalanceServiceClient(channel);
-                response = await service.ReduseBalanceAsync(new ChangeBalanceRequest { Id = id.Value, Value = request.Value });
-                if (response == null || response.Error)
+                if (responseData == null || responseData.Error)
                 {
-                    _logger.LogError("Bad response : {0}", response.ErrorMessage);
-                    result.AddError("Bad response" + response.ErrorMessage);
+                    _logger.LogError("Bad response : {0}", responseData.ErrorMessage);
+                    result.AddError("Bad response" + responseData.ErrorMessage);
                 }
                 else
                 {
-                    result.Result = new BalanceData { Balance = response.Balance, Status = BalanceData.Types.Status.Success };
+                    result.Result = new BalanceData 
+                    {
+                        Balance = (double)responseData.BalanceActive / 100f,
+                        FrozenBalance = (double)responseData.BalanceFrozen / 100f,
+                        Status = BalanceData.Types.Status.Success 
+                    };
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError("Error on Balance method reduce {0}", ex.Message);
+                _logger.LogError("Error on Balance method  {0}", ex.Message);
                 result.AddError(ex.Message);
             }
-            return result.Exception != null ? new BalanceData { Status = BalanceData.Types.Status.Failed } : result.Result;
+
+            if (!result.Ok)
+            {
+                result.Result = new BalanceData { Status = BalanceData.Types.Status.Failed };
+            }
+
+            return result;
         }
     }
 }
