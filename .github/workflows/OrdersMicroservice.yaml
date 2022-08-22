@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ${{ env.MICROSERVICE_NAME }}/${{ env.DOCKERFILE }}
+          file: ${{ env.MICROSERVICE_NAME }}/${{ env.MICROSERVICE_NAME }}/${{ env.DOCKERFILE }}
           tags: ${{ env.MICROSERVICE_TAG }}:${{ github.sha }}
           outputs: type=docker,dest=/tmp/${{ env.MICROSERVICE_TAG }}.tar
           
