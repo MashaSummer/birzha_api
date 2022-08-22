@@ -13,7 +13,7 @@ COPY ["ProductMicroservice/ProductMicroservice/ProductMicroservice.Infrastructur
 COPY ["ProductMicroservice/ProductMicroservice/ProductMicroservice.Domain/ProductMicroservice.Domain.csproj", "ProductMicroservice/ProductMicroservice.Domain/"]
 RUN dotnet restore "ProductMicroservice/ProductMicroservice.Web/ProductMicroservice.Web.csproj"
 COPY ProductMicroservice/ .
-WORKDIR "/src/ProductMicroservice/ProductMicroservice.Web/ProductMicroservice.Web.csproj"
+WORKDIR "/src/ProductMicroservice/ProductMicroservice.Web/"
 RUN dotnet build "ProductMicroservice.Web.csproj" -c Release -o /app/build
 
 RUN dotnet dev-certs https --trust
