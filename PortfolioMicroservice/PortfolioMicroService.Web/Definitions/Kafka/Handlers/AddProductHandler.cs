@@ -42,7 +42,7 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
                 _logger.LogInformation("Created investor record for id: {0}", message.Value.InvestorId);
             }
 
-            portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message)).ToArray();
+            portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message.Value)).ToArray();
 
             await _repository.UpdateAsync(portfolio.Result);
             
