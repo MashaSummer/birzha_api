@@ -47,6 +47,8 @@ services:
 
       kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic Transactions --replication-factor 1 --partitions 1
       
+      kafka-topics --bootstrap-server broker:29092 --crete --if-not-exists --topic Product_Created --replication-factor 1 --prtitions 1
+      
 
       echo -e 'Successfully created topics'
       kafka-topics --bootstrap-server broker:29092 --list
