@@ -32,7 +32,11 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             if (!portfolio.Ok) 
             {
                 _logger.LogError("Investor id ({0}) not found", message.Value.InvestorId);
-                return new OperationResult<bool>() { Result = false }; 
+
+                portfolio = OperationResult.CreateResult(new UserModel() { Id = message.Value.InvestorId });
+                await _repository.AddAsync(portfolio.Result);
+
+                _logger.LogInformation("Created investor record for id: {0}", message.Value.InvestorId);
             }
 
             portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message)).ToArray();
