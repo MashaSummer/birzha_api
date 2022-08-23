@@ -8,11 +8,11 @@ ENV ASPNETCORE_URLS="http://*:38000;https://*:38001"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj", "TransactionMicroservice/TransactionMicroservice.Web/"]
-COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Infrastructure/TransactionMicroservice.Infrastructure.csproj", "TransactionMicroservice/TransactionMicroservice.Infrastructure/"]
-COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Domain/TransactionMicroservice.Domain.csproj", "TransactionMicroservice/TransactionMicroservice.Domain/"]
+COPY ["TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj", "TransactionMicroservice/TransactionMicroservice.Web/"]
+COPY ["TransactionMicroservice/TransactionMicroservice.Infrastructure/TransactionMicroservice.Infrastructure.csproj", "TransactionMicroservice/TransactionMicroservice.Infrastructure/"]
+COPY ["TransactionMicroservice/TransactionMicroservice.Domain/TransactionMicroservice.Domain.csproj", "TransactionMicroservice/TransactionMicroservice.Domain/"]
 RUN dotnet restore "TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj"
-COPY TransactionMicroservice/TransactionMicroservice/ .
+COPY TransactionMicroservice/ .
 WORKDIR "/src/TransactionMicroservice/TransactionMicroservice.Web"
 RUN dotnet build "TransactionMicroservice.Web.csproj" -c Release -o /app/build
 
