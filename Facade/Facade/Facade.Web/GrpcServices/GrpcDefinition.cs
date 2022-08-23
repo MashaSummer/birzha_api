@@ -1,4 +1,4 @@
-using Facade.Domain.Base;
+﻿using Facade.Domain.Base;
 using Facade.Web.Application;
 using Facade.Web.Auth;
 using Facade.Web.Definitions.Base;
@@ -22,13 +22,14 @@ namespace Facade.Web.GrpcServices
         {
             app.UseRouting();
             app.UseCors(AppData.PolicyName);
+            app.UseGrpcWeb();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<PortfolioService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<OrderService>());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<PortfolioService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<OrderService>().EnableGrpcWeb());
             app.MapGrpcReflectionService();
         }
     }

@@ -1,4 +1,4 @@
-using Calabonga.OperationResults;
+﻿using Calabonga.OperationResults;
 using Facade.Web.Application;
 using Facade.Web.GrpcServices.Portfolio.Aggregation;
 using Facade.Web.GrpcServices.Product;
@@ -37,8 +37,8 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channelPortfolio);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channelProduct);
         var ordersClient = new OrdersService.OrdersServiceClient(channelOrders);
-
-        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context, request.Id);
+        var userId = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id")!.Value;
+        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context, userId);
 
         if (responsePortfolio.Ok)
         {
