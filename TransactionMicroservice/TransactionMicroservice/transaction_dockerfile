@@ -12,7 +12,7 @@ COPY ["TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservi
 COPY ["TransactionMicroservice/TransactionMicroservice.Infrastructure/TransactionMicroservice.Infrastructure.csproj", "TransactionMicroservice/TransactionMicroservice.Infrastructure/"]
 COPY ["TransactionMicroservice/TransactionMicroservice.Domain/TransactionMicroservice.Domain.csproj", "TransactionMicroservice/TransactionMicroservice.Domain/"]
 RUN dotnet restore "TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj"
-COPY TransactionMicroservice/ .
+COPY TransactionMicroservice/TransactionMicroservice/ .
 WORKDIR "/src/TransactionMicroservice/TransactionMicroservice.Web"
 RUN dotnet build "TransactionMicroservice.Web.csproj" -c Release -o /app/build
 
