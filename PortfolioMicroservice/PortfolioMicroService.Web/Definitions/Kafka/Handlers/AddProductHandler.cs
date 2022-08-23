@@ -28,20 +28,29 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
         public async Task<OperationResult<bool>> ProcessAsync(Message<Null, ProductAddEvent> message)
         {
             var portfolio = await _repository.GetByIdAsync(message.Value.InvestorId);
+            
+            try
+            {
 
             if (!portfolio.Ok) 
             {
                 _logger.LogError("Investor id ({0}) not found", message.Value.InvestorId);
 
-                portfolio = OperationResult.CreateResult(new UserModel() { Id = message.Value.InvestorId });
+                portfolio = OperationResult.CreateResult(new UserModel() { Id = message.Value.InvestorId, Asset = new AssetModel[] {} });
                 await _repository.AddAsync(portfolio.Result);
 
                 _logger.LogInformation("Created investor record for id: {0}", message.Value.InvestorId);
             }
 
-            portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message)).ToArray();
+            portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message.Value)).ToArray();
 
             await _repository.UpdateAsync(portfolio.Result);
+            
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
             return new OperationResult<bool>() { Result = true };
         }

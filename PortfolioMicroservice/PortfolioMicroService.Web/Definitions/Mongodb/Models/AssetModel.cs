@@ -7,7 +7,6 @@ namespace PortfolioMicroService.Definitions.Mongodb.Models;
 public class AssetModel : IMongoModel
 {
     [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
 
     [BsonElement("start_price")]
