@@ -25,6 +25,7 @@ using AuthMicroservice.Web.Definitions.Base;
 using Serilog;
 using Serilog.Events;
 
+
 try
 {
     // configure logger (Serilog)
