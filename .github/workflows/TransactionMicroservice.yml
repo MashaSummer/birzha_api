@@ -6,7 +6,7 @@ env:
   MICROSERVICE_NAME: "transactionMicroservice"
   MICROSERVICE_TAG: "transaction"
   DOCKERFILE: "transaction_dockerfile"
-  TEST_WORK_DIR: "OrdersMicroservice/OrdersMicroservice/OrdersMicroservice.Web"
+  TEST_WORK_DIR: "TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Web"
   
   
 on:
