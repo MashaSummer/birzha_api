@@ -20,7 +20,6 @@
 // functionality. Also, support two type of Authentication:
 // Cookie and Bearer
 // --------------------------------------------------------------------
-
 using BalanceMicroservice.Web.Definitions.Base;
 using Serilog;
 using Serilog.Events;
