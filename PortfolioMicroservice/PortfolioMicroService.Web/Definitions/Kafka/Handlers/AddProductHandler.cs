@@ -28,6 +28,9 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
         public async Task<OperationResult<bool>> ProcessAsync(Message<Null, ProductAddEvent> message)
         {
             var portfolio = await _repository.GetByIdAsync(message.Value.InvestorId);
+            
+            try
+            {
 
             if (!portfolio.Ok) 
             {
@@ -42,6 +45,12 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message)).ToArray();
 
             await _repository.UpdateAsync(portfolio.Result);
+            
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
             return new OperationResult<bool>() { Result = true };
         }
