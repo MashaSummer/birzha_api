@@ -36,7 +36,10 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         }
 
         // Creating channel and client for request to product microservice
-        var productChannel = GrpcChannel.ForAddress(_serviceUrls.ProductService);
+        var httpHandler = new HttpClientHandler();
+            httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        var productChannel = GrpcChannel.ForAddress(_serviceUrls.ProductService, new GrpcChannelOptions { HttpHandler = httpHandler });
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(productChannel);
 
         // Handling response from product microservice
@@ -53,13 +56,17 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         GetAllProductsRequest request, 
         ServerCallContext context)
     {
+        var httpHandler = new HttpClientHandler();
+            httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+    
         // Creating channel and client for request to product microservice
-        var productChannel = GrpcChannel.ForAddress(_serviceUrls.ProductService);
+        var productChannel = GrpcChannel.ForAddress(_serviceUrls.ProductService, new GrpcChannelOptions { HttpHandler = httpHandler });
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(productChannel);
 
         
         // Creating channel and client for request to orders microservice
-        var orderChannel = GrpcChannel.ForAddress(_serviceUrls.OrdersService);
+        var orderChannel = GrpcChannel.ForAddress(_serviceUrls.OrdersService, new GrpcChannelOptions { HttpHandler = httpHandler });
         var orderClient = new OrdersService.OrdersServiceClient(orderChannel);
 
         

@@ -35,30 +35,29 @@
          load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
          state: present
          source: load
-    
+         
     - name: copy aspnetapp.pfx
       copy:
         src: aspnetapp.pfx
         dest: /root/.aspnet/https
-        mode: '755' 
-    
+        mode: '755'     
+         
     - name: Run 
       docker_container:
          name: "{{ microservice_name }}"
          image: "{{ microservice_name_image }}:{{ sha }}"
          state: started
          ports:
-          - "5000:5000"
-          - "5001:5001"
+          - "38000:38000"
+          - "38001:38001"
          networks:
-          - name: birzha
+           - name: birzha
          log_driver: json-file
          log_options:
              tag: "{{ microservice_name }}"
          env:
-             ASPNETCORE_HTTPS_PORT: "5001"
+             ASPNETCORE_HTTPS_PORT: "37001"
              ASPNETCORE_Kestrel__Certificates__Default__Password: "123456789"
              ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
          volumes:
           - /root/.aspnet/https:/https/ 
-   

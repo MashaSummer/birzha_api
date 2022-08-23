@@ -8,15 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Protos\KafkaAuthRegisterProto.proto" />
-      <None Remove="Protos\KafkaOrderCreated.proto" />
-      <None Remove="Protos\KafkaOrderExecutedProto.proto" />
-      <None Remove="Protos\KafkaProductAddProto.proto" />
-      <None Remove="Protos\KafkaValidate.proto" />
-      <None Remove="Protos\Order.proto" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
@@ -36,13 +27,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Protobuf Include="Protos\Order.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\KafkaAuthRegisterProto.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\KafkaValidate.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\KafkaOrderCreated.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\KafkaOrderExecutedProto.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\KafkaProductAddProto.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\portfolio.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\*.proto" />
     </ItemGroup>
     
     

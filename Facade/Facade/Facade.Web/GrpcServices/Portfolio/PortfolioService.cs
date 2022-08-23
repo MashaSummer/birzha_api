@@ -1,4 +1,4 @@
-using Calabonga.OperationResults;
+﻿using Calabonga.OperationResults;
 using Facade.Web.Application;
 using Facade.Web.GrpcServices.Portfolio.Aggregation;
 using Facade.Web.GrpcServices.Product;
@@ -30,15 +30,19 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
 
     public override async Task<PortfolioServiceGrpc.GetPortfolioResponse> GetPortfolio(PortfolioServiceGrpc.GetPortfolioRequest request, ServerCallContext context)
     {
-        var channelPortfolio = GrpcChannel.ForAddress(_serviceUrls.PortfolioService);
-        var channelProduct = GrpcChannel.ForAddress(_serviceUrls.ProductService);
-        var channelOrders = GrpcChannel.ForAddress(_serviceUrls.OrdersService);
+        var httpHandler = new HttpClientHandler();
+            httpHandler.ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    
+        var channelPortfolio = GrpcChannel.ForAddress(_serviceUrls.PortfolioService, new GrpcChannelOptions { HttpHandler = httpHandler });
+        var channelProduct = GrpcChannel.ForAddress(_serviceUrls.ProductService, new GrpcChannelOptions { HttpHandler = httpHandler });
+        var channelOrders = GrpcChannel.ForAddress(_serviceUrls.OrdersService, new GrpcChannelOptions { HttpHandler = httpHandler });
 
         var portfolioClient = new PortfolioGrpc.PortfolioService.PortfolioServiceClient(channelPortfolio);
         var productClient = new ProductGrpc.ProductService.ProductServiceClient(channelProduct);
         var ordersClient = new OrdersService.OrdersServiceClient(channelOrders);
-
-        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context, request.Id);
+        var userId = context.GetHttpContext().User.Claims.FirstOrDefault(claim => claim.Type == "id")!.Value;
+        var responsePortfolio = await TryGetPortfolio(portfolioClient, productClient, ordersClient, context, userId);
 
         if (responsePortfolio.Ok)
         {

@@ -10,7 +10,7 @@ service PortfolioService {
 
 
 message GetPortfolioRequest {
-	string id = 1;
+	
 }
 
 message ChangePortfolioRequest {
