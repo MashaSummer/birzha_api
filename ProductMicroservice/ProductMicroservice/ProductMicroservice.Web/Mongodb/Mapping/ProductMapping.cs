@@ -11,6 +11,7 @@ public class ProductMapping : Profile
         CreateMap<ProductModel, ProductGrpc.ProductArray.Types.Product>();
         CreateMap<ChangePortfolioRequest, ProductModel>()
             .ForMember(d => d.Id, s => s.Ignore())
-            .ForMember(d => d.InvestorId, s => s.MapFrom(x => x.InvestorId));
+            .ForMember(d => d.InvestorId, s => s.MapFrom(x => x.InvestorId))
+            .ForMember(d => d.Name, s => s.MapFrom(x => x.ProductName));;
     }
 }
