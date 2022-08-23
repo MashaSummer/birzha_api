@@ -187,7 +187,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
         Error = new Error()
         {
             ErrorMessage = result?.Exception?.Message ?? alternativeText, 
-            StackTrace = result?.Exception?.StackTrace ?? new Exception().StackTrace
+            StackTrace = result?.Exception?.StackTrace ?? "No stack trace"
         }
     };
     private ChangePortfolioResponse HandleErrorForAdd(OperationResult result, string alternativeText) => new ChangePortfolioResponse()
