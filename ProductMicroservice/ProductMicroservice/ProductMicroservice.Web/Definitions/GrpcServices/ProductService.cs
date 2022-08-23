@@ -18,9 +18,9 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
 
     private readonly IMapper _mapper;
 
-    private readonly IEventProducer<Null, ProductCreatedEvent> _eventProducer;
+    private readonly IEventProducer<Null, ProductAddEvent> _eventProducer;
 
-    public ProductService(IRepository<ProductModel> repository, ILogger<ProductService> logger, IMapper mapper, IEventProducer<Null, ProductCreatedEvent> eventProducer)
+    public ProductService(IRepository<ProductModel> repository, ILogger<ProductService> logger, IMapper mapper, IEventProducer<Null, ProductAddEvent> eventProducer)
     {
         _repository = repository;
         _logger = logger;
@@ -91,7 +91,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
             };
         }
 
-        await _eventProducer.ProduceAsync(null, new ProductCreatedEvent()
+        await _eventProducer.ProduceAsync(null, new ProductAddEvent()
         {
             InvestorId = request.InvestorId,
             ProductId = productModel.Id,

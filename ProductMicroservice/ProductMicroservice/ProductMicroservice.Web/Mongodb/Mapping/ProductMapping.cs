@@ -12,6 +12,6 @@ public class ProductMapping : Profile
         CreateMap<ChangePortfolioRequest, ProductModel>()
             .ForMember(d => d.Id, s => s.Ignore())
             .ForMember(d => d.InvestorId, s => s.MapFrom(x => x.InvestorId))
-            .ForMember(d => d.Name, s => s.MapFrom(x => x.ProductName));;
+            .ForMember(d => d.Name, s => s.MapFrom(x => x.ProductName));
     }
 }

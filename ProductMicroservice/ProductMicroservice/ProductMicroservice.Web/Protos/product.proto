@@ -45,7 +45,7 @@ message ChangePortfolioResponse {
   }
 }
 
-message ProductCreatedEvent {
+message ProductAddEvent {
   
   string investor_id = 1;
   
