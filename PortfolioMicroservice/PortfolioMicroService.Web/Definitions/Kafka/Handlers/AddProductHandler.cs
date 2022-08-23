@@ -36,7 +36,7 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
             {
                 _logger.LogError("Investor id ({0}) not found", message.Value.InvestorId);
 
-                portfolio = OperationResult.CreateResult(new UserModel() { Id = message.Value.InvestorId });
+                portfolio = OperationResult.CreateResult(new UserModel() { Id = message.Value.InvestorId, Asset = new AssetModel[] {} });
                 await _repository.AddAsync(portfolio.Result);
 
                 _logger.LogInformation("Created investor record for id: {0}", message.Value.InvestorId);
