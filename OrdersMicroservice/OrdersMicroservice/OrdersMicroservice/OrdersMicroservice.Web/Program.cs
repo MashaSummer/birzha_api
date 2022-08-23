@@ -2,6 +2,7 @@ using OrdersMicroservice.Definitions.Base;
 using Serilog;
 using Serilog.Events;
 
+
 try
 {
     // configure logger (Serilog)
