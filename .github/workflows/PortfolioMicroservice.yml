@@ -3,7 +3,7 @@ env:
   SERVER: "84.38.185.78"
   PORT: "22"
   USER: "root"
-  MICROSERVICE_NAME: "PortfolioMicroservice"
+  MICROSERVICE_NAME: "NewPortfolioMicroservice"
   MICROSERVICE_TAG: "portf"
   DOCKERFILE: "portfolio_dockerfile"
   TEST_WORK_DIR: "NewPortfolioMicroservice/NewPortfolioMicroservice/NewPortfolioMicroservice.Web"
