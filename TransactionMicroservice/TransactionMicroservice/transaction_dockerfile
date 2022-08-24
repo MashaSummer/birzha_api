@@ -1,0 +1,27 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 38000
+EXPOSE 38001
+ENV ASPNETCORE_URLS="http://*:38000;https://*:38001"
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj", "TransactionMicroservice/TransactionMicroservice.Web/"]
+COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Infrastructure/TransactionMicroservice.Infrastructure.csproj", "TransactionMicroservice/TransactionMicroservice.Infrastructure/"]
+COPY ["TransactionMicroservice/TransactionMicroservice/TransactionMicroservice.Domain/TransactionMicroservice.Domain.csproj", "TransactionMicroservice/TransactionMicroservice.Domain/"]
+RUN dotnet restore "TransactionMicroservice/TransactionMicroservice.Web/TransactionMicroservice.Web.csproj"
+COPY TransactionMicroservice/ .
+WORKDIR "/src/TransactionMicroservice/TransactionMicroservice.Web"
+RUN dotnet build "TransactionMicroservice.Web.csproj" -c Release -o /app/build
+
+RUN dotnet dev-certs https --trust
+
+FROM build AS publish
+RUN dotnet publish "TransactionMicroservice.Web.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "TransactionMicroservice.Web.dll"]

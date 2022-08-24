@@ -2,8 +2,9 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 20000
+EXPOSE 20001
+ENV ASPNETCORE_URLS="http://*:20000;https://*:20001"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -14,6 +15,8 @@ RUN dotnet restore "Facade/Facade.Web/Facade.Web.csproj"
 COPY Facade/ .
 WORKDIR "/src/Facade/Facade.Web"
 RUN dotnet build "Facade.Web.csproj" -c Release -o /app/build
+
+RUN dotnet dev-certs https --trust
 
 FROM build AS publish
 RUN dotnet publish "Facade.Web.csproj" -c Release -o /app/publish

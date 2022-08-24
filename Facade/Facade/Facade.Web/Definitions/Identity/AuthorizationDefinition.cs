@@ -36,6 +36,10 @@ public class AuthorizationDefinition : AppDefinition
                 options.Audience = "client_id_sts";
                 options.Authority = url;
                 options.RequireHttpsMetadata = false;
+                options.BackchannelHttpHandler = new HttpClientHandler() 
+                { 
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator 
+                };
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateAudience = false, // Audience should be defined on the authorization server or disabled as shown
