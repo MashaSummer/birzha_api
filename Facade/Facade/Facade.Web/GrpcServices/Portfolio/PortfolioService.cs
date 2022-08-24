@@ -68,6 +68,9 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
     {
         var responsePortfolio = await TryGetAssets(context, portfolioClient, id);
         var assetsArray = responsePortfolio.Result.AssetArray.Assets;
+        
+        _logger.LogInformation($"Is assetArray == null ? {assetsArray == null}");
+        _logger.LogInformation($"Get {assetsArray.Count} assets");
 
         var responseProduct = await TryGetAllProducts(productClient);
         var productsArray = responseProduct.Result.ProductArray.Products;
