@@ -1,0 +1,47 @@
+﻿@inherits Components.AddProductModel
+	
+
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adding new product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <EditForm Model="@addProductViewModel" OnValidSubmit="@HandleValidSubmitAsync" class="row">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="productName">Product name</label>
+                    <InputText id="productName" class="form-control modal-input" @bind-Value="addProductViewModel.ProductName" placeholder="Apple" />
+                </div>
+                <div class="form-group">
+                    <label for="startPrice">Start price</label>
+                    <InputNumber id="startPrice" min="0" class="form-control modal-input" @bind-Value="addProductViewModel.StartPrice" />
+                </div>
+                <div class="form-group col-xs-3">
+                    <label for="volume">Volume</label>
+                    <InputNumber id="volume" min="0" class="form-control modal-input" @bind-Value="addProductViewModel.Volume" />
+                </div>    
+                
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+

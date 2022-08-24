@@ -1,0 +1,59 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "PortfolioServiceGrpc";
+
+package portfolio_service;
+
+service PortfolioService {
+	rpc GetPortfolio(GetPortfolioRequest) returns (GetPortfolioResponse);
+}
+
+
+message GetPortfolioRequest {
+	
+}
+
+message ChangePortfolioRequest {
+    string investor_id = 1;
+    string product_name = 2;
+	int32 volume = 3;
+    int32 start_price = 4;
+}
+
+message Portfolio {
+    message Product {
+        string id = 1;
+        string name = 2;
+        int32 volume_active = 3; 
+        int32 volume_frozen = 4; 
+        double spent = 5;
+        double earned = 6;
+        int32 best_ask = 7;
+        double estimate = 8;
+        double delta_abs = 9;
+        double delta_rel = 10;
+    }
+
+    message Total {
+        double spent = 1;
+        double earned = 2;
+        double estimate = 3;
+        double delta_abs = 4;
+        double delta_rel = 5;
+    }
+
+    repeated Product products = 1;
+    Total total = 2;
+}
+
+message Error {
+    string error_message = 1;
+    string stack_trace = 2;
+}
+
+message GetPortfolioResponse {
+    oneof result {
+        Portfolio portfolio = 1;
+        Error error = 2;
+    }
+}

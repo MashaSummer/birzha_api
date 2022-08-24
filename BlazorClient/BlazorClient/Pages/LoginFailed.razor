@@ -1,0 +1,15 @@
+﻿@page "/loginFailed";
+@inject NavigationManager NavigationManager
+<p>
+    Invalid login or password.
+</p>
+<button onclick="@ReEnter"> ReEnter</button>
+@code{
+    public int WaitTime { get; set; } = 5;
+    
+    public void ReEnter()
+    {
+        NavigationManager.NavigateTo("/login", true);
+    }
+
+}
