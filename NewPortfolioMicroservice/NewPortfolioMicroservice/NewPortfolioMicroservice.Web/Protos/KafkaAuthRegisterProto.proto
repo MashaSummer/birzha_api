@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option csharp_namespace = "PortfolioMicroService";
+
+package auth_register;
+
+message UserRegisterEvent {
+  
+  string investor_id = 1;
+  
+}
