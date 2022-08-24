@@ -6,13 +6,13 @@ env:
   MICROSERVICE_NAME: "PortfolioMicroservice"
   MICROSERVICE_TAG: "portf"
   DOCKERFILE: "portfolio_dockerfile"
-  TEST_WORK_DIR: "PortfolioMicroservice/PortfolioMicroService.Web"
+  TEST_WORK_DIR: "NewPortfolioMicroservice/NewPortfolioMicroservice.Web"
 
   
 on:
   push:
     paths: 
-      - "PortfolioMicroservice/**"
+      - "NewPortfolioMicroservice/**"
       - ".github/workflows/PortfolioMicroservice.yml"
 
 jobs:
