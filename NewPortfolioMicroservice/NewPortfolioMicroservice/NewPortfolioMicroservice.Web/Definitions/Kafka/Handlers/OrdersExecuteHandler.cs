@@ -31,7 +31,7 @@ namespace NewPortfolioMicroservice.Definitions.Kafka.Handlers
             var askPortfolio = await _repository.GetByIdAsync(message.Value.AskInvestorId);
             var bidPortfolio = await _repository.GetByIdAsync(message.Value.BidInvestorId);
 
-            if (askPortfolio.Id == bidPortfolio.Id)
+            if (askPortfolio.Result.Id == bidPortfolio.Result.Id)
             {
                 await _repository.UpdateAsync(EncreaseBid(bidPortfolio.Result, message.Value));
                 await _repository.UpdateAsync(DecreaseAsk(bidPortfolio.Result, message.Value.ProductId, message.Value.Volume));
