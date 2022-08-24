@@ -79,7 +79,7 @@ public class TransactionHandler : IEventHandler<Null, TransactionCreatedEvent>
         {
             AskInvestorId = askOrder.InvestorId,
             BidInvestorId = bidOrder.InvestorId,
-            Price = askOrder.Price,
+            Price = askOrder.Price * 100,
             Volume = askOrder.Volume < bidOrder.Volume ? askOrder.Volume : bidOrder.Volume,
             ProductId = askOrder.ProductId
         });
