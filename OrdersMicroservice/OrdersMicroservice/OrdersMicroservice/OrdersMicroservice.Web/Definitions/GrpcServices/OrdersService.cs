@@ -49,6 +49,7 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
             };
         }
 
+        request.OrderDetail.Price *= 100;
         await _eventProducer.ProduceAsync(null, new OrderCreatedEvent()
         {
             Order = request.OrderDetail,
@@ -109,7 +110,10 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
                 });
             }
 
-            var response = new ProductInfoResponse();
+            var response = new ProductInfoResponse()
+            {
+                Success = new ProductInfoArray()
+            };
             response.Success.ProductsInfo.Add(infoList);
             return response;
         }

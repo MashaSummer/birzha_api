@@ -29,6 +29,16 @@ public class OrderExecuteHandler : IEventHandler<Null, OrderExecuteEvent>
         var bidUser = await _database.GetByIdAsync(new Guid(message.Value.BidInvestorId));
         var askUser = await _database.GetByIdAsync(new Guid(message.Value.AskInvestorId));
 
+        if (askUser.Id == bidUser.Id)
+        {
+            bidUser.BalanceFrozen -= price;
+            bidUser.BalanceActive += price;
+            
+            await _database.UpdateAsync(bidUser);
+            
+            return new OperationResult<bool> { Result = true };
+        }
+        
         bidUser.BalanceFrozen -= price;
         askUser.BalanceActive += price;
 
