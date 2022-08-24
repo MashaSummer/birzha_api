@@ -18,7 +18,10 @@ namespace BalanceMicroservice.Web.MongoService.ViewModels
         /// <summary>
         /// Balance
         /// </summary>
-        [BsonElement("Balance")]
-        public double Balance { get; set; }
+        [BsonElement("BalanceActive")]
+        public decimal BalanceActive { get; set; }
+
+        [BsonElement("BalanceFrozen")]
+        public decimal BalanceFrozen { get; set; }
     }
 }

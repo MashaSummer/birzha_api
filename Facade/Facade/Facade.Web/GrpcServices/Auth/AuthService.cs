@@ -72,6 +72,7 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
             if (tokenResponse == null)
             {
                 result.AddError("Invalid auth response");
+                _logger.LogError("Token response is null");
             }
             else
             {
@@ -82,11 +83,13 @@ public class AuthService : AuthRequest.AuthService.AuthServiceBase
         catch (HttpRequestException ex)
         {
             result.AddError(ex.Message);
+            _logger.LogError(ex.Message);
         }
 
         catch (JsonException ex)
         {
             result.AddError("Invalid auth response");
+            _logger.LogError(ex.Message);
         }
 
         return result;

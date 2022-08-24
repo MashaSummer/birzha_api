@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "PortfolioGrpc";
+
+package portfolio;
+
+service PortfolioService {
+  rpc GetAllAssets (GetAllAssetsRequest) returns (GetAllAssetsResponse);
+}
+message GetAllAssetsRequest {
+    string id = 1;
+}
+message AssetArray {
+  message Asset {
+    string id = 1;
+    int32 volume_active = 2;
+    int32 volume_frozen = 3;
+  }
+  repeated Asset assets = 1;
+}
+message Error {
+  string error_message = 1;
+  string stack_trace = 2;
+}
+message GetAllAssetsResponse {
+  oneof result {
+    AssetArray asset_array = 1;
+    Error error = 2;
+  }
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option csharp_namespace = "PortfolioMicroService";
+
+package KafkaProductAddProto;
+
+message ProductAddEvent{
+	string investor_id = 1;
+	string product_id = 2;
+	int32 volume = 3;
+	int32 start_price = 4;
+}
