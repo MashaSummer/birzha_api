@@ -23,7 +23,7 @@ namespace BlazorClient.Pages
             try
             {
                 var headers = new Metadata();
-                headers.Add("Authorization", $"Bearer {token}");
+                headers.Add("Authorization", $"Bearer {token.AccessToken}");
 
                 balanceResponse = await Client.GetBalanceAsync(new EmptyRequest(), headers);
 

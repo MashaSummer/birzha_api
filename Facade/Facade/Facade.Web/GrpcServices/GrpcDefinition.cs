@@ -20,11 +20,12 @@ namespace Facade.Web.GrpcServices
         {
             app.UseRouting();
             app.UseCors(AppData.PolicyName);
+            app.UseGrpcWeb();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>());
-            app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<AuthService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<ProductService>().EnableGrpcWeb());
+            app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>().EnableGrpcWeb());
             app.MapGrpcReflectionService();
         }
     }

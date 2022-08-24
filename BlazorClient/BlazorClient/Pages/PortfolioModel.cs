@@ -25,7 +25,7 @@ namespace BlazorClient.Pages
             try
             {
                 var headers = new Metadata();
-                headers.Add("Authorization", $"Bearer {token}");
+                headers.Add("Authorization", $"Bearer {token.AccessToken}");
 
                 getPortfolioResponse = await Client.GetPortfolioAsync(new GetPortfolioRequest());
 

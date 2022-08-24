@@ -21,6 +21,7 @@ namespace BlazorClient.Pages
         public LoginViewModel LoginData { get; set; }
         protected async Task LoginAsync()
         {
+            
             TokenData tokenData = new TokenData();
             try
             {

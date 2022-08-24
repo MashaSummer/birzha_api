@@ -1,5 +1,6 @@
 ﻿using BlazorClient.Infrastructure;
 using Blazored.Toast.Services;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using ProductGrpc;
@@ -8,7 +9,8 @@ namespace BlazorClient.Pages
 {
     public class CatalogModel : ComponentBase
     {
-        [Inject] IConfiguration config { get; set; }
+        [Inject] public ILocalStorageService localStorageService { get; set; }
+        [Inject] ProductService.ProductServiceClient Client { get; set; }
         [Inject] PriceDefineService priceDefineService { get; set; }
         [Inject] IToastService toastService { get; set; }
         public Components.AddProductModal Modal { get; set; }
@@ -17,18 +19,14 @@ namespace BlazorClient.Pages
         protected override async Task OnInitializedAsync()
         {
             products = new();
-            var address = config["FacadeBaseURL"];
+            var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             GetAllProductsResponse getAllProductsResponse = new();
             try
             {
-                var channel = GrpcChannel.ForAddress(address);
+                var headers = new Metadata();
+                headers.Add("Authorization", $"Bearer {token.AccessToken}");
+                getAllProductsResponse = await Client.GetAllProductsAsync(new GetAllProductsRequest(), headers);
 
-                var client = new ProductService.ProductServiceClient(channel);
-
-
-                getAllProductsResponse = await client.GetAllProductsAsync(new GetAllProductsRequest());
-
-                
                 if (getAllProductsResponse == null || getAllProductsResponse.Error != null)
                 {
 

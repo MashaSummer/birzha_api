@@ -27,7 +27,7 @@ namespace BlazorClient.Components
             try
             {
                 var headers = new Metadata();
-                headers.Add("Authorization", $"Bearer {token}");
+                headers.Add("Authorization", $"Bearer {token.AccessToken}");
                 balanceData = await Client.AddBalanceAsync(new ValueRequest() { Value = addBalanceViewModel.Value}, headers);
 
                 if (balanceData == null || balanceData.Status == BalanceData.Types.Status.Failed)

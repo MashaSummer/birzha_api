@@ -29,7 +29,7 @@ namespace BlazorClient.Components
             try
             {
                 var headers = new Metadata();
-                headers.Add("Authorization", $"Bearer {token}");
+                headers.Add("Authorization", $"Bearer {token.AccessToken}");
                 var changePortfolioRequest = new ChangePortfolioRequest()
                 {
                     InvestorId = null,

@@ -3,8 +3,10 @@
 <DepositModal @ref="Modal"></DepositModal>
 <AuthorizeView>
     <Authorized>
-        Balance: @Balance/ <span style="color:gray"@Frozen</span>
-        <button class="btn btn-primary" @onclick="() => Modal.Open()">Deposite</button>
+        <span style="margin-right:50px">
+            Balance: @Balance/ <span style="color:gray">@Frozen</span>
+            <button class="btn btn-primary" @onclick="() => Modal.Open()">Deposite</button>
+        </span>
     </Authorized>
     <NotAuthorized>
     </NotAuthorized>

@@ -13,6 +13,8 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
         <PackageReference Include="GitInfo" Version="2.2.0" />
         <PackageReference Include="Google.Protobuf" Version="3.21.2" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
+        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.47.0" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
         <PackageReference Include="Grpc.AspNetCore.Server" Version="2.47.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.47.0" />
