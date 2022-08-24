@@ -30,6 +30,7 @@ namespace Facade.Web.GrpcServices
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<BalanceService>().EnableGrpcWeb());
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<PortfolioService>().EnableGrpcWeb());
             app.UseEndpoints(endpoint => endpoint.MapGrpcService<OrderService>().EnableGrpcWeb());
+
             app.MapGrpcReflectionService();
         }
     }

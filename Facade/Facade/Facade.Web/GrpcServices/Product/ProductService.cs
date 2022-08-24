@@ -97,7 +97,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
                 BestBid = info.BestBid
             });
 
-        var response = new GetAllProductsResponse();
+        var response = new GetAllProductsResponse() { ProductArray = new ProductArray() };
         response.ProductArray.Products.AddRange(products);
 
         return response;

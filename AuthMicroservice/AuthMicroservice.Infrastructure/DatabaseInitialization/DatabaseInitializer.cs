@@ -29,8 +29,8 @@ public static class DatabaseInitializer
         var roles = AppData.Roles.ToArray();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var t11 = await userManager.FindByNameAsync("asd");
-        var t = await roleManager.FindByNameAsync("asd");
+        
+        
         foreach (var role in roles)
         {
             
@@ -70,6 +70,34 @@ public static class DatabaseInitializer
                 }
             }
         };
+        var developer2 = new ApplicationUser
+        {
+            Email = "microservice2@yopmail.com",
+            NormalizedEmail = "MICROSERVICE2@YOPMAIL.COM",
+            UserName = "microservice2@yopmail.com",
+            FirstName = "Microservice",
+            LastName = "Administrator",
+            NormalizedUserName = "MICROSERVICE2@YOPMAIL.COM",
+            PhoneNumber = "+79000000001",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+            ApplicationUserProfile = new ApplicationUserProfile
+            {
+                CreatedAt = DateTime.Now,
+                CreatedBy = "SEED",
+                Permissions = new List<AppPermission>
+                {
+                    new()
+                    {
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = "SEED",
+                        PolicyName = "EventItems:UserRoles:View",
+                        Description = "Access policy for EventItems controller user view"
+                    }
+                }
+            }
+        };
         var admin = await userManager.FindByEmailAsync(developer1.Email);
         if (admin == null)
         {
@@ -83,6 +111,22 @@ public static class DatabaseInitializer
             foreach (var role in roles)
             {
                 var roleAdded = await userManager!.AddToRoleAsync(developer1, role);
+            }
+        }
+        
+        var admin2 = await userManager.FindByEmailAsync(developer2.Email);
+        if (admin2 == null)
+        {
+            var result = await userManager.CreateAsync(developer2, "123qwe!@#");
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException("Cannot create account");
+            }
+
+            foreach (var role in roles)
+            {
+                var roleAdded = await userManager!.AddToRoleAsync(developer2, role);
             }
         }
         /*

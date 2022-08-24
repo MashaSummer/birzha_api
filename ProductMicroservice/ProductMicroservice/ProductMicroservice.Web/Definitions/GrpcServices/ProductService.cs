@@ -21,6 +21,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
     private readonly IEventProducer<Null, ProductAddEvent> _eventProducer;
 
     public ProductService(IRepository<ProductModel> repository, ILogger<ProductService> logger, IMapper mapper, IEventProducer<Null, ProductAddEvent> eventProducer)
+
     {
         _repository = repository;
         _logger = logger;
@@ -90,6 +91,7 @@ public class ProductService : ProductGrpc.ProductService.ProductServiceBase
                 }
             };
         }
+
 
         await _eventProducer.ProduceAsync(null, new ProductAddEvent()
         {

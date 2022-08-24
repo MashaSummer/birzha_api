@@ -32,6 +32,8 @@ namespace NewPortfolioMicroservice.Definitions.Kafka.Handlers
 
         public async Task<OperationResult<bool>> ProcessAsync(Message<Null, OrderCreatedEvent> message)
         {
+            if (message.Value.Order.Type != Order.OrderType.Ask) return new OperationResult<bool> { Result = false };
+
             var portfolio = await _repository.GetByIdAsync(message.Value.Order.InvestorId);
             var index = 0;
             var Asset = portfolio.Result.Assets.Where((x, _index) =>

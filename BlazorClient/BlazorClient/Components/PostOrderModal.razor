@@ -1,0 +1,47 @@
+﻿@inherits Components.PostOrderModel
+@using Orders	
+@using BlazorClient.Attributes
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adding new product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <EditForm Model="@postOrderViewModel" OnValidSubmit="@HandleValidSubmitAsync" class="row">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group">
+                    <label for="volume">Volume</label>
+                    <InputNumber id="volume" min="1" class="form-control modal-input" @bind-Value="@postOrderViewModel.Volume" />
+                </div>
+                <div class="form-group">
+                    <label for="volume">Price</label>
+                    <InputNumber id="volume" min="0" class="form-control modal-input" @bind-Value="@postOrderViewModel.Price" />
+                </div> 
+                <div class="form-group">
+                     <InputCheckbox id="onlyFullExecution" class="form-check-input modal-input" @bind-Value="@postOrderViewModel.OnlyFullExecution"></InputCheckbox>
+                     <label for="onlyFullExecution">Full execution</label>
+                </div>
+                <div class="form-group">
+                    <label for="deadline">Retention Time</label>
+                    <InputDate id="deadline"  class="form-control modal-input" @bind-Value="@postOrderViewModel.Deadline" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}

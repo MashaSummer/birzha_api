@@ -41,6 +41,11 @@ namespace PortfolioMicroService.Definitions.Kafka.Handlers
 
                 _logger.LogInformation("Created investor record for id: {0}", message.Value.InvestorId);
             }
+            
+            if (portfolio.Result.Asset == null)
+            {
+                portfolio.Result.Asset = new AssetModel[] {};
+            }
 
             portfolio.Result.Asset = portfolio.Result.Asset!.Append(_mapper.Map<AssetModel>(message.Value)).ToArray();
 
