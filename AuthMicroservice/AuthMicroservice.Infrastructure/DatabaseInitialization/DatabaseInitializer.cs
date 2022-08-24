@@ -70,6 +70,34 @@ public static class DatabaseInitializer
                 }
             }
         };
+        var developer2 = new ApplicationUser
+        {
+            Email = "microservice2@yopmail.com",
+            NormalizedEmail = "MICROSERVICE@YOPMAIL.COM",
+            UserName = "microservice@yopmail.com",
+            FirstName = "Microservice",
+            LastName = "Administrator",
+            NormalizedUserName = "MICROSERVICE@YOPMAIL.COM",
+            PhoneNumber = "+79000000000",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+            ApplicationUserProfile = new ApplicationUserProfile
+            {
+                CreatedAt = DateTime.Now,
+                CreatedBy = "SEED",
+                Permissions = new List<AppPermission>
+                {
+                    new()
+                    {
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = "SEED",
+                        PolicyName = "EventItems:UserRoles:View",
+                        Description = "Access policy for EventItems controller user view"
+                    }
+                }
+            }
+        };
         var admin = await userManager.FindByEmailAsync(developer1.Email);
         if (admin == null)
         {
@@ -83,6 +111,22 @@ public static class DatabaseInitializer
             foreach (var role in roles)
             {
                 var roleAdded = await userManager!.AddToRoleAsync(developer1, role);
+            }
+        }
+        
+        var admin2 = await userManager.FindByEmailAsync(developer2.Email);
+        if (admin2 == null)
+        {
+            var result = await userManager.CreateAsync(developer2, "123qwe!@#");
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException("Cannot create account");
+            }
+
+            foreach (var role in roles)
+            {
+                var roleAdded = await userManager!.AddToRoleAsync(developer2, role);
             }
         }
         /*
