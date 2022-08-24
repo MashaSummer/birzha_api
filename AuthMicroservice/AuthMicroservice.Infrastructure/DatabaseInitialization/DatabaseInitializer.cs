@@ -29,8 +29,8 @@ public static class DatabaseInitializer
         var roles = AppData.Roles.ToArray();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var t11 = await userManager.FindByNameAsync("asd");
-        var t = await roleManager.FindByNameAsync("asd");
+        
+        
         foreach (var role in roles)
         {
             
