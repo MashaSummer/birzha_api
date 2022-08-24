@@ -1,0 +1,63 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Install Docker from repository 
+      apt:
+        name: docker.io
+        state: present
+        
+    - name: Install Docker-compose from repository 
+      apt:
+        name: docker-compose
+        state: present
+               
+    - name: Create Directory for projects
+      file: path=/opt/docker state=directory
+    
+    - name: Copy image 
+      copy:
+        src: "/tmp/{{ microservice_name_image }}.tar"
+        dest: /opt/docker/
+        mode: 0755
+        owner: root
+        group: root
+    
+    - name: Create a network
+      community.docker.docker_network:
+        name: birzha
+    
+    - name: extract image 
+      docker_image:
+         name: "{{ microservice_name_image }}"
+         tag: "{{ sha }}"
+         load_path: "/opt/docker/{{ microservice_name_image }}.tar/{{ microservice_name_image }}.tar"
+         state: present
+         source: load
+    
+    - name: copy aspnetapp.pfx
+      copy:
+        src: aspnetapp.pfx
+        dest: /root/.aspnet/https
+        mode: '755' 
+    
+    - name: Run 
+      docker_container:
+         name: "{{ microservice_name }}"
+         image: "{{ microservice_name_image }}:{{ sha }}"
+         state: started
+         ports:
+          - "12345:12345"
+          - "54321:54321"
+         networks:
+          - name: birzha
+         log_driver: json-file
+         log_options:
+             tag: "{{ microservice_name }}"
+         env:
+             ASPNETCORE_HTTPS_PORT: "12345"
+             ASPNETCORE_Kestrel__Certificates__Default__Password: "123456789"
+             ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+         volumes:
+          - /root/.aspnet/https:/https/ 
