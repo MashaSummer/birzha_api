@@ -73,12 +73,12 @@ public static class DatabaseInitializer
         var developer2 = new ApplicationUser
         {
             Email = "microservice2@yopmail.com",
-            NormalizedEmail = "MICROSERVICE@YOPMAIL.COM",
-            UserName = "microservice@yopmail.com",
+            NormalizedEmail = "MICROSERVICE2@YOPMAIL.COM",
+            UserName = "microservice2@yopmail.com",
             FirstName = "Microservice",
             LastName = "Administrator",
-            NormalizedUserName = "MICROSERVICE@YOPMAIL.COM",
-            PhoneNumber = "+79000000000",
+            NormalizedUserName = "MICROSERVICE2@YOPMAIL.COM",
+            PhoneNumber = "+79000000001",
             EmailConfirmed = true,
             PhoneNumberConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString("D"),
