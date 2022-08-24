@@ -49,6 +49,7 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
             };
         }
 
+        request.OrderDetail.Price *= 100;
         await _eventProducer.ProduceAsync(null, new OrderCreatedEvent()
         {
             Order = request.OrderDetail,
