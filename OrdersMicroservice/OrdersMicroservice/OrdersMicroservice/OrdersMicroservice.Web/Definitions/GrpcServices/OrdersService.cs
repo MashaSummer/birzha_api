@@ -110,6 +110,9 @@ public class OrdersService : Orders.OrdersService.OrdersServiceBase
             }
 
             var response = new ProductInfoResponse();
+            {
+                Success = new ProductInfoArray()
+            };
             response.Success.ProductsInfo.Add(infoList);
             return response;
         }
