@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcServices";
+
+package greet;
+
+service SayHelloService {
+  rpc SayHello (Request) returns (Response);
+}
+
+message Request {
+  string name = 1;
+}
+
+message Response {
+  string answer = 1;
+}
