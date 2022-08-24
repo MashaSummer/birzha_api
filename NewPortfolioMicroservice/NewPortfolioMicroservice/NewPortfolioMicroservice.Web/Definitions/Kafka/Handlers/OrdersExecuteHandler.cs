@@ -30,6 +30,8 @@ namespace NewPortfolioMicroservice.Definitions.Kafka.Handlers
         {
             var askPortfolio = await _repository.GetByIdAsync(message.Value.AskInvestorId);
             var bidPortfolio = await _repository.GetByIdAsync(message.Value.BidInvestorId);
+            
+            _logger.LogInformation($"User {askPortfolio.Result.Id} send to {bidPortfolio.Result.Id}");
 
             if (askPortfolio.Result.Id == bidPortfolio.Result.Id)
             {
