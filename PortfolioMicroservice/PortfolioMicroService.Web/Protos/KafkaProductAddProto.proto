@@ -7,6 +7,6 @@ package KafkaProductAddProto;
 message ProductAddEvent{
 	string investor_id = 1;
 	string product_id = 2;
-	double volume = 3;
-	double start_price = 4;
+	int32 volume = 3;
+	int32 start_price = 4;
 }
