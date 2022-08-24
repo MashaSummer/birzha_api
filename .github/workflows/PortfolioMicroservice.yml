@@ -6,7 +6,7 @@ env:
   MICROSERVICE_NAME: "PortfolioMicroservice"
   MICROSERVICE_TAG: "portf"
   DOCKERFILE: "portfolio_dockerfile"
-  TEST_WORK_DIR: "NewPortfolioMicroservice/NewPortfolioMicroservice.Web"
+  TEST_WORK_DIR: "NewPortfolioMicroservice/NewPortfolioMicroservice/NewPortfolioMicroservice.Web"
 
   
 on:
