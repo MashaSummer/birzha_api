@@ -75,12 +75,24 @@ public class PortfolioService : PortfolioServiceGrpc.PortfolioService.PortfolioS
         var responseProduct = await TryGetAllProducts(productClient);
         var productsArray = responseProduct.Result.ProductArray.Products;
 
+        _logger.LogInformation($"Products array == null ? {productsArray == null}");
+        _logger.LogInformation($"Products array has {productsArray.Count} elements");
+
         var responseOrders = await TryGetOrders(context, ordersClient, productsArray, id);
         var userProductsInfo = responseOrders.Result.Success.Products;
+        
+        _logger.LogInformation($"userProductsInfo == null {userProductsInfo == null}");
+        _logger.LogInformation($"UserProductsInfo contains {userProductsInfo.Count} elements");
 
         var result = OperationResult.CreateResult<GetPortfolioResponse>();
-
-        GetPortfolioResponse portfolio = new GetPortfolioResponse();
+        
+        GetPortfolioResponse portfolio = new GetPortfolioResponse()
+        {
+            Portfolio = new PortfolioServiceGrpc.Portfolio()
+            {
+                Total = new PortfolioServiceGrpc.Portfolio.Types.Total()
+            }
+        };
         try
         {
             var productsInPortfolio = PortfolioAggregator.AggregateProducts(portfolio, assetsArray, productsArray, userProductsInfo).Portfolio.Products;
