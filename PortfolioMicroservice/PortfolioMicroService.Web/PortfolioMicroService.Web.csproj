@@ -35,10 +35,5 @@
       <ProjectReference Include="..\PortfolioMicroService.Domain\PortfolioMicroService.Domain.csproj" />
       <ProjectReference Include="..\PortfolioMicroService.Infrastructure\PortfolioMicroService.Infrastructure.csproj" />
     </ItemGroup>
-    
-    
-    <ItemGroup>
-      <Folder Include="Definitions\Kafka\Models\" />
-    </ItemGroup>
 
 </Project>
