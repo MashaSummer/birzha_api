@@ -12,7 +12,7 @@ COPY ["NewPortfolioMicroservice/NewPortfolioMicroservice/NewPortfolioMicroservic
 COPY ["NewPortfolioMicroservice/NewPortfolioMicroservice/NewPortfolioMicroservice.Infrastructure/NewPortfolioMicroservice.Infrastructure.csproj", "/NewPortfolioMicroservice/NewPortfolioMicroservice.Infrastructure/"]
 COPY ["NewPortfolioMicroservice/NewPortfolioMicroservice/NewPortfolioMicroservice.Domain/NewPortfolioMicroservice.Domain.csproj", "NewPortfolioMicroservice/NewPortfolioMicroservice.Domain/"]
 RUN dotnet restore "NewPortfolioMicroservice/NewPortfolioMicroservice.Web/NewPortfolioMicroservice.Web.csproj"
-COPY . .
+COPY NewPortfolioMicroservice/ .
 WORKDIR "/src/NewPortfolioMicroservice/NewPortfolioMicroservice.Web"
 RUN dotnet build "NewPortfolioMicroservice.Web.csproj" -c Release -o /app/build
 
