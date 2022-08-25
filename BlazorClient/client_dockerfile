@@ -9,7 +9,7 @@ ENV ASPNETCORE_URLS="http://*:12345;https://*:54321"
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["BlazorClient/BlazorClient/BlazorClient.csproj", "BlazorClient/"]
-RUN dotnet restore "BlazorClient/BlazorClient/BlazorClient.csproj"
+RUN dotnet restore "BlazorClient/BlazorClient.csproj"
 COPY BlazorClient/ .
 WORKDIR "/src/BlazorClient/"
 RUN dotnet build "BlazorClient.csproj" -c Release -o /app/build
