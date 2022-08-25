@@ -1,4 +1,4 @@
-﻿@page "/product/{Id}"
+﻿@page "/product/{Name}/{Id}"
 @using Orders
 <PostOrderModal @ref="Modal"></PostOrderModal>
 <div class="container-fluid">
@@ -9,7 +9,7 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
 
-                <h3 class="profile-username text-center">Apple</h3>
+                <h3 class="profile-username text-center">@Name</h3>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
@@ -113,5 +113,9 @@
 @code {
     [Parameter]
     public string? Id { get; set; }
+    
+    [Parameter]
+    public string? Name { get; set; }
     public Components.PostOrderModal Modal { get; set; }
+
 }

@@ -22,8 +22,12 @@ public class OrderService : OrdersService.OrdersServiceBase
         _client = new OrdersService.OrdersServiceClient(channel);
     }
 
-    public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context) => 
-        await _client.CreateOrderAsync(request);
+    public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
+    {
+        var investorId = context.GetHttpContext().User.Claims.FirstOrDefault(x => x.Type == "id")!.Value;
+        request.OrderDetail.InvestorId = investorId;
+        return await _client.CreateOrderAsync(request);
+    }
 
     public override async Task<ProductInfoResponse> GetProductsInfo(ProductInfoRequest request, ServerCallContext context) => 
         await _client.GetProductsInfoAsync(request);
