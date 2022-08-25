@@ -37,7 +37,7 @@ namespace BlazorClient.Pages
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    BestAsk = x.BestAsk,
+                    BestAsk = priceDefineService.DefineNormalPrice(x.BestAsk),
                     BestBid = x.BestBid
                 }).ToList();
             }

@@ -27,7 +27,7 @@ namespace BlazorClient.Pages
                 var headers = new Metadata();
                 headers.Add("Authorization", $"Bearer {token.AccessToken}");
 
-                getPortfolioResponse = await Client.GetPortfolioAsync(new GetPortfolioRequest());
+                getPortfolioResponse = await Client.GetPortfolioAsync(new GetPortfolioRequest(), headers);
 
                 if (getPortfolioResponse == null || getPortfolioResponse.Error != null)
                 {
@@ -43,7 +43,7 @@ namespace BlazorClient.Pages
                     VolumeFrozen = x.VolumeFrozen,
                     Spent = x.Spent,
                     Earned = x.Earned,
-                    Price = x.BestAsk,
+                    Price = priceDefineService.DefineNormalPrice(x.BestAsk),
                     Estimate = x.Estimate,
                     DeltaAbs = x.DeltaAbs,
                     DeltaRel = x.DeltaRel

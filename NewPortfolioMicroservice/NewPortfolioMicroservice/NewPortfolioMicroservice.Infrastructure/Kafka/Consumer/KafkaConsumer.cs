@@ -32,29 +32,38 @@ public class KafkaConsumer<TKey, TValue> : IHostedService, IDisposable
 
     private async Task ConsumeEvents(CancellationToken token)
     {
-        _consumer.Subscribe(_topic);
-
-        ConsumeResult<TKey, TValue> result = null;
-
-        while (!token.IsCancellationRequested)
+        try
         {
-            result = _consumer.Consume(token);
+            _consumer.Subscribe(_topic);
+
+            ConsumeResult<TKey, TValue> result = null;
+
+            while (!token.IsCancellationRequested)
+            {
+                result = _consumer.Consume(token);
+                if (result == null)
+                    continue;
+
+                Console.WriteLine($"From consumer: message value: {result.Message.Value}");
+                var processResult = await _handler.ProcessAsync(result.Message);
+                
+                if (processResult.Ok)
+                    _consumer.Commit(result);
+            }
+
             if (result == null)
-                continue;
+                return;
 
-            Console.WriteLine($"From consumer: message value: {result.Message.Value}");
-            await _handler.ProcessAsync(result.Message);
+            // We do commit before invoke close method (if autocommit is disable)
+            // because Close() method informs consumer group coordinator about changing
+            // consumers number so after that rebalancing starts 
             _consumer.Commit(result);
+            _consumer.Close();
         }
-
-        if (result == null)
-            return;
-
-        // We do commit before invoke close method (if autocommit is disable)
-        // because Close() method informs consumer group coordinator about changing
-        // consumers number so after that rebalancing starts 
-        _consumer.Commit(result);
-        _consumer.Close();
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error while start kafka: {ex?.Message}");
+        }
     }
 
     public void Dispose()

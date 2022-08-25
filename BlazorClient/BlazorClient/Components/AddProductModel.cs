@@ -23,7 +23,7 @@ namespace BlazorClient.Components
 
         public async Task HandleValidSubmitAsync()
         {
-            
+            var t = addProductViewModel;   
             var token = await localStorageService.GetAsync<SecurityToken>(nameof(SecurityToken));
             ChangePortfolioResponse addProductResponse = new();
             try
@@ -32,9 +32,10 @@ namespace BlazorClient.Components
                 headers.Add("Authorization", $"Bearer {token.AccessToken}");
                 var changePortfolioRequest = new ChangePortfolioRequest()
                 {
-                    InvestorId = null,
+                    InvestorId = "",
                     ProductName = addProductViewModel.ProductName,
                     StartPrice = priceDefineService.DefinePrice(addProductViewModel.StartPrice),
+                    Volume = addProductViewModel.Volume
                 };
 
                 addProductResponse = await Client.AddProductAsync(changePortfolioRequest, headers);

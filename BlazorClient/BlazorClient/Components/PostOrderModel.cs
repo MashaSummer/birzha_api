@@ -32,16 +32,17 @@ namespace BlazorClient.Components
             {
                 var headers = new Metadata();
                 headers.Add("Authorization", $"Bearer {token.AccessToken}");
-                
+
                 var orderDetail = new Order()
                 {
                     ProductId = ProductId,
                     Volume = postOrderViewModel.Volume,
                     Price = priceDefineService.DefinePrice(postOrderViewModel.Price),
                     OnlyFullExecution = postOrderViewModel.OnlyFullExecution,
-                    SubmissionTime = Timestamp.FromDateTime(postOrderViewModel.SubmissionTime),
-                    Deadline = Timestamp.FromDateTime(postOrderViewModel.Deadline),
-                    InvestorId = null
+                    SubmissionTime = Timestamp.FromDateTime(postOrderViewModel.SubmissionTime.ToUniversalTime()),
+                    Deadline = Timestamp.FromDateTime(postOrderViewModel.Deadline.ToUniversalTime()),
+                    InvestorId = "",
+                    Type = this.OrderType
                 };
                 var postOrderRequest = new CreateOrderRequest() { OrderDetail = orderDetail };
                 
