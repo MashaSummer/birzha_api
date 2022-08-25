@@ -1,4 +1,4 @@
-name: Transaction-test-and-deploy
+name: Client-test-and-deploy
 env:
   SERVER: "84.38.185.78"
   PORT: "22"
@@ -86,7 +86,7 @@ jobs:
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.5.0
         with:
-          playbook: ansiblefiles/transaction_playbook.yaml
+          playbook: ansiblefiles/client_playbook.yaml
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           options: | 
             -vv
