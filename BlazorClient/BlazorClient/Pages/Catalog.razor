@@ -53,22 +53,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <a href="/product/123" class="">Apple</a>
-                        </td>
-                        <td>
-                            172.04
-                        </td>
-                        <td>
-                            169.32
-                        </td>
-                    </tr>
-                    @foreach (var product in products)
+                @foreach (var product in products)
                         {
                         <tr>
                             <td>
-                                <a href="/product/@product.Id"
+                                <a href="/product/@product.Name/@product.Id"
                                     class="">
                                     @product.Name
                                 </a>

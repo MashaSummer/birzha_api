@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace NewPortfolioMicroservice.Infrastructure.Mongodb;
 
-public class MongoRepository<T> : IRepository<T> where T : IMongoModel
+public class MongoRepository<T> : IRepository<T> where T : IMongoModel, new()
 {
     private readonly IMongoCollection<T> _collection;
     private readonly ILogger<MongoRepository<T>> _logger;
@@ -44,6 +44,12 @@ public class MongoRepository<T> : IRepository<T> where T : IMongoModel
             if (entity == null)
             {
                 result.AddError(new Exception($"No entities with this id: {id}"));
+                _logger.LogInformation($"Try create new record for {id}");
+
+                await AddAsync(new T()
+                {
+                    Id = id
+                });
                 return result;
             }
 

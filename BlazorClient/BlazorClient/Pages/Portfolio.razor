@@ -24,40 +24,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                    </tr>
-                    @if(portfolio.Total != null)
+                @if(portfolio.Total != null)
                     {
                      <tr>
                         <td>
-                            @portfolio.Total?.Spent?
+                            @($"{portfolio.Total?.Spent:0.00}")
                         </td>
                         <td>
-                            @portfolio.Total?.Earned?
+                            @($"{portfolio.Total?.Earned:0.00}")
                         </td>
                         <td>
-                            @portfolio.Total?.Estimate?
+                            @($"{portfolio.Total?.Estimate:0.00}")
                         </td>
                         <td>
-                            @portfolio.Total?.DeltaAbs?
+                            @($"{portfolio.Total?.DeltaAbs:0.00}")
                         </td>
                         <td>
-                            @portfolio.Total?.DeltaRel?
+                            @($"{portfolio.Total?.DeltaRel:0.00}")
                         </td>
                     </tr>
                     }
@@ -86,46 +69,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>
-                            Apple
-                        </th>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123/<span style="color:gray">123</span>
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                        <td>
-                            123
-                        </td>
-                    </tr>
-                    @if(portfolio.Products != null)
+                @if(portfolio.Products != null)
         {
             @foreach (var product in portfolio.Products)
                         {
                         <tr>
                             <td>
-                                <a href="/product/@product.Id"
+                                <a href="/product/@product.Name/@product.Id"
                                     class="">
                                     @product.Name
                                 </a>
                             </td>
                             <td>
                                 @{
-                                    var price = product.Price == 0 ? "-" : product.Price.ToString();
+                                    var price = product.Price <= 0 ? "-" : product.Price.ToString();
                                 }
                                 @price
                             </td>
@@ -133,19 +90,19 @@
                                 @product.VolumeActive/<span style="color:gray">@product.VolumeFrozen</span>
                             </td>
                             <td>
-                                @product.Spent
+                                @($"{product.Spent:0.00}")
                             </td>
                             <td>
-                                @product.Earned
+                                @($"{product.Earned:0.00}")
                             </td>
                             <td>
-                                @product.Estimate
+                                @($"{product.Estimate:0.00}")
                             </td>
                             <td>
-                                @product.DeltaAbs
+                                @($"{product.DeltaAbs:0.00}")
                             </td>
                             <td>
-                                @product.DeltaRel
+                                @($"{product.DeltaRel:0.00}")
                             </td>
                         </tr>
                         }
